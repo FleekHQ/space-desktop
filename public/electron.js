@@ -6,15 +6,16 @@ const path = require('path');
 const isDev = require('electron-is-dev');
 
 let mainWindow;
+const isMacOs = process.platform === 'darwin';
 
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 900,
     height: 680,
-    // frame: false,
-    // titleBarStyle: 'hiddenInset',
+    frame: !isMacOs,
+    titleBarStyle: isMacOs ? 'hiddenInset' : 'default',
   });
-  mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);
+  mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`); // parent, frames
   if (isDev) {
     // Open the DevTools.
     //BrowserWindow.addDevToolsExtension('<location to your react chrome extension>');

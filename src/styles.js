@@ -1,6 +1,14 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 export default makeStyles({
+  dragableAera: {
+    position: 'absolute',
+    top: 0,
+    width: '100%',
+    height: 37,
+    '-webkit-user-select': 'none',
+    '-webkit-app-region': 'drag',
+  },
   app: {
     display: 'flex',
   },
@@ -15,13 +23,13 @@ export default makeStyles({
   },
   sidebarHeader: {
     height: 36,
+    borderBottom: '1px solid black',
   },
   sidebarSpacesList: {
     padding: 10,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    borderTop: '1px solid black',
     borderRight: '1px solid black',
   },
   spaceAvatar: {
@@ -38,7 +46,6 @@ export default makeStyles({
   },
   box: {
     padding: '10px 10px 6px',
-    borderTop: '1px solid black',
   },
   username: {
     fontSize: 14,
@@ -79,5 +86,8 @@ export default makeStyles({
   },
   sidebarActions: {
     flexGrow: 1,
+  },
+  topBorder: {
+    borderTop: '1px solid black',
   }
 });

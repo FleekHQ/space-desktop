@@ -10,14 +10,16 @@ const theme = createFleekTheme();
 
 function App() {
   const classes = useStyles();
+  const isFrameless = window.innerHeight === window.outerHeight;
 
   return (
     <>
       <CssBaseline />
       <ThemeProvider theme={theme}>
-        <div className={classes.app}>
+          <div className={classes.dragableAera}></div>
+          <div className={classes.app}>
           <div className={classes.sidebar}>
-            <div className={classes.sidebarHeader}></div>
+            {isFrameless && <div className={classes.sidebarHeader}></div>}
             <div className={classes.sidebarBody}>
               <div className={classes.sidebarSpacesList}>
                 <div className={classes.spaceAvatar}></div>
@@ -45,7 +47,7 @@ function App() {
                     <Typography className={classes.username}>Trash</Typography>
                   </div>
                 </div>
-                <div className={classes.box}>
+                <div className={`${classes.box} ${classes.topBorder}`}>
                   <div className={classes.option}>
                     <div className={classes.optionIcon}></div>
                     <Typography className={classes.username}>Backup</Typography>
@@ -58,7 +60,6 @@ function App() {
                 </div>
               </div>
             </div>
-
           </div>
           <div className={classes.content}></div>
         </div>
