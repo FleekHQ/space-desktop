@@ -4,18 +4,11 @@
 
 #root {
   display: grid;
-  grid-template-columns: 200px auto;
   height: 100vh;
 }
 
 body {
   margin: 0;
-}
-
-.app-content {
-  padding-top: 35px;
-  height: 100%;
-  background: #aaaaaa;
 }
 
 .app-title-bar {
