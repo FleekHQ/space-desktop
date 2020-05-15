@@ -6,9 +6,9 @@
   "author": "Fleek",
   "homepage": "./",
   "scripts": {
-    "start": "node scripts/start.js",
-    "build": "node scripts/build.js",
-    "test": "node scripts/test.js",
+    "start": "craco scripts/start.js",
+    "build": "craco scripts/build.js",
+    "test": "craco scripts/test.js",
     "electron:dev": "concurrently \"cross-env BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",
     "electron-pack": "electron-builder -c.extraMetadata.main=build/electron.js",
     "preelectron-pack": "npm run clean && npm run build",
@@ -119,7 +119,8 @@
     "electron": "^8.2.5",
     "electron-builder": "^22.6.0",
     "rimraf": "^3.0.2",
-    "wait-on": "^5.0.0"
+    "wait-on": "^5.0.0",
+    "craco-alias": "^2.1.1"
   },
   "eslintConfig": {
     "extends": "react-app"

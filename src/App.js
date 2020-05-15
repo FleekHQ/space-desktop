@@ -2,10 +2,10 @@ import React from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { ThemeProvider } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import { Typography as FleekTypography } from './components';
+import { Typography as FleekTypography } from '@ui';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import createFleekTheme from './theme';
+import createFleekTheme from '@ui/theme';
 
 const theme = createFleekTheme();
 
