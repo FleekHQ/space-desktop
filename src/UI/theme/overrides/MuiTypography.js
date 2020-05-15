@@ -1,6 +1,6 @@
 import palette from '../palette/palette';
 
-const muiButton = {
+const muiTypography = {
   colorPrimary: {
     color: palette.primary,
   },
@@ -12,4 +12,4 @@ const muiButton = {
   },
 };
 
-export default muiButton;
+export default muiTypography;
