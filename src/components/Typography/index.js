@@ -7,7 +7,7 @@ const FleekTypography = ({ bold, color, ...restProps }) => {
   const typographyColor = color === 'accent' ? 'textSecondary' : color;
   const typographyComponent = (
     <Typography
-      color="textSecondary"
+      color={typographyColor}
       {...restProps}
     />
   );
