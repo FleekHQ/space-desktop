@@ -2,5 +2,5 @@ import palette from './palette';
 
 export default {
   primary: palette.primary,
-  secondary: palette.secondary,
+  secondary: palette.backgroundPrimary,
 };

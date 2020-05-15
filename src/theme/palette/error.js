@@ -1,11 +1,5 @@
-const main = '#EF6A6E';
-const light = '#FDEFF0';
-const dark = '#EC4B50';
-const extraDark = '#B00020';
+import palette from './palette';
 
 export default {
-  main,
-  light,
-  dark,
-  extraDark,
+  main: palette.danger,
 };

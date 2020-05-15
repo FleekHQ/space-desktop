@@ -1,3 +1,5 @@
-const hover = 'rgba(0, 0, 0, 0.04)';
+import palette from './palette';
 
-export default { hover };
+export default {
+  hover: palette.hover,
+};

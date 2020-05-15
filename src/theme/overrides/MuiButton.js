@@ -1,6 +1,3 @@
-import text from '../palette/text';
-import error from '../palette/error';
-import primary from '../palette/primary';
 import palette from '../palette/palette';
 
 const muiButton = {
@@ -8,51 +5,27 @@ const muiButton = {
     padding: '8px 20px',
     whiteSpace: 'nowrap',
   },
+  text: {
+    color: palette.primary,
+  },
   contained: {
-    '&$disabled': {
-      color: '#7b7b7b',
-      backgroundColor: palette.veryLightPink,
-    },
-  },
-  outlinedSecondary: {
-    color: error.main,
-    border: `solid 1px ${error.main}`,
-    '&:hover': {
-      borderColor: error.extraDark,
-      color: error.extraDark,
-    },
-  },
-  sizeLarge: {
-    height: 52,
-    fontSize: 14,
-  },
-  containedSecondary: {
-    color: palette.whiteThree,
-    backgroundColor: error.main,
-    '&:hover': {
-      backgroundColor: error.extraDark,
-    },
+    color: palette.backgroundPrimary,
+    backgroundColor: palette.primary,
   },
   outlined: {
-    color: text.secondary,
-    border: `solid 1px ${palette.grey6}`,
+    color: palette.primary,
+    border: `solid 1px ${palette.primary}`,
   },
-  textSecondary: {
-    color: error.main,
-    '&:hover': {
-      backgroundColor: palette.grey3,
-    },
+  textPrimary: {
+    color: palette.accent,
   },
   containedPrimary: {
-    '&&&:hover': {
-      backgroundColor: primary.main,
-      opacity: 0.8,
-      transition: 'all 0.2s ease',
-    },
-    '&$disabled': {
-      color: '#7b7b7b',
-      backgroundColor: palette.veryLightPink,
-    },
+    color: palette.backgroundPrimary,
+    backgroundColor: palette.accent,
+  },
+  outlinedPrimary: {
+    color: palette.accent,
+    border: `solid 1px ${palette.accent}`,
   },
 };
 
