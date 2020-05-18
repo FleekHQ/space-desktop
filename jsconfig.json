@@ -2,8 +2,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@ui": ["src/UI"],
-      "~": ["src"]
+      "@ui": ["src/UI"]
     }
   },
   "exclude": ["node_modules"]
