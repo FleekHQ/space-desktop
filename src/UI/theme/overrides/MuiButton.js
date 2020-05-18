@@ -2,30 +2,61 @@ import palette from '../palette/palette';
 
 const muiButton = {
   root: {
-    padding: '8px 20px',
+    display: 'flex',
+    height: 32,
+    justifyContent: 'center',
+    alignItems: 'center',
     whiteSpace: 'nowrap',
+    minWidth: undefined,
+  },
+  text: {
+    color: palette.primary,
+    padding: undefined,
+    '&:hover': {
+      backgroundColor: palette.hover,
+    },
+    '&$disabled': {
+      backgroundColor: palette.accent,
+    },
+  },
+  contained: {
+    color: palette.backgroundPrimary,
+    backgroundColor: palette.primary,
+    '-webkit-font-smoothing': 'antialiased',
+    '-moz-osx-font-smoothing': 'grayscale',
+    '&$disabled': {
+      backgroundColor: palette.primaryDisabledLight,
+      color: palette.primaryDisabledDark,
+    },
+  },
+  outlined: {
+    color: palette.primary,
+    padding: undefined,
+    '&&, &&:hover': {
+      border: 'solid 1px currentColor'
+    },
   },
   textPrimary: {
-    color: palette.black,
+    color: palette.accent,
   },
   containedPrimary: {
-    color: palette.white,
-    backgroundColor: palette.black,
+    color: palette.backgroundPrimary,
+    backgroundColor: palette.accent,
   },
   outlinedPrimary: {
-    color: palette.black,
-    border: `solid 1px ${palette.black}`,
+    color: palette.accent,
   },
   textSecondary: {
-    color: palette.blue1,
+    color: palette.secondary,
   },
   containedSecondary: {
-    color: palette.white,
-    backgroundColor: palette.blue1,
+    color: palette.backgroundPrimary,
   },
   outlinedSecondary: {
-    color: palette.blue1,
-    border: `solid 1px ${palette.blue1}`,
+    color: palette.secondary,
+    '&&, &&:hover': {
+      border: `solid 1px ${palette.disabled}`,
+    },
   },
 };
 
