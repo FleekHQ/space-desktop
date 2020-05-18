@@ -3,13 +3,18 @@ import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
-const FleekTypography = ({ bold, color, children, ...restProps }) => {
+const getFontWeight = (weight) => (
+  `fontWeight${weight.charAt(0).toUpperCase()}${weight.substring(1)}`
+)
+
+const FleekTypography = ({ weight, color, children, ...restProps }) => {
   const typographyColor = color === 'accent' ? 'textSecondary' : color;
+
   return (
     <Typography
       color={typographyColor}
-      children={bold
-        ? <Box fontWeight="fontWeightMedium">{children}</Box>
+      children={weight
+        ? <Box fontWeight={getFontWeight(weight)} component="span">{children}</Box>
         : children}
       {...restProps}
     />
@@ -17,14 +22,14 @@ const FleekTypography = ({ bold, color, children, ...restProps }) => {
 };
 
 FleekTypography.defaultProps = {
-  bold: false,
+  weight: undefined,
   color: 'primary',
   children: null,
 };
 
 FleekTypography.propTypes = {
-  bold: PropTypes.bool,
   color: PropTypes.oneOf(['primary', 'secondary', 'accent', 'error']),
+  weight: PropTypes.oneOf(['medium']),
   children: PropTypes.node,
 };
 
