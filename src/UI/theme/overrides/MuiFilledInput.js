@@ -4,9 +4,7 @@ const MuiFilledInput = {
   root: {
     backgroundColor: palette.palette.backgroundPrimary,
     boxShadow: palette.shadows.bottom,
-    borderWidth: 1,
-    borderStyle: 'solid',
-    borderColor: palette.palette.backgroundPrimary,
+    border: `1px solid ${palette.palette.backgroundPrimary}`,
     borderRadius: 4,
     transition: 'border-color 0.15s ease',
     '&:hover': {
