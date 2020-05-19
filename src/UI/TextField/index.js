@@ -13,7 +13,6 @@ const FleekTextField = ({ variant, label, InputProps, ...props }) => {
         disableUnderline: variant === 'filled',
         ...InputProps,
       }}
-      fullWidth
       {...props}
     />
   );
