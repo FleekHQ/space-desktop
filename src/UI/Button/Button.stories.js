@@ -14,6 +14,6 @@ storiesOf(categoryName, module).add('Button', () => {
     fixedWidth: boolean('set fixed width(200px as example)?', false) ? 200 : undefined,
     className: 'example-of-class-name',
   };
-  console.log(props);
+
   return <Button {...props}>Some text</Button>;
 });
