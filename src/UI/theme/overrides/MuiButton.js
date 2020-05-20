@@ -15,24 +15,24 @@ const muiButton = {
     },
   },
   text: {
-    color: palette.primary,
+    color: palette.black,
     padding: undefined,
   },
   contained: {
-    color: palette.backgroundPrimary,
-    backgroundColor: palette.primary,
+    color: palette.white,
+    backgroundColor: palette.black,
     '-webkit-font-smoothing': 'antialiased',
     '-moz-osx-font-smoothing': 'grayscale',
     '&:hover': {
       backgroundColor: undefined,
     },
     '&$disabled': {
-      backgroundColor: palette.primaryDisabledLight,
-      color: palette.primaryDisabledDark,
+      backgroundColor: palette.gray7,
+      color: palette.gray6,
     },
   },
   outlined: {
-    color: palette.primary,
+    color: palette.black,
     padding: undefined,
     '&&, &&:hover': {
       border: 'solid 1px currentColor',
@@ -40,37 +40,37 @@ const muiButton = {
     },
   },
   textPrimary: {
-    color: palette.accent,
+    color: palette.blue1,
     '&:hover': {
       backgroundColor: undefined,
     },
   },
   containedPrimary: {
-    color: palette.backgroundPrimary,
-    backgroundColor: palette.accent,
+    color: palette.white,
+    backgroundColor: palette.blue1,
     '&:hover': {
       backgroundColor: undefined,
     },
   },
   outlinedPrimary: {
-    color: palette.accent,
+    color: palette.blue1,
   },
   textSecondary: {
-    color: palette.secondary,
+    color: palette.gray1,
     '&:hover': {
       backgroundColor: undefined,
     },
   },
   containedSecondary: {
-    color: palette.backgroundPrimary,
+    color: palette.white,
     '&:hover': {
       backgroundColor: undefined,
     },
   },
   outlinedSecondary: {
-    color: palette.secondary,
+    color: palette.gray1,
     '&&, &&:hover': {
-      border: `solid 1px ${palette.disabled}`,
+      border: `solid 1px ${palette.gray2}`,
     },
   },
 };
