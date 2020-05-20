@@ -3,7 +3,7 @@ import { storiesOf } from '@storybook/react';
 import { select, boolean } from '@storybook/addon-knobs';
 import FolderNavButton from './index';
 
-const categoryName = 'ElementalComponents';
+const categoryName = 'FolderNavButton';
 
 storiesOf(categoryName, module).add('FolderNavButton', () => {
   const props = {

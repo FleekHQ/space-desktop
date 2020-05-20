@@ -6,9 +6,8 @@ export default makeStyles((theme) => ({
   },
   icon: {
     fontSize: 18,
-    color: 'green',
   },
   disabledIcon: {
-    color: 'red',
+    color: theme.palette.palette.gray2,
   }
 }));

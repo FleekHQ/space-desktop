@@ -6,16 +6,20 @@ import { faArrowLeft  } from '@fortawesome/pro-regular-svg-icons/faArrowLeft';
 import Button from '@material-ui/core/Button';
 import useStyles from './styles';
 
-const FolderNavButton = ({ direction, className, ...props }) => {
+const FolderNavButton = ({ direction, className, ...restProps }) => {
   const classes = useStyles();
 
   return (
-    <Button className={classnames(classes.root, className)} {...props}>
+    <Button
+      className={classnames(classes.root, className)}
+      disableRipple
+      {...restProps}
+    >
       <FontAwesomeIcon
         icon={faArrowLeft}
         flip={direction === 'forward' ? 'horizontal' : undefined}
         className={classnames(classes.icon, {
-          [classes.disabledIcon]: props.disabled,
+          [classes.disabledIcon]: restProps.disabled,
         })}
       />
     </Button>
