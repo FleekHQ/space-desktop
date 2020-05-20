@@ -2,17 +2,15 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { select, boolean } from '@storybook/addon-knobs';
 
-import Button from './index';
+import Button from '@material-ui/core/Button';
 
 const categoryName = 'ElementalComponents';
 
 storiesOf(categoryName, module).add('Button', () => {
   const props = {
     variant: select('variant', ['text', 'contained', 'outlined'], 'text'),
-    color: select('color', [undefined, 'accent', 'secondary'], undefined),
+    color: select('color', [undefined, 'primary', 'secondary'], undefined),
     disabled: boolean('disabled', false),
-    fixedWidth: boolean('set fixed width(200px as example)?', false) ? 200 : undefined,
-    className: 'example-of-class-name',
   };
 
   return <Button {...props}>Some text</Button>;
