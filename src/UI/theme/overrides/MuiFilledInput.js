@@ -2,9 +2,9 @@ import palette from '../palette';
 
 const MuiFilledInput = {
   root: {
-    backgroundColor: palette.white,
+    backgroundColor: palette.palette.white,
     boxShadow: palette.shadows.bottom,
-    border: `1px solid ${palette.white}`,
+    border: `1px solid ${palette.palette.white}`,
     borderRadius: 4,
     transition: 'border-color 0.15s ease',
     '&:hover': {
