@@ -21,7 +21,7 @@ const IconsNavigation = ({ options, WrapperComponent }) => {
       {options.map(({ active, icon, ...restProps }) => (
         <WrapperComponent {...restProps}>
           <Button
-            color={active ? 'primary' : undefined}
+            color={active ? 'primary' : 'default'}
             variant={active ? 'contained' : 'text'}
             className={classes.button}
             fullWidth
