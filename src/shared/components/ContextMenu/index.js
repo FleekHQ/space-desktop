@@ -65,7 +65,7 @@ const contextMenuConfig = ({
 
 
 
-const ContextMenu = ({ children }) => {
+const ContextMenu = () => {
   const { t } = useTranslation(); 
   const menuItems = contextMenuConfig({ t });
 
