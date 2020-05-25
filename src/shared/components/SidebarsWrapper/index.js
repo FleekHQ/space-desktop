@@ -1,15 +1,21 @@
 import React from 'react';
+import Sidebar from '../../../components/Sidebar';
+import useStyles from './styles';
 
 const SidebarsWrapper = ({ children }) => {
+  const classes = useStyles();
+
   return (
-    <>
-      Sidebar with navigation
-      <br />
-      {children}
-      <br />
-      Right panel, with files/folders details
-      + check if user is authorized (already setup the app config)
-    </>
+    <div className={classes.root}>
+      <Sidebar />
+      <div>
+        {children}
+      </div>
+      <div>
+        Right panel, with files/folders details
+        + check if user is authorized (already setup the app config)
+      </div>
+    </div>
   );
 };
 

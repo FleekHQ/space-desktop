@@ -4,6 +4,7 @@ import IconsNavigation from '@ui/IconsNavigation';
 import Typography from '@ui/Typography';
 import Avatar from '@ui/Avatar';
 import CreateNewButton from '../CreateNewButton';
+import TeamSelector from '../TeamSelector';
 import useStyles from './styles';
 import { useNavigations } from './hooks';
 
@@ -19,9 +20,9 @@ const Sidebar = () => {
   return (
     <div className={classes.root}>
       <div className={classes.trafficLightsSpot}></div>
-      <div>Team Selector Component</div>
+      <TeamSelector accountsList={[]} selectedAccountId="" />
       <div className={classes.navWrapper}>
-        <div className={`${classes.navColumn} ${classes.differentBackground}`}>
+        <div className={`${classes.navColumn} ${classes.generalNav}`}>
           <IconsNavigation options={generalNav} />
           <div className={classes.pullDown}>
             <Avatar />
