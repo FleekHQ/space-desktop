@@ -5,4 +5,7 @@ export default makeStyles((theme) => ({
     display: 'flex',
     height: '100%',
   },
+  mainContent: {
+    backgroundColor: theme.palette.palette.gray5,
+  },
 }));

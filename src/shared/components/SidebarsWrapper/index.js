@@ -8,7 +8,7 @@ const SidebarsWrapper = ({ children }) => {
   return (
     <div className={classes.root}>
       <Sidebar />
-      <div>
+      <div className={classes.mainContent}>
         {children}
       </div>
       <div>
