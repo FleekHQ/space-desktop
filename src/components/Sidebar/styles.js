@@ -10,6 +10,9 @@ export default makeStyles((theme) => ({
   trafficLightsSpot: {
     height: 27,
   },
+  differentBackground: {
+    backgroundColor: theme.palette.palette.gray5,
+  },
   navWrapper: {
     display: 'flex',
   },
@@ -18,10 +21,16 @@ export default makeStyles((theme) => ({
     flexDirection: 'column',
     justifyContent: 'space-between',
   },
-  specificNavigation: {
+  specificNavWrapper: {
     padding: '15px 13px 14px 12px',
   },
-  differentBackground: {
-    backgroundColor: theme.palette.palette.gray5,
-  }
+  specificNavTitle: {
+    marginBottom: 14,
+  },
+  specificNavLink: {
+    marginBottom: 10,
+  },
+  pullDown: {
+    marginTop: 'auto',
+  },
 }));

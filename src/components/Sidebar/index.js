@@ -1,38 +1,58 @@
 import React from 'react';
-import useStyles from './styles';
+import { Link } from 'react-router-dom';
 import IconsNavigation from '@ui/IconsNavigation';
 import Typography from '@ui/Typography';
+import Avatar from '@ui/Avatar';
+import CreateNewButton from '../CreateNewButton';
+import useStyles from './styles';
+import { useNavigations } from './hooks';
 
-const config = [
-  {
-    icon: 'files',
-    link: '/storage/files',
-    subNav: {
-      text: 'Files',
-      link: '/storage/files',
-    }
-  }
-]
+const activeLinkProps = {
+  weight: 'medium',
+  color: 'textSecondary',
+};
 
 const Sidebar = () => {
   const classes = useStyles();
+  const { generalNav, specificNav } = useNavigations();
 
   return (
     <div className={classes.root}>
-      <div className={classes.trafficLightsSpot}>empty spot</div>
-      <div>Team Selector</div>
+      <div className={classes.trafficLightsSpot}></div>
+      <div>Team Selector Component</div>
       <div className={classes.navWrapper}>
         <div className={`${classes.navColumn} ${classes.differentBackground}`}>
-          <IconsNavigation />
-          <div>Profile Picture</div>
+          <IconsNavigation options={generalNav} />
+          <div className={classes.pullDown}>
+            <Avatar />
+          </div>
         </div>
-        <div className={`${classes.navColumn} ${classes.specificNavigation}`}>
-          <Typography weight="medium" variant="h6">Storage</Typography>
-          <Typography weight="medium" variant="h6">Storage</Typography>
+        <div className={`${classes.navColumn} ${classes.specificNavWrapper}`}>
+          <Typography
+            weight="medium"
+            variant="h6"
+            className={classes.specificNavTitle}
+          >
+            {specificNav.title}
+          </Typography>
+          {specificNav.list.map((navLink) => (
+            <Link to={navLink.to} className={classes.specificNavLink}>
+              <Typography
+                color="secondary"
+                variant="body1"
+                {...navLink.active && activeLinkProps}
+              >
+                {navLink.text}
+              </Typography>
+            </Link>
+          ))}
+          <div className={classes.pullDown}>
+            <CreateNewButton />
+          </div>
         </div>
       </div>
     </div>
-  )
-};
+  );
+}
 
 export default Sidebar;
