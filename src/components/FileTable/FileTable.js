@@ -93,7 +93,7 @@ const FileTable = (props) => {
 
 FileTable.defaultProps = {
   rows: [],
-  onClick: () => { },
+  onClick: () => {},
 };
 
 FileTable.propTypes = {
