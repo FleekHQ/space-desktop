@@ -103,7 +103,9 @@ const StorageMainView = ({ rows }) => {
           }}
         />
       </div>
-      <Typography variant="h6" className={classes.title}>Files</Typography>
+      <Typography variant="h6" className={classes.title}>
+        {t('navigation.files')}
+      </Typography>
       <div className={classes.tableWrapper}>
         <FileTable rows={defaultRows} />
       </div>
