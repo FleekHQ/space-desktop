@@ -37,7 +37,11 @@ const Sidebar = () => {
             {specificNav.title}
           </Typography>
           {specificNav.list.map((navLink) => (
-            <Link to={navLink.to} className={classes.specificNavLink}>
+            <Link
+              key={navLink.key}
+              to={navLink.to}
+              className={classes.specificNavLink}
+            >
               <Typography
                 color="secondary"
                 variant="body1"

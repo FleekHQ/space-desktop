@@ -1,43 +1,40 @@
 import { matchPath, useLocation } from 'react-router-dom';
-import get from 'lodash/get';
 import { useTranslation } from 'react-i18next';
 
-const defaultConfig = [
+const getDefaultConfig = (location) => ([
   {
+    key: 'storage',
     icon: 'files',
     to: '/storage/files',
-    tKey: 'navigation.storage',
+    active: !!matchPath(location.pathname, { path: '/storage/files' }),
     subNav: [
       {
-        tKey: 'navigation.files',
+        key: 'files',
         to: '/storage/files',
       },
     ],
   }
-];
+]);
 
 export const useNavigations = () => {
   const location = useLocation();
   const { t } = useTranslation();
 
-  const generalNav = defaultConfig.map((navItem) => ({
+  const generalNav = getDefaultConfig(location);
+  const { key, subNav } = generalNav.find((navItem) => navItem.active) || {
+    key: '',
+    subNav: [],
+  };
+  const specificNavList = subNav.map((navItem) => ({
     ...navItem,
-    active: matchPath(location.pathname, { path: navItem.to }),
-  }));
-
-  const activeGeneralNavOption = generalNav.find((navItem) => navItem.active);
-  const subNavigation = get(activeGeneralNavOption, 'subNav', []);
-  const specificNavTitle = t(get(activeGeneralNavOption, 'tKey', ''));
-  const specificNavList = subNavigation.map((navItem) => ({
-    text: t(navItem.tKey),
-    to: navItem.to,
-    active: matchPath(location.pathname, { path: navItem.to }),
+    text: t(`navigation.${navItem.key}`),
+    active: !!matchPath(location.pathname, { path: navItem.to }),
   }));
 
   return {
     generalNav,
     specificNav: {
-      title: specificNavTitle,
+      title: t(`navigation.${key}`),
       list: specificNavList,
     },
   };
