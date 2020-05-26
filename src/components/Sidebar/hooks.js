@@ -1,6 +1,6 @@
 import { matchPath, useLocation } from 'react-router-dom';
 import get from 'lodash/get';
-import { useTranslation } from 'react-i18next'; 
+import { useTranslation } from 'react-i18next';
 
 const defaultConfig = [
   {
@@ -16,7 +16,7 @@ const defaultConfig = [
   }
 ];
 
-export const useNavigations = (locationPath) => {
+export const useNavigations = () => {
   const location = useLocation();
   const { t } = useTranslation();
 
