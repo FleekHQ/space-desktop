@@ -2,7 +2,7 @@ import React from 'react';
 import Sidebar from '../../../components/Sidebar';
 import useStyles from './styles';
 
-const SidebarsWrapper = ({ children }) => {
+const Layout = ({ children }) => {
   const classes = useStyles();
 
   return (
@@ -19,4 +19,4 @@ const SidebarsWrapper = ({ children }) => {
   );
 };
 
-export default SidebarsWrapper;
+export default Layout;
