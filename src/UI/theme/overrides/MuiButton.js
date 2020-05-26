@@ -20,7 +20,6 @@ const muiButton = {
     color: palette.white,
     backgroundColor: palette.black,
     '-webkit-font-smoothing': 'antialiased',
-    '-moz-osx-font-smoothing': 'grayscale',
     '&:hover': {
       backgroundColor: undefined,
     },

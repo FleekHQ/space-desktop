@@ -22,7 +22,6 @@ const MuiFilledInput = {
       color: palette.palette.gray1,
       opacity: 1,
       '-webkit-font-smoothing': 'antialiased',
-      '-moz-osx-font-smoothing': 'grayscale',
     },
   },
   underline: {
