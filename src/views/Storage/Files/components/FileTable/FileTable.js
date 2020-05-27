@@ -50,7 +50,7 @@ const FileTable = (props) => {
     </TableRow>
   );
 
-  // TODO: replace options by menu dropdown and members column value
+  // TODO: replace options by menu dropdown
   const renderRow = ({ row }) => (
     <TableRow
       hover
@@ -80,6 +80,8 @@ const FileTable = (props) => {
       <TableCell>
         <Typography variant="body1" color="secondary" noWrap>
           {moment(row.lastModified).format('MMM d, YYYY hh:mm:ss A z')}
+          {/* ^ just for testing, after POC should be used line below */}
+          {/* {formatMonthDayYear(row.lastModified)} */}
         </Typography>
       </TableCell>
       <TableCell align="right">
