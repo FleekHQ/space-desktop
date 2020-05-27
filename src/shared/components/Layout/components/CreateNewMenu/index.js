@@ -1,25 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import useStyles from './styles';
+import useItems from './hooks/useItems';
 
 const Dropdown = ({
-  open,
-  items,
-  setOpen,
+  close,
+  children,
   ...restProps
 }) => {
   const classes = useStyles(restProps);
-
-  if (!open) {
-    return null;
-  }
+  const items = useItems();
 
   return (
     <div className={classes.container}>
       {items.map(({ component: Component, id, ...itemProps }) => (
         <Component
           key={id}
-          setParentOpen={setOpen}
+          id={id}
+          closeParent={close}
           // eslint-disable-next-line react/jsx-props-no-spreading
           {...itemProps}
         />
@@ -29,15 +27,11 @@ const Dropdown = ({
 };
 
 Dropdown.defaultProps = {
-  setOpen: () => {},
+  close: () => {},
 };
 
 Dropdown.propTypes = {
-  open: PropTypes.bool.isRequired,
-  left: PropTypes.number.isRequired,
-  bottom: PropTypes.number.isRequired,
-  setOpen: PropTypes.func,
-  items: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-};
+  close: PropTypes.func,
+}
 
 export default Dropdown;
