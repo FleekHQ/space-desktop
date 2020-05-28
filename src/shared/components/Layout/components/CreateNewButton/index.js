@@ -17,7 +17,7 @@ const CreateNewButton = (props) => {
   const toggleIsOpenMenu = () => setIsMenuOpen(!isMenuOpen);
 
   return (
-    <div className={classes.relativePosition}>
+    <>
       <Popover
         classes={{ paper: classes.popover }}
         anchorEl={rootNodeRef.current}
@@ -51,7 +51,7 @@ const CreateNewButton = (props) => {
           />
         </div>
       </Button>
-    </div>
+    </>
   );
 };
 
