@@ -12,7 +12,7 @@ const CreateNewButton = (props) => {
   const classes = useStyles();
   const { t } = useTranslation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  // const rootNodeRef = useRef(null);
+  const rootNodeRef = useRef(null);
 
   const toggleIsOpenMenu = () => setIsMenuOpen(!isMenuOpen);
 
@@ -20,7 +20,7 @@ const CreateNewButton = (props) => {
     <div className={classes.relativePosition}>
       <Popover
         classes={{ paper: classes.popover }}
-        // anchorEl={rootNodeRef.current}
+        anchorEl={rootNodeRef.current}
         anchorOrigin={{
           vertical: 'top',
           horizontal: 'center',
@@ -32,17 +32,14 @@ const CreateNewButton = (props) => {
         open={isMenuOpen}
         onClose={toggleIsOpenMenu}
       >
-        <div>
-          {/* <CreateNewMenu /> */}
-          <h1>aaaa</h1>
-        </div>
+        <CreateNewMenu close={toggleIsOpenMenu} />
       </Popover>
-      <button onClick={toggleIsOpenMenu}>aaaaaaaa</button>
-      {/* <Button
+      <Button
         variant="contained"
         color="primary"
         className={classes.container}
         onClick={toggleIsOpenMenu}
+        ref={rootNodeRef}
         {...props}
       >
         <Typography className={classes.text}>
@@ -53,7 +50,7 @@ const CreateNewButton = (props) => {
             icon={faPlus}
           />
         </div>
-      </Button> */}
+      </Button>
     </div>
   );
 };

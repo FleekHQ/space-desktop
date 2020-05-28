@@ -14,66 +14,65 @@ const Option = ({
   onClick,
   closeParent,
 }) => {
-  return <p>aaaaa</p>;
-  // const classes = useStyles();
-  // const [popperOpen, setPopperOpen] = useState(false);
-  // const [anchorEl, setAnchorEl] = useState(null);
-  // const hasSubItems = subItems.length > 0;
+  const classes = useStyles();
+  const [popperOpen, setPopperOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const hasSubItems = subItems.length > 0;
 
-  // const onMouseEnter = (e) => {
-  //   if (hasSubItems) {
-  //     setAnchorEl(anchorEl || e.currentTarget);
-  //     setPopperOpen(true);
-  //   }
-  // };
+  const onMouseEnter = (e) => {
+    if (hasSubItems) {
+      setAnchorEl(anchorEl || e.currentTarget);
+      setPopperOpen(true);
+    }
+  };
 
-  // const onMouseLeave = () => setPopperOpen(false)
+  const onMouseLeave = () => setPopperOpen(false)
 
-  // const itemAction = (e) => {
-  //   if (!hasSubItems) {
-  //     onClick(e);
-  //     closeParent();
-  //   }
-  // }
+  const itemAction = (e) => {
+    if (!hasSubItems) {
+      onClick(e);
+      closeParent();
+    }
+  }
 
-  // return (
-  //   <div onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
-  //     <div
-  //       className={classes.container}
-  //       onClick={itemAction}
-  //     >
-  //       <div className={classes.iconLabelContainer}>
-  //         <div className={classes.iconContainer}>
-  //           <FontAwesomeIcon
-  //             className={classes.icon}
-  //             icon={icon}
-  //           />
-  //         </div>
-  //         <Typography className={classes.label}>
-  //           {label}
-  //         </Typography>
-  //       </div>
-  //       {
-  //         hasSubItems && (
-  //           <FontAwesomeIcon
-  //             className={classes.angleRightIcon}
-  //             icon={faAngleRight}
-  //           />
-  //         )
-  //       }
-  //     </div>
-  //     <Popper
-  //       id={`${id}-popper`}
-  //       open={popperOpen}
-  //       anchorEl={anchorEl}
-  //       placement="right-end"
-  //     >
-  //       {() => (
-  //         <div className={classes.paper}>SUBMENU COMPONENT TODO</div>
-  //       )}
-  //     </Popper>
-  //   </div>
-  // );
+  return (
+    <div onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+      <div
+        className={classes.container}
+        onClick={itemAction}
+      >
+        <div className={classes.iconLabelContainer}>
+          <div className={classes.iconContainer}>
+            <FontAwesomeIcon
+              className={classes.icon}
+              icon={icon}
+            />
+          </div>
+          <Typography className={classes.label}>
+            {label}
+          </Typography>
+        </div>
+        {
+          hasSubItems && (
+            <FontAwesomeIcon
+              className={classes.angleRightIcon}
+              icon={faAngleRight}
+            />
+          )
+        }
+      </div>
+      <Popper
+        id={`${id}-popper`}
+        open={popperOpen}
+        anchorEl={anchorEl}
+        placement="right-end"
+      >
+        {() => (
+          <div className={classes.paper}>SUBMENU COMPONENT TODO</div>
+        )}
+      </Popper>
+    </div>
+  );
 };
 
 Option.defaultProps = {

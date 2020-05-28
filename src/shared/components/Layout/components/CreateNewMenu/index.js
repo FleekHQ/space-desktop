@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import useStyles from './styles';
 import useItems from './hooks/useItems';
 
-const Dropdown = ({
+const CreateNewMenu = ({
   close,
   children,
   ...restProps
@@ -26,12 +26,8 @@ const Dropdown = ({
   );
 };
 
-Dropdown.defaultProps = {
-  close: () => {},
-};
-
-Dropdown.propTypes = {
-  close: PropTypes.func,
+CreateNewMenu.propTypes = {
+  close: PropTypes.func.isRequired,
 }
 
-export default Dropdown;
+export default CreateNewMenu;
