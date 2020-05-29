@@ -12,6 +12,5 @@ export default makeStyles({
     display: ({ isDragable }) => (isDragable ? 'block' : 'none'),
     '-webkit-app-region': 'drag',
     height: 32,
-    backgroundColor: 'red',
   },
 });
