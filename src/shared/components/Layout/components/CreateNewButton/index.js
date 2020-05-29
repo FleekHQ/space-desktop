@@ -40,6 +40,7 @@ const CreateNewButton = (props) => {
         className={classes.container}
         onClick={toggleIsOpenMenu}
         ref={rootNodeRef}
+        // eslint-disable-next-line react/jsx-props-no-spreading
         {...props}
       >
         <Typography className={classes.text}>

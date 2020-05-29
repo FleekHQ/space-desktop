@@ -14,10 +14,10 @@ const getUploadComponent = (onlyDirectory) => ({
 
   return (
     <Dropzone noDrag onDrop={onDrop} allowOnlyDirectory={onlyDirectory}>
+      {/* eslint-disable-next-line react/jsx-props-no-spreading */}
       <Option {...restProps} onClick={() => {}} closeParent={() => {}} />
     </Dropzone>
   );
-}
-
+};
 
 export default getUploadComponent;

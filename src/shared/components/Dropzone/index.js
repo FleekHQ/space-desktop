@@ -8,7 +8,7 @@ const propsToAllowOnlyDirectory = {
   directory: 'true',
 };
 
-const Dropzone = ({ children, allowOnlyDirectory,...restProps }) => {
+const Dropzone = ({ children, allowOnlyDirectory, ...restProps }) => {
   const {
     getRootProps,
     getInputProps,
@@ -17,12 +17,14 @@ const Dropzone = ({ children, allowOnlyDirectory,...restProps }) => {
 
   const inputProps = {
     ...getInputProps(),
-    ...allowOnlyDirectory && propsToAllowOnlyDirectory
+    ...allowOnlyDirectory && propsToAllowOnlyDirectory,
   };
 
   return (
+    // eslint-disable-next-line react/jsx-props-no-spreading
     <div {...getRootProps()} className={classes.root}>
-      <input {...inputProps}  />
+      {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+      <input {...inputProps} />
       {children}
     </div>
   );

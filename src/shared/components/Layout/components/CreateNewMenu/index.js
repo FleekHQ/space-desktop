@@ -5,7 +5,6 @@ import useItems from './hooks/useItems';
 
 const CreateNewMenu = ({
   close,
-  children,
   ...restProps
 }) => {
   const classes = useStyles(restProps);
@@ -28,6 +27,6 @@ const CreateNewMenu = ({
 
 CreateNewMenu.propTypes = {
   close: PropTypes.func.isRequired,
-}
+};
 
 export default CreateNewMenu;

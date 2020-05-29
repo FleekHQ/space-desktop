@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
@@ -26,14 +28,14 @@ const Option = ({
     }
   };
 
-  const onMouseLeave = () => setPopperOpen(false)
+  const onMouseLeave = () => setPopperOpen(false);
 
   const itemAction = (e) => {
     if (!hasSubItems) {
       onClick(e);
       closeParent();
     }
-  }
+  };
 
   return (
     <div onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
@@ -76,15 +78,15 @@ const Option = ({
 };
 
 Option.defaultProps = {
-  onClick: () => {},
+  onClick: () => { },
   subItems: [],
 };
 
 Option.propTypes = {
-  icon: PropTypes.object.isRequired,
+  icon: PropTypes.shape({}).isRequired,
   label: PropTypes.string.isRequired,
   onClick: PropTypes.func,
-  subItems: PropTypes.array,
+  subItems: PropTypes.arrayOf(PropTypes.shape({})),
   id: PropTypes.string.isRequired,
   closeParent: PropTypes.func.isRequired,
 };
