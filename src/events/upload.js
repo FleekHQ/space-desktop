@@ -10,10 +10,12 @@ const ERROR_EVENT = `${EVENT_PREFIX}:error`;
 
 const registerUploadEvents = () => {
   ipcRenderer.on(SUCCESS_EVENT, () => {
+    // eslint-disable-next-line no-console
     console.log('upload completed');
   });
 
   ipcRenderer.on(ERROR_EVENT, (event, payload) => {
+    // eslint-disable-next-line no-console
     console.log('error: ', payload);
     store.dispatch({
       payload,
