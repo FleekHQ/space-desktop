@@ -11,21 +11,23 @@ const ERROR_EVENT = `${EVENT_PREFIX}:error`;
 const registerUploadEvents = (mainWindow) => {
   ipcMain.on(START_EVENT, (event, payload) => {
     // TODO: replace with call to gRPC method
-    console.log(payload);
     mainWindow
     .webContents
     .executeJavaScript('localStorage.getItem("_wd");', true)
     .then((cwd) => {
       if (!cwd) return;
-      payload.forEach(({ fullPath, relativePath, relativePathWithFile }) => {
+      const { files, prefix } = payload;
+
+      files.forEach(({ fullPath, relativePath, relativePathWithFile }) => {
         const copy = () => {
-          const destPath = path.join(cwd, relativePathWithFile);
+          const destPath = path.join(cwd, prefix, relativePathWithFile);
           fs.copyFile(fullPath, destPath, (err) => {
             if (err) throw err;
           });
         };
+
         if (relativePath) {
-          const destPath = path.join(cwd, relativePath);
+          const destPath = path.join(cwd, prefix, relativePath);
           fs.mkdir(destPath, copy);
         } else {
           copy();
