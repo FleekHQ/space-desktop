@@ -2,6 +2,8 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import Empty from './components/Empty';
 import Header from './components/Header';
+import ObjectDetails from './components/ObjectDetails';
+import SharePanel from './components/SharePanel';
 import useStyles from './styles';
 
 const DetailsPanel = () => {
@@ -12,14 +14,19 @@ const DetailsPanel = () => {
     if (selectedObjects.length === 0) {
       return <Empty />;
     }
-    // if (selectedObjects.length === 1 || true) {
-    return (
-      <>
-        <Header objects={selectedObjects.slice(0, 3)} />
-      </>
-    );
-    // }
-    // return null;
+    if (selectedObjects.length === 1 || true) {
+      return (
+        <>
+          <Header objects={selectedObjects} />
+          <div className={classes.divider} />
+          {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+          <ObjectDetails {...selectedObjects[0]} />
+          <div className={classes.divider} />
+          <SharePanel />
+        </>
+      );
+    }
+    return <Header objects={selectedObjects} />;
   };
 
   return (

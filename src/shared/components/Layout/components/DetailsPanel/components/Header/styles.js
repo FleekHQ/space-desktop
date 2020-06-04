@@ -1,8 +1,10 @@
 import { makeStyles } from '@material-ui/core/styles';
 
+export const HORIZONTAL_PADDING = 22;
+
 export default makeStyles({
   root: {
-    padding: '13px 22px 18px',
+    padding: `13px ${HORIZONTAL_PADDING}px 18px`,
   },
   fileIconWrapper: {
     margin: '28px auto 15px',
@@ -20,7 +22,7 @@ export default makeStyles({
   },
   menuBtn: {
     fontSize: 18,
-    padding: 0,
+    padding: 6,
     flexGrow: 1,
   },
   title: {
