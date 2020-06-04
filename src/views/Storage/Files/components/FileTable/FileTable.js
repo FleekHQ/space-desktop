@@ -84,7 +84,6 @@ const FileTable = (props) => {
           color="secondary"
           disableRipple
           onClick={(e) => {
-            e.preventDefault();
             e.stopPropagation();
           }}
         >
