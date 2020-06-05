@@ -21,7 +21,7 @@ const DetailsPanel = ({ objects }) => {
       <div className={classes.fileIconWrapper}>
         {objects.slice(0, MAX_NUMBER_OF_ICONS_PREVIEW).map((obj, index) => (
           <div
-            className={classes.smallIcon}
+            className={objects.length === 1 ? classes.centerIcon : classes.icon}
             key={obj.key}
             style={getIconStyles(index, objects.length)}
           >

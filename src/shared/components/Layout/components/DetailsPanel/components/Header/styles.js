@@ -33,8 +33,11 @@ export default makeStyles({
     marginTop: 1,
     marginLeft: 5,
   },
-  smallIcon: {
+  icon: {
     position: 'absolute',
-    width: 71,
+    filter: 'drop-shadow(-2px -2px 6px rgba(0, 0, 0, 0.12))',
+  },
+  centerIcon: {
+    margin: 'auto',
   },
 });
