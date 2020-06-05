@@ -14,7 +14,6 @@ const DetailsPanel = ({ objects }) => {
   const classes = useStyles();
   const { t } = useTranslation();
   const allFolders = objects.filter((obj) => obj.type === 'folder');
-  const firstObject = objects[0];
 
   return (
     <div className={classes.root}>
@@ -34,7 +33,7 @@ const DetailsPanel = ({ objects }) => {
       </div>
       <Typography className={classes.title} variant="h6" weight="medium">
         {objects.length === 1
-          ? firstObject.name
+          ? objects[0].name
           : `${t(
             'detailsPanel.foldersNumber',
             { count: allFolders.length },
