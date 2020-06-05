@@ -7,7 +7,7 @@ export default makeStyles({
     padding: `13px ${HORIZONTAL_PADDING}px 18px`,
   },
   fileIconWrapper: {
-    margin: '28px auto 15px',
+    margin: '15px auto',
     position: 'relative',
     height: 120,
   },
