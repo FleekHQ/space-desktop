@@ -27,7 +27,6 @@ const DetailsPanel = () => {
   const classes = useStyles();
   const selectedObjects = useTestingData();
 
-
   const getContent = () => {
     if (selectedObjects.length === 0) {
       return <Empty />;

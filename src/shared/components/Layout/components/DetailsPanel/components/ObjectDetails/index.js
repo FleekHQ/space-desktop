@@ -2,15 +2,30 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Typography from '@ui/Typography';
 import { useTranslation } from 'react-i18next';
+import { formatDate, formatHour } from '@utils';
 import useStyles from './styles';
 
 const ObjectDetails = ({ bytesSize, created, lastModified }) => {
   const classes = useStyles();
   const { t } = useTranslation();
+
+  const formatTime = (date) => (
+    `${formatDate(date)} ${t('common.at')} ${formatHour(date)}`
+  );
+
   const dataSet = [
-    { label: t('detailsPanel.objectDetails.size'), value: bytesSize },
-    { label: t('detailsPanel.objectDetails.created'), value: created.toUTCString() },
-    { label: t('detailsPanel.objectDetails.lastModified'), value: lastModified.toUTCString() },
+    {
+      label: t('detailsPanel.objectDetails.size'),
+      value: bytesSize,
+    },
+    {
+      label: t('detailsPanel.objectDetails.created'),
+      value: formatTime(created),
+    },
+    {
+      label: t('detailsPanel.objectDetails.lastModified'),
+      value: formatTime(lastModified),
+    },
   ];
 
 
