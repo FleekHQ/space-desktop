@@ -7,7 +7,9 @@ import { faEllipsisH } from '@fortawesome/pro-regular-svg-icons/faEllipsisH';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Table, { TableCell, TableRow, FileCell } from '@ui/Table';
+import Dropzone from '@shared/components/Dropzone';
 import { formatBytes } from '@utils';
+import { useUploadEvent } from '@shared/hooks';
 
 import useStyles from './styles';
 
@@ -19,6 +21,7 @@ const FileTable = (props) => {
 
   const classes = useStyles();
   const { t } = useTranslation();
+  const onUpload = useUploadEvent();
 
   const head = [
     {
@@ -95,13 +98,19 @@ const FileTable = (props) => {
   /* eslint-enable react/prop-types */
 
   return (
-    <Table
-      head={head}
-      rows={rows}
-      renderRow={renderRow}
-      renderHead={renderHead}
-      className={classes.root}
-    />
+    <Dropzone
+      disableClick
+      onDrop={onUpload}
+      classes={{ root: classes.dropzone, active: classes.dropzoneActive }}
+    >
+      <Table
+        head={head}
+        rows={rows}
+        renderRow={renderRow}
+        renderHead={renderHead}
+        className={classes.root}
+      />
+    </Dropzone>
   );
 };
 
