@@ -17,6 +17,7 @@ storiesOf(categoryName, module).add('BaseCard', () => {
       style={{
         width: 500,
         height: 500,
+        padding: 30,
         backgroundColor: '#f6f8fc',
       }}
     >
