@@ -99,7 +99,7 @@ const FileTable = (props) => {
 
   return (
     <Dropzone
-      disableClick
+      noClick
       onDrop={onUpload}
       classes={{ root: classes.dropzone, active: classes.dropzoneActive }}
     >
