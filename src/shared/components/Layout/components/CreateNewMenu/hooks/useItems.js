@@ -6,7 +6,6 @@ import get from 'lodash/get';
 import { addItems } from '@events';
 import { faFileUpload } from '@fortawesome/pro-regular-svg-icons/faFileUpload';
 import { faFolderUpload } from '@fortawesome/pro-regular-svg-icons/faFolderUpload';
-import { useUploadEvent } from '@shared/hooks';
 
 import Option from '../components/Option';
 
@@ -32,7 +31,10 @@ const openDialog = ({ prefix, properties }) => async (event) => {
 
 const useItems = () => {
   const { t } = useTranslation();
-  const onUpload = useUploadEvent();
+  const location = useLocation();
+
+  const match = matchPath(location.pathname, { path: '/storage/files/*' });
+  const prefix = get(match, 'params.0', '');
 
   return [
     {

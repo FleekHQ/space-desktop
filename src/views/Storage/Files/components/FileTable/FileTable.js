@@ -1,7 +1,9 @@
 import React from 'react';
 import moment from 'moment';
+import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
+import { matchPath, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisH } from '@fortawesome/pro-regular-svg-icons/faEllipsisH';
 import Typography from '@material-ui/core/Typography';
@@ -9,7 +11,7 @@ import Button from '@material-ui/core/Button';
 import Table, { TableCell, TableRow, FileCell } from '@ui/Table';
 import Dropzone from '@shared/components/Dropzone';
 import { formatBytes } from '@utils';
-import { useUploadEvent } from '@shared/hooks';
+import { addItems } from '@events';
 
 import useStyles from './styles';
 
@@ -21,7 +23,7 @@ const FileTable = (props) => {
 
   const classes = useStyles();
   const { t } = useTranslation();
-  const onUpload = useUploadEvent();
+  const location = useLocation();
 
   const head = [
     {
@@ -100,7 +102,15 @@ const FileTable = (props) => {
   return (
     <Dropzone
       noClick
-      onDrop={onUpload}
+      onDrop={(files) => {
+        const match = matchPath(location.pathname, { path: '/storage/files/*' });
+        const prefix = get(match, 'params.0', '');
+
+        addItems({
+          targetPath: prefix || '',
+          sourcePaths: files.map((file) => file.path),
+        });
+      }}
       classes={{ root: classes.dropzone, active: classes.dropzoneActive }}
     >
       <Table
