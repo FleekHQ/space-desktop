@@ -7,11 +7,12 @@ export default makeStyles((theme) => ({
     position: 'fixed',
     left: SIDEBAR_WIDTH + 12,
     right: DETAILS_PANEL_WIDTH + 12,
-    bottom: 12,
+    bottom: ({ order }) => 12 + 50 * order,
     backgroundColor: theme.palette.palette.white,
     borderRadius: 4,
     boxShadow: theme.palette.shadows.main,
     overflow: 'hidden',
+    zIndex: 1,
   },
   info: {
     display: 'flex',

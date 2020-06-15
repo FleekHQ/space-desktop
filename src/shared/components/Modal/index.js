@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import UploadProgressModal from './UploadProgress';
 
 import {
-  closeModal,
+  closeModal as closeModalAction,
   UPLOAD_PROGRESS_MODAL,
 } from './actions';
 
@@ -14,24 +14,22 @@ const MODALS = {
 
 const Modal = () => {
   const dispatch = useDispatch();
-  const modalState = useSelector((state) => state.modal);
+  const modals = useSelector((state) => state.modals);
 
-  const closeModalHandler = () => dispatch(closeModal());
+  return modals.map((modalProps) => {
+    const ModalComponent = MODALS[modalProps.type];
+    const closeModal = () => dispatch(closeModalAction(modalProps.id));
 
-  if (!modalState.open) return null;
-
-  const ModalComponent = MODALS[modalState.id];
-
-  if (!ModalComponent) return null;
-
-  return (
-    <ModalComponent
-      // eslint-disable-next-line react/jsx-props-no-spreading
-      {...modalState.props}
-      closeModal={closeModalHandler}
-      open
-    />
-  );
+    return (
+      <ModalComponent
+        open
+        key={modalProps.id}
+        closeModal={closeModal}
+        // eslint-disable-next-line react/jsx-props-no-spreading
+        {...modalProps}
+      />
+    );
+  });
 };
 
 export default Modal;

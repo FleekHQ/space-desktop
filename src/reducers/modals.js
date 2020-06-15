@@ -3,22 +3,18 @@ import {
   CLOSE_MODAL,
 } from '@shared/components/Modal/actions';
 
-const defaultState = {
-  id: null,
-  open: false,
-  props: null,
-};
+const defaultState = [];
 
 export default (state = defaultState, action) => {
   switch (action.type) {
     case OPEN_MODAL:
-      return {
-        ...action.payload,
-        open: true,
-      };
+      return [
+        ...state,
+        action.payload,
+      ];
 
     case CLOSE_MODAL:
-      return defaultState;
+      return state.filter((modal) => modal.id !== action.payload);
 
     default:
       return state;
