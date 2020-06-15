@@ -1,6 +1,6 @@
 import { ipcRenderer } from 'electron';
 import {
-  SET_UPLOAD_START_STATE, SET_UPLOAD_SUCCESS_STATE, SET_UPLOAD_ERROR_STATE,
+  SET_UPLOAD_SUCCESS_STATE, SET_UPLOAD_ERROR_STATE,
 } from '@reducers/storage';
 import {
   openModal, UPLOAD_PROGRESS_MODAL,
@@ -34,12 +34,8 @@ const registerAddItemsSubscribeEvents = () => {
 };
 
 export const addItems = (payload) => {
-  ipcRenderer.send(SUBSCRIBE_START_EVENT, payload);
-  store.dispatch({
-    payload,
-    type: SET_UPLOAD_START_STATE,
-  });
-  store.dispatch(openModal(UPLOAD_PROGRESS_MODAL));
+  const modalId = store.dispatch(openModal(UPLOAD_PROGRESS_MODAL));
+  ipcRenderer.send(SUBSCRIBE_START_EVENT, { id: modalId, payload });
 };
 
 export default registerAddItemsSubscribeEvents;

@@ -20,13 +20,15 @@ const UploadProgress = ({ id, closeModal }) => {
   const orderNumber = uploadProgressModals.findIndex(
     (modal) => modal.id === id,
   );
-
-  const uploadedFiles = 4;
-  const totalFiles = 22;
+  const { completedFiles = 0, totalFiles = 0 } = useSelector(
+    (state) => state.storage.uploadsList[id] || {},
+  );
   const classes = useStyles({
-    progress: uploadedFiles / totalFiles,
+    progress: completedFiles / totalFiles || 0,
     order: orderNumber,
   });
+
+  useEffect(() => () => clearTimeout(timeoutId), []);
 
   const onClickDismiss = () => {
     if (!timeoutId) {
@@ -36,8 +38,6 @@ const UploadProgress = ({ id, closeModal }) => {
     }
   };
 
-  useEffect(() => () => clearTimeout(timeoutId), []);
-
   return (
     <Grow in={!timeoutId} timeout={TRANSITION_TIMEOUT}>
       <div className={classes.root}>
@@ -46,7 +46,7 @@ const UploadProgress = ({ id, closeModal }) => {
             <Trans
               i18nKey="uploadProgressModal.message"
               values={{
-                uploadedNumber: uploadedFiles,
+                uploadedNumber: completedFiles,
                 totalNumber: totalFiles,
               }}
               components={[<Box fontWeight="600" component="span" />]}
