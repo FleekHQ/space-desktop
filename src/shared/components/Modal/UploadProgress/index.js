@@ -38,13 +38,17 @@ const UploadProgress = ({ id, closeModal }) => {
     }
   };
 
+  const isShownDefaultMsg = completedFiles === totalFiles && totalFiles === 0;
+
   return (
     <Grow in={!timeoutId} timeout={TRANSITION_TIMEOUT}>
       <div className={classes.root}>
         <div className={classes.info}>
           <Typography variant="body2">
             <Trans
-              i18nKey="uploadProgressModal.message"
+              i18nKey={isShownDefaultMsg
+                ? 'uploadProgressModal.defaultMessage'
+                : 'uploadProgressModal.message'}
               values={{
                 uploadedNumber: completedFiles,
                 totalNumber: totalFiles,
