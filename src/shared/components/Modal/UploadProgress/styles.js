@@ -1,0 +1,36 @@
+import { makeStyles } from '@material-ui/core/styles';
+import { DETAILS_PANEL_WIDTH } from '@shared/components/Layout/components/DetailsPanel/styles';
+import { SIDEBAR_WIDTH } from '@shared/components/Layout/components/Sidebar/styles';
+
+export default makeStyles((theme) => ({
+  root: {
+    position: 'fixed',
+    left: SIDEBAR_WIDTH + 12,
+    right: DETAILS_PANEL_WIDTH + 12,
+    bottom: 12,
+    backgroundColor: theme.palette.palette.white,
+    borderRadius: 4,
+    boxShadow: theme.palette.shadows.main,
+    overflow: 'hidden',
+  },
+  info: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    padding: '6px 10px',
+  },
+  progressBar: {
+    height: 9,
+    backgroundColor: theme.palette.palette.gray9,
+    '&:before': {
+      content: '""',
+      display: 'block',
+      width: ({ progress }) => `${progress * 100}%`,
+      height: '100%',
+      backgroundColor: theme.palette.palette.blue1,
+    },
+  },
+  button: {
+    padding: 0,
+    fontSize: 12,
+  },
+}));

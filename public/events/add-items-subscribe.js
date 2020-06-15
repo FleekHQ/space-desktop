@@ -3,7 +3,7 @@ const { ipcMain } = require('electron');
 const client = require('../client');
 const { listDirectories } = require('./objects');
 
-const EVENT_PREFIX = 'addItemsSuscribe';
+const EVENT_PREFIX = 'addItemsSubscribe';
 const SUBSCRIBE_START_EVENT = `${EVENT_PREFIX}:start`;
 const SUBSCRIBE_ERROR_EVENT = `${EVENT_PREFIX}:error`;
 const SUBSCRIBE_SUCCESS_EVENT = `${EVENT_PREFIX}:success`;

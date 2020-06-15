@@ -1,9 +1,14 @@
 import { ipcRenderer } from 'electron';
-import { SET_UPLOAD_ERROR_STATE } from '@reducers/storage';
+import {
+  SET_UPLOAD_START_STATE, SET_UPLOAD_SUCCESS_STATE, SET_UPLOAD_ERROR_STATE,
+} from '@reducers/storage';
+import {
+  openModal, UPLOAD_PROGRESS_MODAL,
+} from '@shared/components/Modal/actions';
 
 import store from '../store';
 
-const EVENT_PREFIX = 'addItemsSuscribe';
+const EVENT_PREFIX = 'addItemsSubscribe';
 const SUBSCRIBE_START_EVENT = `${EVENT_PREFIX}:start`;
 const SUBSCRIBE_ERROR_EVENT = `${EVENT_PREFIX}:error`;
 const SUBSCRIBE_SUCCESS_EVENT = `${EVENT_PREFIX}:success`;
@@ -12,6 +17,10 @@ const registerAddItemsSubscribeEvents = () => {
   ipcRenderer.on(SUBSCRIBE_SUCCESS_EVENT, (event, payload) => {
     // eslint-disable-next-line no-console
     console.log('upload completed: ', payload);
+    store.dispatch({
+      payload,
+      type: SET_UPLOAD_SUCCESS_STATE,
+    });
   });
 
   ipcRenderer.on(SUBSCRIBE_ERROR_EVENT, (event, payload) => {
@@ -26,6 +35,11 @@ const registerAddItemsSubscribeEvents = () => {
 
 export const addItems = (payload) => {
   ipcRenderer.send(SUBSCRIBE_START_EVENT, payload);
+  store.dispatch({
+    payload,
+    type: SET_UPLOAD_START_STATE,
+  });
+  store.dispatch(openModal(UPLOAD_PROGRESS_MODAL));
 };
 
 export default registerAddItemsSubscribeEvents;

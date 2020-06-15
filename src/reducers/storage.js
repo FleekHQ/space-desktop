@@ -10,6 +10,7 @@ const DEFAULT_STATE = {
     isLoading: false,
   },
   uploadError: null,
+  uploadList: [],
 };
 
 export const ADD_OBJECT = 'ADD_OBJECT';
@@ -21,6 +22,8 @@ export const SET_ERROR_STATE = 'SET_ERROR_STATE';
 export const SET_LOADING_STATE = 'SET_LOADING_STATE';
 export const SEARCH_TERM_CHANGE = 'SEARCH_TERM_CHANGE';
 export const SET_UPLOAD_ERROR_STATE = 'SET_UPLOAD_ERROR_STATE';
+export const SET_UPLOAD_START_STATE = 'SET_UPLOAD_START_STATE';
+export const SET_UPLOAD_SUCCESS_STATE = 'SET_UPLOAD_SUCCESS_STATE';
 
 export default (state = DEFAULT_STATE, action) => {
   switch (action.type) {
@@ -98,6 +101,20 @@ export default (state = DEFAULT_STATE, action) => {
       return {
         ...state,
         objects: action.payload.concat(newObjs),
+      };
+    }
+
+    case SET_UPLOAD_START_STATE: {
+      return {
+        ...state,
+        uploadList: action.payload,
+      };
+    }
+
+    case SET_UPLOAD_SUCCESS_STATE: {
+      return {
+        ...state,
+        uploadError: action.payload,
       };
     }
 
