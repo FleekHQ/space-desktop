@@ -105,7 +105,7 @@ const FileTable = () => {
 
   const handleDoubleRowClick = ({ row }) => (event) => {
     event.preventDefault();
-    let newRows;
+    let newRows = [];
 
     if (row.type === 'folder') {
       const redirectUrl = path.join('/storage/files', prefix, row.name);
@@ -132,7 +132,7 @@ const FileTable = () => {
     });
   };
 
-  const handleRowRightClick = ({ row, rowIndex }) => (event) => {
+  const handleRowRightClick = ({ row }) => (event) => {
     event.preventDefault();
     // eslint-disable-next-line no-console
     console.log('TODO: show context menu');
@@ -141,10 +141,10 @@ const FileTable = () => {
       return;
     }
 
-    const newRows = rows.map((_row, index) => ({
+    const newRows = rows.map((_row) => ({
       ..._row,
-      pivote: index === rowIndex,
-      selected: index === rowIndex,
+      pivote: _row.id === row.id,
+      selected: _row.id === row.id,
     }));
 
     dispatch({
@@ -214,8 +214,8 @@ const FileTable = () => {
                   [classes.selected]: row.selected,
                 })}
                 onClick={handleRowClick({ row, rowIndex })}
+                onContextMenu={handleRowRightClick({ row })}
                 onDoubleClick={handleDoubleRowClick({ row })}
-                onContextMenu={handleRowRightClick({ row, rowIndex })}
               >
                 <FileCell ext={row.ext} src={`file:${row.key}`}>
                   <Typography variant="body1" noWrap>
