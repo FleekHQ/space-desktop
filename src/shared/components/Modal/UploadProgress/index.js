@@ -28,8 +28,6 @@ const UploadProgress = ({ id, closeModal }) => {
     order: orderNumber,
   });
 
-  useEffect(() => () => clearTimeout(timeoutId), []);
-
   const onClickDismiss = () => {
     if (!timeoutId) {
       setTimeoutId(
@@ -38,7 +36,19 @@ const UploadProgress = ({ id, closeModal }) => {
     }
   };
 
-  const isShownDefaultMsg = completedFiles === totalFiles && totalFiles === 0;
+
+  useEffect(() => {
+    if (completedFiles === totalFiles && totalFiles !== 0) {
+      setTimeoutId(
+        setTimeout(closeModal, TRANSITION_TIMEOUT),
+      );
+    }
+  }, [completedFiles]);
+
+  useEffect(() => () => clearTimeout(timeoutId), []);
+
+
+  const isShownDefaultMsg = completedFiles === 0 && totalFiles === 0;
 
   return (
     <Grow in={!timeoutId} timeout={TRANSITION_TIMEOUT}>

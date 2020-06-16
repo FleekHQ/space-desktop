@@ -28,6 +28,7 @@ export default makeStyles((theme) => ({
       width: ({ progress }) => `${progress * 100}%`,
       height: '100%',
       backgroundColor: theme.palette.palette.blue1,
+      transition: 'width ease-out 0.5s',
     },
   },
   button: {
