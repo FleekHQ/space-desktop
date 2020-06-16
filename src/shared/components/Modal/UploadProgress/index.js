@@ -70,6 +70,7 @@ const UploadProgress = ({ id, closeModal }) => {
             color="secondary"
             className={classes.button}
             onClick={onClickDismiss}
+            disableRipple
           >
             {t('uploadProgressModal.dismiss')}
           </Button>
