@@ -15,8 +15,6 @@ const SUBSCRIBE_SUCCESS_EVENT = `${EVENT_PREFIX}:success`;
 
 const registerAddItemsSubscribeEvents = () => {
   ipcRenderer.on(SUBSCRIBE_SUCCESS_EVENT, (event, payload) => {
-    // eslint-disable-next-line no-console
-    console.log('upload completed: ', payload);
     store.dispatch({
       payload,
       type: SET_UPLOAD_SUCCESS_STATE,
@@ -24,8 +22,6 @@ const registerAddItemsSubscribeEvents = () => {
   });
 
   ipcRenderer.on(SUBSCRIBE_ERROR_EVENT, (event, payload) => {
-    // eslint-disable-next-line no-console
-    console.error('Error on adding item: ', payload);
     store.dispatch({
       payload,
       type: SET_UPLOAD_ERROR_STATE,
