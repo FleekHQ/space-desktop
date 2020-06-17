@@ -14,14 +14,15 @@ const TRANSITION_TIMEOUT = 300;
 const UploadProgress = ({ id, closeModal }) => {
   const [timeoutId, setTimeoutId] = useState(null);
   const { t } = useTranslation();
-  const uploadProgressModals = useSelector((state) => state.modals.filter(
-    (modal) => modal.type === UPLOAD_PROGRESS_MODAL,
-  ));
+  const [
+    uploadProgressModals,
+    { completedFiles = 0, totalFiles = 0 },
+  ] = useSelector((state) => [
+    state.modals.filter((modal) => modal.type === UPLOAD_PROGRESS_MODAL),
+    state.storage.uploadsList[id] || {},
+  ]);
   const orderNumber = uploadProgressModals.findIndex(
     (modal) => modal.id === id,
-  );
-  const { completedFiles = 0, totalFiles = 0 } = useSelector(
-    (state) => state.storage.uploadsList[id] || {},
   );
   const classes = useStyles({
     progress: completedFiles / totalFiles || 0,
@@ -36,7 +37,6 @@ const UploadProgress = ({ id, closeModal }) => {
     }
   };
 
-
   useEffect(() => {
     if (completedFiles === totalFiles && totalFiles !== 0) {
       setTimeoutId(
@@ -46,7 +46,6 @@ const UploadProgress = ({ id, closeModal }) => {
   }, [completedFiles]);
 
   useEffect(() => () => clearTimeout(timeoutId), []);
-
 
   const isShownDefaultMsg = completedFiles === 0 && totalFiles === 0;
 
