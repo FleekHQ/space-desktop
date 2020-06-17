@@ -16,17 +16,18 @@ const Modal = () => {
   const dispatch = useDispatch();
   const modals = useSelector((state) => state.modals);
 
-  return modals.map((modalProps) => {
-    const ModalComponent = MODALS[modalProps.type];
-    const closeModal = () => dispatch(closeModalAction(modalProps.id));
+  return modals.map(({ id, type, props }) => {
+    const ModalComponent = MODALS[type];
+    const closeModal = () => dispatch(closeModalAction(id));
 
     return (
       <ModalComponent
         open
-        key={modalProps.id}
+        key={id}
         closeModal={closeModal}
+        id={id}
         // eslint-disable-next-line react/jsx-props-no-spreading
-        {...modalProps}
+        {...props}
       />
     );
   });
