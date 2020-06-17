@@ -35,7 +35,8 @@
       "invite": "Invite Members",
       "with": "Shared with",
       "manage": "Manage",
-      "group": "+{{number}} others"
+      "group": "+{{number}} others",
+      "you": " (you)"
     }
   },
   "teamSelector": {

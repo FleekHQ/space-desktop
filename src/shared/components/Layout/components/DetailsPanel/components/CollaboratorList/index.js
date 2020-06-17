@@ -210,7 +210,7 @@ const SharePanel = ({ t }) => {
                 })
               }
               <Typography noWrap variant="body1">
-                {`${collaborator.username}${index === 0 ? ' (you)' : ''}`}
+                {`${collaborator.username}${index === 0 ? t('detailsPanel.share.you') : ''}`}
               </Typography>
             </div>
             /* eslint-enable react/prop-types */
