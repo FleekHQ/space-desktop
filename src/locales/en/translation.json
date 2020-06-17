@@ -29,6 +29,13 @@
       "size": "Size:",
       "created": "Created:",
       "lastModified": "Last Modified:"
+    },
+    "share": {
+      "copy": "Copy Link",
+      "invite": "Invite Members",
+      "with": "Shared with",
+      "mange": "Manage",
+      "group": "+{{number}} others"
     }
   },
   "teamSelector": {
