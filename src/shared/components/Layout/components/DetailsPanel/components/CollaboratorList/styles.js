@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-export default makeStyles({
+export default makeStyles((theme) => ({
   root: {
     flex: 1,
     overflow: 'auto',
@@ -22,10 +22,10 @@ export default makeStyles({
     fontSize: '1rem',
   },
   greyBG: {
-    backgroundColor: '#e4e4e4',
+    backgroundColor: theme.palette.palette.gray10,
     '& > svg': {
       height: 9,
-      color: '#666666',
+      color: theme.palette.palette.gray1,
     },
   },
-});
+}));

@@ -123,6 +123,31 @@ const SharePanel = ({ t }) => {
   /* eslint-enable react/prop-types */
 
   React.useEffect(() => {
+    let timer;
+    const handleResizeWindow = () => {
+      if (timer) {
+        clearTimeout(timer);
+      }
+
+      timer = setTimeout(() => {
+        setState({
+          ...state,
+          currentDocBodyHeight: window.innerHeight,
+        });
+      }, RESIZE_DEBOUNCE_TIME);
+    };
+
+    window.addEventListener('resize', handleResizeWindow);
+    return () => {
+      window.removeEventListener('resize', handleResizeWindow);
+
+      if (timer) {
+        clearTimeout(timer);
+      }
+    };
+  }, []);
+
+  React.useEffect(() => {
     if (state.currentDocBodyHeight > 0) {
       const { currentDocBodyHeight } = state;
       const { offsetTop } = collaboratorList.current;
@@ -152,31 +177,6 @@ const SharePanel = ({ t }) => {
       });
     }
   }, [state.currentDocBodyHeight]);
-
-  React.useEffect(() => {
-    let timer;
-    const handleResizeWindow = () => {
-      if (timer) {
-        clearTimeout(timer);
-      }
-
-      timer = setTimeout(() => {
-        setState({
-          ...state,
-          currentDocBodyHeight: window.innerHeight,
-        });
-      }, RESIZE_DEBOUNCE_TIME);
-    };
-
-    window.addEventListener('resize', handleResizeWindow);
-    return () => {
-      window.removeEventListener('resize', handleResizeWindow);
-
-      if (timer) {
-        clearTimeout(timer);
-      }
-    };
-  }, []);
 
   return (
     <div className={classes.root} ref={collaboratorList}>
