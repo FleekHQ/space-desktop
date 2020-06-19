@@ -19,7 +19,8 @@ const createWindow = () => {
     ? 'http://localhost:3000'
     : `file://${path.join(__dirname, 'build/index.html')}`;
 
-  if (!isDev) {
+  // TODO: run daemon  
+  /* if (!isDev) {
     exec(path.join(process.resourcesPath, 'space-daemon'), (err, stdout, stderr) => {
       if (err) {
         console.error(err);
@@ -29,7 +30,7 @@ const createWindow = () => {
       console.log(stdout);
       console.error(stderr);
     });
-  }
+  } */
 
   mainWindow = new BrowserWindow({
     width: 1200,
