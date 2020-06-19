@@ -12,8 +12,7 @@ const CommentInput = ({
   i18n,
   user,
   confirm,
-  onFocus,
-  onBlur,
+  textFieldProps,
 }) => {
   const [value, setValue] = useState('');
   const classes = useStyles();
@@ -50,8 +49,8 @@ const CommentInput = ({
           fullWidth
           placeholder={i18n.placeholder}
           inputProps={{ 'aria-label': 'naked' }}
-          onFocus={onFocus}
-          onBlur={onBlur}
+          // eslint-disable-next-line react/jsx-props-no-spreading
+          {...textFieldProps}
         />
         {value && (
           <div className={classes.buttonsWrapper}>
@@ -75,12 +74,14 @@ const CommentInput = ({
 CommentInput.defaultProps = {
   onFocus: () => {},
   onBlur: () => {},
+  textFieldProps: {},
 };
 
 CommentInput.propTypes = {
   confirm: PropTypes.func.isRequired,
   onFocus: PropTypes.func,
   onBlur: PropTypes.func,
+  textFieldProps: PropTypes.shape({}),
   user: PropTypes.shape({
     username: PropTypes.string.isRequired,
     imgUrl: PropTypes.string.isRequired,

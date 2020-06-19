@@ -11,8 +11,10 @@ storiesOf(categoryName, module).add('CommentInput', () => {
 
   const props = {
     confirm: action('confirm'),
-    onFocus: action('onFocus'),
-    onBlur: action('onBlur'),
+    textFieldProps: {
+      onFocus: action('onFocus'),
+      onBlur: action('onBlur'),
+    },
     user: object('user', {
       username: 'Darth Vader',
       imgUrl: 'https://avatarfiles.alphacoders.com/177/thumb-177869.jpg',
