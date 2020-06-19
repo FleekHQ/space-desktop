@@ -17,7 +17,7 @@ const isMac = process.platform === "darwin";
 const createWindow = () => {
   const url = isDev
     ? 'http://localhost:3000'
-    : `file://${path.join(__dirname, 'build/index.html')}`;
+    : `file://${path.join(__dirname, '../build/index.html')}`;
 
   // TODO: run daemon  
   /* if (!isDev) {
