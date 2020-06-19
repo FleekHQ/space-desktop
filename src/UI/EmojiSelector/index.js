@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import 'emoji-mart/css/emoji-mart.css';
 import { Picker } from 'emoji-mart';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Button from '@material-ui/core/Button';
@@ -20,6 +21,10 @@ const EmojiSelector = ({ onSelect, placement, placeholder }) => {
 
   const handleClick = (event) => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
+  };
+  const onSelectHandler = (emoji) => {
+    onSelect(emoji);
+    handleClick();
   };
 
   const open = Boolean(anchorEl);
@@ -44,7 +49,7 @@ const EmojiSelector = ({ onSelect, placement, placeholder }) => {
       >
         <ClickAwayListener onClickAway={handleClick}>
           <Picker
-            onSelect={onSelect}
+            onSelect={onSelectHandler}
             emoji="smiley"
             title={placeholder}
           />
