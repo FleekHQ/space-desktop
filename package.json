@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "main": "public/electron.js",
-  "author": "Fleek",
+  "author": "Fleek Labs Inc",
   "homepage": "./",
   "scripts": {
     "start": "node scripts/start.js",
@@ -142,6 +142,7 @@
   "build": {
     "productName": "Space",
     "appId": "com.electron.space-app",
+    "afterSign": "scripts/notarize.js",
     "artifactName": "${name}-${version}-${os}-${arch}.${ext}",
     "files": [
       "build/**/*",
@@ -160,11 +161,14 @@
     ],
     "mac": {
       "target": "dmg",
-      "icon": "build/icon.png"
+      "icon": "build/icon.png",
+      "hardenedRuntime" : true,
+      "gatekeeperAssess": false,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist"
     },
     "win": {
-      "icon": "build/icon.png",
-      "verifyUpdateCodeSignature": false
+      "icon": "build/icon.png"
     },
     "linux": {
       "icon": "build/icon.png"
