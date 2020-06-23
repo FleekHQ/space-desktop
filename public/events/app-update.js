@@ -1,43 +1,35 @@
-const EVENT_PREFIX = 'appUpdate';
-const { ipcMain } = require('electron');
-const CONFIRM_EVENT = `${EVENT_PREFIX}:confirm`;
+const { dialog } = require('electron');
 
 const registerAppUpdateEvents = ({
   app,
-  mainWindow,
   autoUpdater,
 }) => {
-  ipcMain.on(CONFIRM_EVENT, (event, payload) => {
-    console.log('UPDATE CONFIRM!!');
-    app.relaunch();
-    app.exit(0);
-  });
+  try {
+    autoUpdater.checkForUpdates();
 
-  autoUpdater.on('checking-for-update', () => {
-  });
+    autoUpdater.on('update-downloaded', () => {
+      // eslint-disable-next-line no-console
+      console.log('The last update of the space app was successfully downloaded.');
 
-  autoUpdater.on('update-available', (info) => {
-    console.log('update-available', info);
-  });
+      const res = dialog.showMessageBoxSync({
+        buttons: ['No', 'Yes'],
+        message: 'New update available! Do you want to restart space to install last updates?',
+      });
 
-  autoUpdater.on('update-not-available', (info) => {
-    console.log('update-not-available', info);
-  });
-
-  autoUpdater.on('error', (err) => {
-    console.log('error', err);
-    // mainWindow.webContents.send(ERROR_EVENT, err);
-  });
-
-  autoUpdater.on('download-progress', (progressObj) => {
-    console.log('download-progress', progressObj);
-  });
-
-  autoUpdater.on('update-downloaded', (info) => {
-    console.log('update-downloaded', info);
-    // mainWindow.webContents.send(ERROR_EVENT, err);
-    autoUpdater.quitAndInstall();  
-  });
+      if (res === 1) {
+        setImmediate(() => {
+          autoUpdater.quitAndInstall();
+          setTimeout(() => {
+            app.exit(0);
+            app.relaunch();
+          });
+        });
+      }
+    });
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error(`Errror when try to check for updates: ${error.stack || error.message}`);
+  }
 };
 
 module.exports = registerAppUpdateEvents;

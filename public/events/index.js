@@ -9,6 +9,7 @@ const registerAppUpdate = require('./app-update');
 
 const registerEvents = ({
   app,
+  isDev,
   mainWindow,
   autoUpdater,
 }) => {
@@ -20,7 +21,10 @@ const registerEvents = ({
   registerPathInfoEvents(mainWindow);
   registerAddItemsSubscribe(mainWindow);
   registerGenerateKeyPairEvents(mainWindow);
-  registerAppUpdate({ app, mainWindow, autoUpdater });
+
+  if (!isDev) {
+    registerAppUpdate({ app, mainWindow, autoUpdater });
+  }
 
   return () => {
     stream.destroy();
