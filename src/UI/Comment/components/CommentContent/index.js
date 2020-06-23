@@ -3,21 +3,18 @@ import PropTypes from 'prop-types';
 import moment from 'moment-timezone';
 
 import Avatar from '@ui/Avatar';
-import Button from '@material-ui/core/Button';
 import Typography from '@ui/Typography';
 
 import useStyles from './styles';
 
-const Content = ({
+const CommentContent = ({
   user,
-  i18n,
   createdAt,
   content,
-  isRoot,
   children,
-  resolve,
+  isExpanded,
 }) => {
-  const classes = useStyles();
+  const classes = useStyles({ isExpanded });
 
   return (
     <div className={classes.root}>
@@ -27,19 +24,9 @@ const Content = ({
         size={32}
       />
       <div className={classes.mainContent}>
-        <div className={classes.row}>
-          <Typography weight="medium">{user.username}</Typography>
-          {isRoot && (
-            <Button
-              color="secondary"
-              className={classes.btn}
-              disableRipple
-              onClick={resolve}
-            >
-              {i18n.resolve}
-            </Button>
-          )}
-        </div>
+        <Typography weight="medium" className={classes.username}>
+          {user.username}
+        </Typography>
         <Typography variant="body2" color="secondary">
           {moment(createdAt).tz(moment.tz.guess()).fromNow()}
         </Typography>
@@ -55,23 +42,20 @@ const Content = ({
   );
 };
 
-Content.defaultProps = {
+CommentContent.defaultProps = {
   children: null,
+  isExpanded: false,
 };
 
-Content.propTypes = {
-  createdAt: PropTypes.string.isRequired,
-  isRoot: PropTypes.bool.isRequired,
-  resolve: PropTypes.func.isRequired,
-  content: PropTypes.string.isRequired,
+CommentContent.propTypes = {
   children: PropTypes.node,
+  isExpanded: PropTypes.bool,
+  createdAt: PropTypes.string.isRequired,
+  content: PropTypes.string.isRequired,
   user: PropTypes.shape({
     username: PropTypes.string.isRequired,
     imgUrl: PropTypes.string.isRequired,
   }).isRequired,
-  i18n: PropTypes.shape({
-    resolve: PropTypes.string.isRequired,
-  }).isRequired,
 };
 
-export default Content;
+export default CommentContent;

@@ -72,15 +72,11 @@ const CommentInput = ({
 };
 
 CommentInput.defaultProps = {
-  onFocus: () => {},
-  onBlur: () => {},
   textFieldProps: {},
 };
 
 CommentInput.propTypes = {
   confirm: PropTypes.func.isRequired,
-  onFocus: PropTypes.func,
-  onBlur: PropTypes.func,
   textFieldProps: PropTypes.shape({}),
   user: PropTypes.shape({
     username: PropTypes.string.isRequired,
