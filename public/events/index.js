@@ -5,8 +5,13 @@ const registerObjectsEvents = require('./objects').default;
 const registerGenerateKeyPairEvents = require('./generate-key-pair');
 const registerTxlSubscribe = require('./txl-subscribe');
 const registerAddItemsSubscribe = require('./add-items-subscribe');
+const registerAppUpdate = require('./app-update');
 
-const registerEvents = (mainWindow) => {
+const registerEvents = ({
+  app,
+  mainWindow,
+  autoUpdater,
+}) => {
   const stream = registerEventStream(mainWindow);
   const txlStream = registerTxlSubscribe(mainWindow);
 
@@ -15,6 +20,7 @@ const registerEvents = (mainWindow) => {
   registerPathInfoEvents(mainWindow);
   registerAddItemsSubscribe(mainWindow);
   registerGenerateKeyPairEvents(mainWindow);
+  registerAppUpdate({ app, mainWindow, autoUpdater });
 
   return () => {
     stream.destroy();

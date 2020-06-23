@@ -4,6 +4,7 @@ const path = require('path');
 const electron = require('electron');
 const isDev = require('electron-is-dev');
 const { exec } = require('child_process');
+const { autoUpdater } = require('electron-updater');
 
 const registerEvents = require('./events');
 
@@ -73,7 +74,13 @@ const createWindow = () => {
     }
   });
 
-  destroyStream = registerEvents(mainWindow);
+  destroyStream = registerEvents({
+    app,
+    mainWindow,
+    autoUpdater,
+  });
+
+  // autoUpdater.checkForUpdates();
 };
 
 app.on('ready', createWindow);

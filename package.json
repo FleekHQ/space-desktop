@@ -4,7 +4,10 @@
   "private": true,
   "main": "public/electron.js",
   "author": "Fleek Labs Inc",
-  "homepage": "./",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FleekHQ/desktop-storage.git"
+  },
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
@@ -33,6 +36,7 @@
     "classnames": "^2.2.6",
     "electron-is-dev": "^1.2.0",
     "electron-store": "^5.2.0",
+    "electron-updater": "^4.3.1",
     "glob": "^7.1.6",
     "grpc": "^1.24.2",
     "i18next": "^19.4.4",
@@ -79,7 +83,8 @@
     "dotenv": "^8.2.0",
     "dotenv-expand": "5.1.0",
     "electron": "^8.2.5",
-    "electron-builder": "^22.6.0",
+    "electron-builder": "^22.7.0",
+    "electron-notarize": "^1.0.0",
     "eslint": "^7.1.0",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-config-react-app": "^5.2.1",
@@ -142,8 +147,14 @@
   "build": {
     "productName": "Space",
     "appId": "com.electron.space-app",
-    "afterSign": "scripts/notarize.js",
+    "afterSign": "./scripts/notarize.js",
     "artifactName": "${name}-${version}-${os}-${arch}.${ext}",
+    "publish": {
+      "provider": "s3",
+      "private": true,
+      "bucket": "electron-builder",
+      "endpoint": "http://localhost:9000"
+    },
     "files": [
       "build/**/*",
       "node_modules/**/*"
@@ -160,12 +171,12 @@
       }
     ],
     "mac": {
-      "target": "dmg",
       "icon": "build/icon.png",
-      "hardenedRuntime" : true,
+      "hardenedRuntime": true,
       "gatekeeperAssess": false,
-      "entitlements": "build/entitlements.mac.plist",
-      "entitlementsInherit": "build/entitlements.mac.plist"
+      "electronLanguages": ["en"],
+      "entitlements": "./build/entitlements.mac.plist",
+      "entitlementsInherit": "./build/entitlements.mac.plist"
     },
     "win": {
       "icon": "build/icon.png"
