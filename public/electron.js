@@ -3,7 +3,6 @@ require('dotenv').config();
 const path = require('path');
 const { app, BrowserWindow } = require('electron');
 const isDev = require('electron-is-dev');
-const { autoUpdater } = require('electron-updater');
 
 const registerEvents = require('./events');
 
@@ -64,7 +63,7 @@ const createWindow = () => {
   });
 
   mainWindow.on('close', (event) => {
-    if (app.quitting) {
+    if (app.quitting || app.newUpdate) {
       mainWindow = null;
     } else {
       event.preventDefault();
@@ -76,7 +75,6 @@ const createWindow = () => {
     app,
     isDev,
     mainWindow,
-    autoUpdater,
   });
 };
 
@@ -85,7 +83,7 @@ app.on('ready', createWindow);
 app.on('window-all-closed', () => {
   destroyStream();
 
-  if (process.platform !== 'darwin') {
+  if (process.platform !== 'darwin' || app.newUpdate) {
     app.quit();
   }
 });

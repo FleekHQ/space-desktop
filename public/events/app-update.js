@@ -1,8 +1,8 @@
 const { dialog } = require('electron');
+const { autoUpdater } = require('electron-updater');
 
 const registerAppUpdateEvents = ({
   app,
-  autoUpdater,
 }) => {
   try {
     autoUpdater.checkForUpdates();
@@ -17,13 +17,9 @@ const registerAppUpdateEvents = ({
       });
 
       if (res === 1) {
-        setImmediate(() => {
-          autoUpdater.quitAndInstall();
-          setTimeout(() => {
-            app.exit(0);
-            app.relaunch();
-          });
-        });
+        // eslint-disable-next-line no-param-reassign
+        app.newUpdate = true;
+        autoUpdater.quitAndInstall();
       }
     });
   } catch (error) {

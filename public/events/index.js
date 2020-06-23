@@ -11,7 +11,6 @@ const registerEvents = ({
   app,
   isDev,
   mainWindow,
-  autoUpdater,
 }) => {
   const stream = registerEventStream(mainWindow);
   const txlStream = registerTxlSubscribe(mainWindow);
@@ -23,7 +22,7 @@ const registerEvents = ({
   registerGenerateKeyPairEvents(mainWindow);
 
   if (!isDev) {
-    registerAppUpdate({ app, mainWindow, autoUpdater });
+    registerAppUpdate({ app, mainWindow });
   }
 
   return () => {
