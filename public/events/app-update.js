@@ -13,7 +13,7 @@ const registerAppUpdateEvents = ({
 
       const res = dialog.showMessageBoxSync({
         buttons: ['No', 'Yes'],
-        message: 'New update available! Do you want to restart space to install last updates?',
+        message: 'New update available! Do you want to restart the app now to install it?',
       });
 
       if (res === 1) {
