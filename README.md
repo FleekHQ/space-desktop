@@ -58,6 +58,8 @@ Also, if the daemon requires additional env variables, you need to pass those en
 
 `DEV_DAEMON=true DAEMON_PATH=/path/to/the/bin/daemon SOME_DAEMON_ENV=foo yarn electron:dev`
 
+You can also download the latest version of the daemon directly into the resource folder (same way as CI does). To do that you can run `yarn download-daemon`
+
 ## Build app locally
 The default behavior of the build process it's to try to sign the application. If you are not exporting the ENV variables required to sign the application, the build process is going to fail. If you want to skip the signing process in order to be able to run the build process locally you can pass the `CSC_IDENTITY_AUTO_DISCOVERY=false` env variable, so the sign step is going to be ignored
 
