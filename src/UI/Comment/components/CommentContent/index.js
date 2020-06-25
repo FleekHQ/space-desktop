@@ -54,7 +54,7 @@ CommentContent.propTypes = {
   content: PropTypes.string.isRequired,
   user: PropTypes.shape({
     username: PropTypes.string.isRequired,
-    imgUrl: PropTypes.string.isRequired,
+    imgUrl: PropTypes.string,
   }).isRequired,
 };
 
