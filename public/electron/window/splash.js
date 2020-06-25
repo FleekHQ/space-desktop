@@ -1,4 +1,5 @@
 const path = require('path');
+const isDev = require('electron-is-dev');
 const { BrowserWindow } = require('electron');
 
 const createWindow = () => {
