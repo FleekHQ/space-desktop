@@ -23,7 +23,7 @@ const registerEvents = ({
   registerAddItemsSubscribe(mainWindow);
   registerGenerateKeyPairEvents(mainWindow);
 
-  if (!isDev) {
+  if (!isDev && process.env.SKIP_AUTOUPDATE !== 'false') {
     registerAppUpdate({ app, mainWindow });
   }
 
