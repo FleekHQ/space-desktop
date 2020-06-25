@@ -1,6 +1,5 @@
 require('dotenv').config();
 
-const path = require('path');
 const { app, Tray } = require('electron');
 const isDev = require('electron-is-dev');
 
@@ -57,14 +56,13 @@ app.on('ready', () => {
   appIcon.setContextMenu(contextMenu);
 });
 
-
 /**
  * Daemon Event handlers
  */
 daemon.on('ready', () => {
   const prevWindow = mainWindow;
 
-  mainWindow = createMainWindow(app);
+  mainWindow = createMainWindow();
 
   mainWindow.on('closed', () => {
     mainWindow = null;
