@@ -122,7 +122,7 @@ const SignUp = () => {
       {
         state.error && (
           <div className={classes.alert}>
-            <Typography color="inherit" variant="body2">
+            <Typography noWrap color="inherit" variant="body2">
               {state.error}
             </Typography>
           </div>
