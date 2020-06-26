@@ -1,13 +1,15 @@
 require('dotenv').config();
 
-const { app } = require('electron');
+const path = require('path');
+const { app, Tray } = require('electron');
 const isDev = require('electron-is-dev');
 
 const DaemonProcess = require('./electron/daemon');
 const registerEvents = require('./electron/events');
 const createMainWindow = require('./electron/window/main');
-const createSplashWindow = require('./electron/window/splash');
+const { getMenuOptions, trayIcon } = require('./electron/tray-menu');
 
+let appIcon;
 let mainWindow;
 let destroyStream = () => {};
 
@@ -19,8 +21,9 @@ const enableDevDaemon = process.env.DEV_DAEMON === 'true';
  * App events
  */
 app.on('window-all-closed', () => {
+  // eslint-disable-next-line no-console
+  console.log('All windows are closed...');
   destroyStream();
-  daemon.stop();
 
   if (process.platform !== 'darwin' || app.newUpdate) {
     app.quit();
@@ -30,26 +33,40 @@ app.on('window-all-closed', () => {
 app.on('activate', () => {
   if (!mainWindow) {
     mainWindow = createMainWindow();
+
+    destroyStream = registerEvents({
+      app,
+      isDev,
+      mainWindow,
+    });
   } else {
     mainWindow.show();
   }
 });
 
 app.on('before-quit', () => {
+  // eslint-disable-next-line no-console
+  console.log('App is quiting...');
+  daemon.stop();
   app.quitting = true;
 });
 
 app.on('ready', () => {
-  mainWindow = createSplashWindow();
+  mainWindow = createMainWindow();
+
+  const contextMenu = getMenuOptions(app, 'pending');
+
+  appIcon = new Tray(trayIcon);
+  appIcon.setContextMenu(contextMenu);
 });
 
 /**
  * Daemon Event handlers
  */
 daemon.on('ready', () => {
-  const prevWindow = mainWindow;
-
-  mainWindow = createMainWindow();
+  mainWindow.loadURL(isDev
+    ? 'http://localhost:3000'
+    : `file://${path.join(__dirname, '../build/index.html')}`);
 
   mainWindow.on('closed', () => {
     mainWindow = null;
@@ -64,13 +81,16 @@ daemon.on('ready', () => {
     }
   });
 
-  prevWindow.destroy();
-
   destroyStream = registerEvents({
     app,
     isDev,
     mainWindow,
   });
+
+  if (appIcon) {
+    const contextMenu = getMenuOptions(app, 'ready');
+    appIcon.setContextMenu(contextMenu);
+  }
 });
 
 /**
@@ -80,5 +100,4 @@ if (isDev && !enableDevDaemon) {
   daemon.startDev();
   return;
 }
-
 daemon.start();
