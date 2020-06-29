@@ -121,7 +121,7 @@ const SignUp = () => {
         state.error && (
           <div className={classes.alert}>
             <Typography noWrap color="inherit" variant="body2">
-              {state.error}
+              {t(state.error, { defaultValue: t('modules.signup.errors.generic') })}
             </Typography>
           </div>
         )

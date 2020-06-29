@@ -16,8 +16,17 @@ const registerAuthEvents = () => {
   ipcRenderer.on(SIGNUP_ERROR_EVENT, (_, error) => {
     // eslint-disable-next-line
     console.error('signup error payload: ', error);
+
+    let errorKey = 'modules.signup.errors.';
+    if (error.message.includes('address')) {
+      errorKey += 'address';
+    }
+    if (error.message.includes('username')) {
+      errorKey += 'username';
+    }
+
     store.dispatch({
-      error: error.message,
+      error: errorKey,
       type: SIGNUP_ACTION_TYPES.ON_SUBMIT_ERROR,
     });
   });
