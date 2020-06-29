@@ -69,12 +69,10 @@ const SignUp = () => {
 
   React.useEffect(() => {
     if (state.loading) {
-      setTimeout(() => {
-        singup({
-          email: state.tfEmail,
-          username: state.tfUsername,
-        });
-      }, 1000);
+      singup({
+        email: state.tfEmail,
+        username: state.tfUsername,
+      });
     }
   }, [state.loading]);
 
