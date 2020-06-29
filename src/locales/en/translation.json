@@ -99,6 +99,14 @@
       "resolve": "Resolve",
       "commentPlaceholder": "Reply",
       "editCommentPlaceholder": "Edit comment"
+    },
+    "versionsHistory": {
+      "title": "Version History",
+      "current": "Current",
+      "restore": "Restore",
+      "modifiedBy": "Edited by {{user}}",
+      "addedBy": "Added by {{user}}",
+      "userIsAuthor": " (You)"
     }
   }
 }
