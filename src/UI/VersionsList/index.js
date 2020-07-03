@@ -42,13 +42,26 @@ const VersionsList = ({
             <div className={classes.row}>
               <Typography variant="body1">{version.fileName}</Typography>
               {version.isCurrent
-                ? <Typography variant="body1" color="secondary">{t('filePreview.versionsHistory.current')}</Typography>
-                : <Button color="secondary" className={classes.btn}>{t('filePreview.versionsHistory.restore')}</Button>}
+                ? (
+                  <Typography variant="body1" color="secondary">
+                    {t('filePreview.versionsHistory.current')}
+                  </Typography>
+                ) : (
+                  <Button
+                    color="secondary"
+                    className={classes.btn}
+                    disableRipple
+                  >
+                    {t('filePreview.versionsHistory.restore')}
+                  </Button>
+                )}
             </div>
             <Typography variant="body2" color="secondary">
               {formatDate(wasModified ? version.modifiedAt : version.addedAt)}
             </Typography>
-            <Typography variant="body2" className={classes.author}>{t(tKey, { user: author })}</Typography>
+            <Typography variant="body2" className={classes.author}>
+              {t(tKey, { user: author })}
+            </Typography>
           </div>
         );
       })}
