@@ -151,5 +151,4 @@ CommentsSection.propTypes = {
   }).isRequired,
 };
 
-
 export default CommentsSection;

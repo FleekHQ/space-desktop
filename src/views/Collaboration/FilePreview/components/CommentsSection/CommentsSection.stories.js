@@ -33,7 +33,7 @@ const initialThreads = [
         content: 'WWWWWWWGGGGHHHRRRRW."',
       },
       {
-        id: '0',
+        id: '1',
         author: '0',
         createdAt: '2020-06-24T09:51:46.055Z',
         content: 'The dark side of the Force agree with you!',
