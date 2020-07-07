@@ -3,7 +3,13 @@
   "createNew": "Create New",
   "common": {
     "search": "Search",
-    "at": "at"
+    "at": "at",
+    "post": "Post",
+    "cancel": "Cancel",
+    "emojiSelectorPlaceholder": "Select Emoji",
+    "open": "Open",
+    "edit": "Edit",
+    "delete": "Delete"
   },
   "contextMenu": {
     "open": "Open",
@@ -85,5 +91,14 @@
     "message": "<0>{{uploadedNumber}}</0> out of <0>{{totalNumber}}</0> files uploaded",
     "dismiss": "Dismiss",
     "defaultMessage": "Upload in progress..."
+  },
+  "filePreview": {
+    "comments": {
+      "newThreadPlaceholder": "Enter comment",
+      "inviteMembers": "Invite Members",
+      "resolve": "Resolve",
+      "commentPlaceholder": "Reply",
+      "editCommentPlaceholder": "Edit comment"
+    }
   }
 }

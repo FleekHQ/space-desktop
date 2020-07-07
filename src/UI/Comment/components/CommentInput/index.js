@@ -13,14 +13,17 @@ const CommentInput = ({
   user,
   confirm,
   textFieldProps,
+  initialValue,
+  onCancel,
 }) => {
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState(initialValue);
   const classes = useStyles();
   const onChangeInput = (event) => {
     setValue(event.target.value);
   };
   const clearInput = () => {
-    setValue('');
+    setValue(initialValue);
+    onCancel();
   };
   const onSelectEmoji = (emoji) => {
     confirm(emoji.native);
@@ -72,15 +75,19 @@ const CommentInput = ({
 };
 
 CommentInput.defaultProps = {
+  initialValue: '',
   textFieldProps: {},
+  onCancel: () => {},
 };
 
 CommentInput.propTypes = {
+  initialValue: PropTypes.string,
+  onCancel: PropTypes.func,
   confirm: PropTypes.func.isRequired,
   textFieldProps: PropTypes.shape({}),
   user: PropTypes.shape({
     username: PropTypes.string.isRequired,
-    imgUrl: PropTypes.string.isRequired,
+    imgUrl: PropTypes.string,
   }).isRequired,
   i18n: PropTypes.shape({
     placeholder: PropTypes.string.isRequired,
