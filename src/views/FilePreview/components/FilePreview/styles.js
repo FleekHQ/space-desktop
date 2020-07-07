@@ -7,6 +7,7 @@ export default makeStyles((theme) => ({
     justifyContent: 'center',
     flexDirection: 'column',
     flexGrow: 1,
+    padding: 20,
   },
   placeholder: {
     display: 'flex',

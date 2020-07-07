@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import Button from '@material-ui/core/Button';
-import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/pro-regular-svg-icons/faChevronDown';
 import { faEllipsisH } from '@fortawesome/pro-regular-svg-icons/faEllipsisH';
@@ -45,12 +44,18 @@ const DetailsPanel = ({ objects }) => {
       </Typography>
       <div className={classes.buttonsGroup}>
         {objects.length === 1 && (
-          <Link to="/file-preview/history">
-            <Button variant="outlined" className={classes.openBtn}>
-              {t('detailsPanel.open')}
-              <FontAwesomeIcon className={classes.arrowIcon} icon={faChevronDown} />
-            </Button>
-          </Link>
+          <Button
+            variant="outlined"
+            className={classes.openBtn}
+            onClick={() => window.open(
+              `${window.location.origin}/#/file-preview/history`,
+              '',
+              'width=1050, height=700',
+            )}
+          >
+            {t('detailsPanel.open')}
+            <FontAwesomeIcon className={classes.arrowIcon} icon={faChevronDown} />
+          </Button>
         )}
         <Button variant="outlined" className={classes.menuBtn}>
           <FontAwesomeIcon icon={faEllipsisH} />
