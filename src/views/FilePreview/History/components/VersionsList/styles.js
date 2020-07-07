@@ -1,6 +1,9 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 export default makeStyles((theme) => ({
+  root: {
+    padding: '17px 24px',
+  },
   itemWrapper: {
     padding: '10px 11px',
     border: `1px solid ${theme.palette.palette.gray11}`,

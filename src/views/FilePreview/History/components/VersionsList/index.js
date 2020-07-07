@@ -23,7 +23,7 @@ const VersionsList = ({
   const classes = useStyles();
 
   return (
-    <div>
+    <div className={classes.root}>
       <Typography variant="h6" weight="medium" className={classes.title}>
         {t('filePreview.versionsHistory.title')}
       </Typography>
@@ -38,7 +38,7 @@ const VersionsList = ({
           : 'filePreview.versionsHistory.addedBy';
 
         return (
-          <div className={classes.itemWrapper}>
+          <div className={classes.itemWrapper} key={version.id}>
             <div className={classes.row}>
               <Typography variant="body1">{version.fileName}</Typography>
               {version.isCurrent
@@ -73,17 +73,18 @@ VersionsList.propTypes = {
   user: PropTypes.shape({
     id: PropTypes.string.isRequired,
   }).isRequired,
-  members: PropTypes.arrayOf({
+  members: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired,
-  }).isRequired,
-  versions: PropTypes.arrayOf({
+  })).isRequired,
+  versions: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string.isRequired,
     fileName: PropTypes.string.isRequired,
     createdAt: PropTypes.string.isRequired,
     modifiedAt: PropTypes.string.isRequired,
     modifiedBy: PropTypes.string.isRequired,
     isCurrent: PropTypes.bool.isRequired,
-  }).isRequired,
+  })).isRequired,
 };
 
 export default VersionsList;

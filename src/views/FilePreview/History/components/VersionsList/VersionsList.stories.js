@@ -19,6 +19,7 @@ storiesOf(categoryName, module).add('VersionsList', () => {
     members,
     versions: [
       {
+        id: '0',
         fileName: 'HistoryExam.docx',
         createdAt: '2020-06-26T10:35:31.517Z',
         modifiedAt: '2020-06-26T12:35:31.517Z',
@@ -26,6 +27,7 @@ storiesOf(categoryName, module).add('VersionsList', () => {
         isCurrent: true,
       },
       {
+        id: '1',
         fileName: 'HistoryExam.docx',
         createdAt: '2020-06-24T11:35:31.517Z',
         modifiedAt: '2020-06-24T11:35:31.517Z',
