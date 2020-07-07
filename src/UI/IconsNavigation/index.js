@@ -4,13 +4,15 @@ import Button from '@material-ui/core/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCog } from '@fortawesome/pro-regular-svg-icons/faCog';
 import { faCopy } from '@fortawesome/pro-regular-svg-icons/faCopy';
-import { faComment } from '@fortawesome/pro-regular-svg-icons/faComment';
+import { faCommentAltLines } from '@fortawesome/pro-regular-svg-icons/faCommentAltLines';
+import { faHistory } from '@fortawesome/pro-regular-svg-icons/faHistory';
 import useStyles from './styles';
 
 const mapNameToIcon = {
   files: faCopy,
   settings: faCog,
-  comments: faComment,
+  comments: faCommentAltLines,
+  history: faHistory,
 };
 
 const IconsNavigation = ({ options, WrapperComponent }) => {
@@ -45,7 +47,7 @@ IconsNavigation.propTypes = {
     icon: PropTypes.oneOf(Object.keys(mapNameToIcon)).isRequired,
     active: PropTypes.bool,
   })).isRequired,
-  WrapperComponent: PropTypes.node,
+  WrapperComponent: PropTypes.elementType,
 };
 
 export default IconsNavigation;

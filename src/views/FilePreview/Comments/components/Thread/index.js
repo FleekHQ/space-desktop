@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
@@ -99,13 +99,13 @@ const CommentsSection = ({
         </Button>
       )}
       {thread.comments.map((answer) => (
-        <>
+        <Fragment key={answer.id}>
           <div className={classes.divider} />
           {getCommentComponent(
             members.find(({ id }) => answer.author === id) || { username: '' },
             answer,
           )}
-        </>
+        </Fragment>
       ))}
       <div className={classes.divider} />
       <CommentInput

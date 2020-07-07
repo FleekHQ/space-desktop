@@ -50,6 +50,7 @@ const CommentsSection = ({
       <div className={classes.sectionWrapper}>
         {threads.map((thread) => (
           <Thread
+            key={thread.id}
             isOpen={openThreadId === thread.id}
             onEdit={(commentId, newValue) => onEdit(thread.id, commentId, newValue)}
             onRemove={(commentId) => onRemove(thread.id, commentId)}

@@ -44,7 +44,15 @@ const DetailsPanel = ({ objects }) => {
       </Typography>
       <div className={classes.buttonsGroup}>
         {objects.length === 1 && (
-          <Button variant="outlined" className={classes.openBtn}>
+          <Button
+            variant="outlined"
+            className={classes.openBtn}
+            onClick={() => window.open(
+              `${window.location.origin}/#/file-preview/history`,
+              '',
+              'width=1050, height=700',
+            )}
+          >
             {t('detailsPanel.open')}
             <FontAwesomeIcon className={classes.arrowIcon} icon={faChevronDown} />
           </Button>
