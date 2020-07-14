@@ -16,6 +16,7 @@ import {
 import Modal from '@shared/components/Modal';
 import store from './store';
 import Auth from './views/Auth';
+import Join from './views/Join';
 import Splash from './views/Splash';
 import Storage from './views/Storage';
 import ModalView from './views/Modal';
@@ -42,6 +43,9 @@ const App = () => (
             <Route path="/splash">
               <Splash />
             </Route>
+            <PrivateRoute path="/join">
+              <Join />
+            </PrivateRoute>
             <PrivateRoute path="/storage">
               <Storage />
             </PrivateRoute>

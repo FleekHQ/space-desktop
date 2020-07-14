@@ -5,6 +5,7 @@ const registerTxlSubscribe = require('./txl-subscribe');
 const registerObjectsEvents = require('./objects').default;
 const registerAddItemsSubscribe = require('./add-items-subscribe');
 const registerAppUpdate = require('./app-update');
+const registerBucketSubscribe = require('./bucket');
 
 const registerEvents = ({
   app,
@@ -18,6 +19,7 @@ const registerEvents = ({
   registerModalEvents(mainWindow);
   registerObjectsEvents(mainWindow);
   registerAddItemsSubscribe(mainWindow);
+  registerBucketSubscribe(mainWindow);
 
   if (!isDev && process.env.SKIP_AUTOUPDATE !== 'true') {
     registerAppUpdate({ app, mainWindow });

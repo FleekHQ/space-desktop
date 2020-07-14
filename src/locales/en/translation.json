@@ -114,5 +114,14 @@
       "copyLink": "Copy link",
       "createLink": "Create link"
     }
+  },
+  "join": {
+    "error": "Sorry, there was a problem when try to join the bucket \"{{bucketName}}\".",
+    "success": "You have been joined the bucket \"{{bucketName}}\"! Redirecting to the bucket.",
+    "loading": "Joining the bucket \"{{bucketName}}\"...",
+    "goTo": {
+      "success": "Go without waiting",
+      "error": "Go to your files"
+    }
   }
 }

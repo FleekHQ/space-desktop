@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/pro-regular-svg-icons/faSpinner';
@@ -41,6 +41,7 @@ const handleInputChange = ({ dispatch }) => (event) => {
 const SignUp = () => {
   const classes = useStyles();
   const history = useHistory();
+  const location = useLocation();
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const state = useSelector((_state) => _state.auth.signup);
@@ -63,6 +64,14 @@ const SignUp = () => {
 
   React.useEffect(() => {
     if (state.success) {
+      const qs = new URLSearchParams(location.search);
+      const returnTo = qs.get('return_to');
+
+      if (returnTo && returnTo.length) {
+        history.push(returnTo);
+        return;
+      }
+
       history.push('/storage');
     }
   }, [state.success]);

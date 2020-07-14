@@ -61,6 +61,18 @@ app.on('ready', () => {
   appIcon.setContextMenu(contextMenu);
 });
 
+app.on('open-url', (event, data) => {
+  event.preventDefault();
+
+  const goTo = decodeURIComponent(data.replace('space://', ''));
+
+  mainWindow.loadURL(isDev
+    ? `http://localhost:3000/#/${goTo}`
+    : `file://${path.join(__dirname, `../build/index.html#/${goTo}`)}`);
+});
+
+app.setAsDefaultProtocolClient('space');
+
 /**
  * Daemon Event handlers
  */

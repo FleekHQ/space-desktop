@@ -11,13 +11,13 @@ const PrivateRoute = ({ children, ...rest }) => {
   return (
     <Route
       {...rest}
-      render={() => {
+      render={({ location }) => {
         if (user) {
           return children;
         }
 
         return (
-          <Redirect to="/auth/signup" />
+          <Redirect to={`/auth/signup?return_to=${encodeURIComponent(`${location.pathname}${location.search}`)}`} />
         );
       }}
     />
