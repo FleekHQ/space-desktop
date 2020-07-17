@@ -8,5 +8,6 @@ export default makeStyles((theme) => ({
   mainContent: {
     flexGrow: 1,
     backgroundColor: theme.palette.palette.gray5,
+    minWidth: 0,
   },
 }));

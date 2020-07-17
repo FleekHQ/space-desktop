@@ -9,22 +9,36 @@ import {
 } from 'react-router-dom';
 
 import Breadcrumbs from './components/Breadcrumbs';
-import BucketsTable from './components/BucketsTable';
+// import BucketsTable from './components/BucketsTable';
 
 import { FileTable } from '../shared/components';
+import SharedByList from './components/SharedByList';
 
 const SharedWithMeView = () => {
   const match = useRouteMatch();
 
   return (
-    <div style={{ marginTop: 30, padding: '0 18px' }}>
+    <div
+      style={{
+        padding: '30px 18px 0',
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
       <Breadcrumbs />
       <Switch>
         <Route exact path={match.path}>
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              overflow: 'auto',
+            }}
+          >
             <span><strong>List of Buckets</strong></span>
             <Link to={`${match.path}/bucket-test/`}>BUCKET-TEST</Link>
-            <BucketsTable />
+            <SharedByList />
           </div>
         </Route>
         <Route
