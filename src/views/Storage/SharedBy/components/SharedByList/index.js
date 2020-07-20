@@ -1,6 +1,7 @@
 import React from 'react';
 import ShareBox from '@ui/ShareBox';
 import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router-dom';
 import Masonry from 'react-masonry-css';
 import useStyles from './styles';
 
@@ -36,6 +37,7 @@ const sharedByList = Array.from({ length: 20 }, (item, index) => ({
     username: sharedByItem.user.username + index,
   },
   objectsList: sharedByItem.objectsList.slice(0, Math.ceil(Math.random() * 4)),
+  bucketId: 'bucket-id',
 }));
 
 const breakpointColumnsObj = {
@@ -52,29 +54,36 @@ const breakpointColumnsObj = {
 const SharedBy = () => {
   const classes = useStyles();
   const { t } = useTranslation();
+  const history = useHistory();
 
   return (
-    <Masonry
-      breakpointCols={breakpointColumnsObj}
-      className={classes.masonryGrid}
-      columnClassName={classes.masonryColumn}
-    >
-      {sharedByList.map((item) => (
-        <div key={item.id} className={classes.itemWrapper}>
-          <ShareBox
-            user={item.user}
-            objectsList={item.objectsList}
-            showViewAllBtn={item.objectsList.length > 3}
-            onViewAllClick={() => console.log('onViewAllClick')}
-            onObjectClick={() => console.log('onObjectClick')}
-            i18n={{
-              subtitle: t('modules.storage.sharedBy.mostRecentShared'),
-              viewAll: t('modules.storage.sharedBy.viewAll'),
-            }}
-          />
-        </div>
-      ))}
-    </Masonry>
+    <div className={classes.root}>
+      <Masonry
+        breakpointCols={breakpointColumnsObj}
+        className={classes.masonryGrid}
+        columnClassName={classes.masonryColumn}
+      >
+        {sharedByList.map((item) => (
+          <div key={item.id} className={classes.itemWrapper}>
+            <ShareBox
+              user={item.user}
+              objectsList={item.objectsList}
+              showViewAllBtn={item.objectsList.length > 3}
+              onViewAllClick={() => {
+                history.push(`/storage/shared-by/${item.bucketId}`);
+              }}
+              onObjectClick={(obj) => {
+                history.push(`/storage/shared-by/${item.bucketId}/${obj.name}`);
+              }}
+              i18n={{
+                subtitle: t('modules.storage.sharedBy.mostRecentShared'),
+                viewAll: t('modules.storage.sharedBy.viewAll'),
+              }}
+            />
+          </div>
+        ))}
+      </Masonry>
+    </div>
   );
 };
 
