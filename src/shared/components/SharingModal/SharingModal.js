@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { useTranslation } from 'react-i18next';
@@ -7,9 +7,11 @@ import useStyles from './styles';
 import getOptions from './options';
 import {
   Header,
-  Footer,
+  EditFooter,
   MemberInput,
   CollaboratorList,
+  EmailBodyInput,
+  SendEmailFooter,
 } from './components';
 
 const SharingModal = (props) => {
@@ -22,11 +24,14 @@ const SharingModal = (props) => {
     onShareLinkClick,
     onChangeUserPermissions,
     onChangeInputPermissions,
+    onSendEmailClick,
   } = props;
-
   const classes = useStyles();
   const { t } = useTranslation();
 
+  const [emailBody, setEmailBody] = useState('');
+  const [showEmailBody, setShowEmailBody] = useState(false);
+  const [emailAddresses, setEmailAddresses] = useState([]);
   const i18n = {
     memberInput: {
       to: t('modals.sharingModal.to'),
@@ -44,6 +49,14 @@ const SharingModal = (props) => {
       cta: shareLink
         ? t('modals.sharingModal.copyLink')
         : t('modals.sharingModal.createLink'),
+    },
+    email: {
+      placeholder: t('modals.sharingModal.emailPlaceholder'),
+      shareButton: t('modals.sharingModal.shareEmailButton'),
+    },
+    emailErrors: {
+      invalidEmail: t('modals.sharingModal.errors.invalidEmail'),
+      duplicateEmail: t('modals.sharingModal.errors.duplicateEmail'),
     },
   };
 
@@ -65,19 +78,46 @@ const SharingModal = (props) => {
         i18n={i18n.memberInput}
         className={classes.memberInput}
         onChange={onChangeInputPermissions}
-      />
-      <CollaboratorList
-        i18n={i18n.collaboratorList}
+        setEmailAddresses={setEmailAddresses}
+        emailAddresses={emailAddresses}
+        showEmailBody={showEmailBody}
+        setShowEmailBody={setShowEmailBody}
+        setEmailBody={setEmailBody}
         collaborators={collaborators}
-        options={getOptions(t, true)}
-        className={classes.collaboratorList}
-        onChangePermissions={onChangeUserPermissions}
+        emailErrors={i18n.emailErrors}
       />
-      <Footer
-        i18n={i18n.footer}
-        className={classes.footer}
-        onClick={onShareLinkClick}
-      />
+      {
+        showEmailBody ? (
+          <>
+            <EmailBodyInput
+              placeholder={i18n.email.placeholder}
+              setEmailBody={setEmailBody}
+              emailBody={emailBody}
+            />
+            <SendEmailFooter
+              className={classes.footer}
+              shareButtonText={i18n.email.shareButton}
+              onSendEmailClick={() => onSendEmailClick(emailAddresses, emailBody)}
+              disabled={emailAddresses.length === 0}
+            />
+          </>
+        ) : (
+          <>
+            <CollaboratorList
+              i18n={i18n.collaboratorList}
+              collaborators={collaborators}
+              options={getOptions(t, true)}
+              className={classes.collaboratorList}
+              onChangePermissions={onChangeUserPermissions}
+            />
+            <EditFooter
+              i18n={i18n.footer}
+              className={classes.footer}
+              onClick={onShareLinkClick}
+            />
+          </>
+        )
+      }
     </div>
   );
 };
@@ -91,6 +131,7 @@ SharingModal.defaultProps = {
   onShareLinkClick: () => {},
   onChangeUserPermissions: () => {},
   onChangeInputPermissions: () => {},
+  onSendEmailClick: () => {},
 };
 
 SharingModal.propTypes = {
@@ -109,6 +150,7 @@ SharingModal.propTypes = {
     secondaryText: PropTypes.string,
     permissionsId: PropTypes.string,
   })),
+  onSendEmailClick: PropTypes.func,
 };
 
 export default SharingModal;

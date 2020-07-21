@@ -1,16 +1,19 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-export default makeStyles({
+export default makeStyles((theme) => ({
   root: {
     display: 'flex',
     alignItems: 'center',
   },
-  input: {
-    padding: 0,
-  },
-  inputRoot: {
-    flex: 1,
-    display: 'flex',
+  autocomplete: {
     margin: '0 18px',
+    '&&&  div': {
+      paddingRight: 0,
+    },
   },
-});
+  emailError: {
+    textAlign: 'center',
+    margin: '8px 0 -8px 0',
+    color: theme.palette.palette.red,
+  },
+}));

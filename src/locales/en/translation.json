@@ -44,6 +44,7 @@
     },
     "share": {
       "copy": "Copy Link",
+      "copied": "Copied to clipboard!",
       "invite": "Invite Members",
       "with": "Shared with",
       "manage": "Manage",
@@ -58,7 +59,7 @@
   "navigation": {
     "storage": "Storage",
     "files": "Files",
-    "shared-with-me": "Shared with me"
+    "shared-by": "Shared by"
   },
   "createNewMenu": {
     "fileUpload": "File Upload",
@@ -112,7 +113,13 @@
       "noLinkDescription": "No link created yet.",
       "linkDescription": "Anyone with this link can view the folder.",
       "copyLink": "Copy link",
-      "createLink": "Create link"
+      "createLink": "Create link",
+      "emailPlaceholder": "Add a message (optional)",
+      "shareEmailButton": "Share",
+      "errors": {
+        "invalidEmail": "Email is invalid",
+        "duplicateEmail": "This email is already selected"
+      }
     }
   },
   "join": {

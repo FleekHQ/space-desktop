@@ -5,6 +5,7 @@ const registerTxlSubscribe = require('./txl-subscribe');
 const registerObjectsEvents = require('./objects').default;
 const registerAddItemsSubscribe = require('./add-items-subscribe');
 const registerAppUpdate = require('./app-update');
+const registerShareUpdate = require('./share');
 const registerBucketSubscribe = require('./bucket');
 
 const registerEvents = ({
@@ -17,6 +18,7 @@ const registerEvents = ({
 
   registerAuthEvents(mainWindow);
   registerModalEvents(mainWindow);
+  registerShareUpdate(mainWindow);
   registerObjectsEvents(mainWindow);
   registerAddItemsSubscribe(mainWindow);
   registerBucketSubscribe(mainWindow);

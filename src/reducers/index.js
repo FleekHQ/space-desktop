@@ -4,6 +4,7 @@ import authReducer from './auth';
 import userReducer from './user';
 import storageReducer from './storage';
 import modalsReducer from './modals';
+import detailsPanelReducer from './details-panel';
 import joinReducer from './join';
 
 const rootReducer = combineReducers({
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   user: userReducer,
   storage: storageReducer,
   modals: modalsReducer,
+  detailsPanel: detailsPanelReducer,
   join: joinReducer,
 });
 
