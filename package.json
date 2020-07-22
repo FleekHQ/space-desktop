@@ -15,7 +15,7 @@
     "test": "node scripts/test.js",
     "download-daemon": "rimraf resources && node scripts/download-daemon.js",
     "lint": "eslint ./ --ext .js --ext .jsx",
-    "electron:dev": "concurrently \"cross-env yarn start\" \"wait-on http://localhost:3000 && electron .\"",
+    "electron:dev": "concurrently \"cross-env BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",
     "electron-pack": "electron-builder -c.extraMetadata.main=build/electron-app.js",
     "preelectron-pack": "npm run clean && npm run build",
     "clean": "rimraf build dist",
