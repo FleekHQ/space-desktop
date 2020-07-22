@@ -1,44 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import ShareBox from '@ui/ShareBox';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import Masonry from 'react-masonry-css';
+import { fetchBuckets } from '@events';
 import useStyles from './styles';
 
-const sharedByItem = {
-  user: {
-    imgUrl: '',
-    username: 'Username',
-  },
-  objectsList: [
-    {
-      ext: 'docx',
-      name: 'TechDocsV2.docx',
-    },
-    {
-      ext: 'pdf',
-      name: 'IPFS-Report.pdf',
-    },
-    {
-      ext: 'zip',
-      name: 'Branding.zip',
-    },
-    {
-      ext: 'png',
-      name: 'Logo.png',
-    },
-  ],
-};
-
-const sharedByList = Array.from({ length: 20 }, (item, index) => ({
-  id: index,
-  user: {
-    imgUrl: '',
-    username: sharedByItem.user.username + index,
-  },
-  objectsList: sharedByItem.objectsList.slice(0, Math.ceil(Math.random() * 4)),
-  bucketId: 'bucket-id',
-}));
+const MAX_SHOWN_OBJECTS = 3;
 
 const breakpointColumnsObj = {
   default: 8,
@@ -55,6 +24,17 @@ const SharedBy = () => {
   const classes = useStyles();
   const { t } = useTranslation();
   const history = useHistory();
+  const bucketsList = useSelector((state) => (
+    Object.values(state.storage.buckets)
+  ));
+
+  useEffect(() => {
+    fetchBuckets();
+  }, []);
+
+  const sharedBuckets = bucketsList.filter(
+    (bucket) => bucket.name !== 'personal',
+  );
 
   return (
     <div className={classes.root}>
@@ -63,17 +43,17 @@ const SharedBy = () => {
         className={classes.masonryGrid}
         columnClassName={classes.masonryColumn}
       >
-        {sharedByList.map((item) => (
-          <div key={item.id} className={classes.itemWrapper}>
+        {sharedBuckets.map((bucket) => (
+          <div key={bucket.name} className={classes.itemWrapper}>
             <ShareBox
-              user={item.user}
-              objectsList={item.objectsList}
-              showViewAllBtn={item.objectsList.length > 3}
+              user={bucket.membersList[0]}
+              objectsList={bucket.objects.slice(0, MAX_SHOWN_OBJECTS)}
+              showViewAllBtn={bucket.objects.length > MAX_SHOWN_OBJECTS}
               onViewAllClick={() => {
-                history.push(`/storage/shared-by/${item.bucketId}`);
+                history.push(`/storage/shared-by/${bucket.name}`);
               }}
               onObjectClick={(obj) => {
-                history.push(`/storage/shared-by/${item.bucketId}/${obj.name}`);
+                history.push(`/storage/shared-by/${bucket.name}/${obj.name}`);
               }}
               i18n={{
                 subtitle: t('modules.storage.sharedBy.mostRecentShared'),
