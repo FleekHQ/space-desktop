@@ -3,12 +3,12 @@ const { ipcMain } = require('electron');
 const spaceClient = require('../space-client');
 const { listDirectory } = require('./objects');
 
-const EVENT_PREFIX = 'buckets-list';
-const FETCH_EVENT = `${EVENT_PREFIX}:fetch`;
-const ERROR_EVENT = `${EVENT_PREFIX}:error`;
-const SUCCESS_EVENT = `${EVENT_PREFIX}:success`;
+const EVENT_PREFIX = 'bucket';
+const LIST_FETCH_EVENT = `${EVENT_PREFIX}:list:fetch`;
+const LIST_ERROR_EVENT = `${EVENT_PREFIX}:list:error`;
+const LIST_SUCCESS_EVENT = `${EVENT_PREFIX}:list:success`;
 
-const fakeSuccess = (mainWindow) => {
+const fakeListBucketsSuccess = (mainWindow) => {
   setTimeout(() => {
     // mockup data with fake success event
     const bucketsList = [
@@ -56,7 +56,7 @@ const fakeSuccess = (mainWindow) => {
       });
     });
 
-    mainWindow.webContents.send(SUCCESS_EVENT, { bucketsList });
+    mainWindow.webContents.send(LIST_SUCCESS_EVENT, { bucketsList });
   }, 2000);
 };
 
@@ -78,7 +78,7 @@ const listBuckets = async (
     const res = await spaceClient.listBuckets(payload);
     const bucketsList = res.getBucketsList().map(getBucketData);
 
-    mainWindow.webContents.send(SUCCESS_EVENT, { bucketsList });
+    mainWindow.webContents.send(LIST_SUCCESS_EVENT, { bucketsList });
 
     bucketsList.forEach((bucket) => {
       listDirectory(mainWindow, {
@@ -88,13 +88,13 @@ const listBuckets = async (
       });
     });
   } catch (error) {
-    mainWindow.webContents.send(ERROR_EVENT, error);
-    fakeSuccess(mainWindow);
+    mainWindow.webContents.send(LIST_ERROR_EVENT, error);
+    fakeListBucketsSuccess(mainWindow);
   }
 };
 
 const registerObjectsEvents = (mainWindow) => {
-  ipcMain.on(FETCH_EVENT, async (event, payload) => {
+  ipcMain.on(LIST_FETCH_EVENT, async (event, payload) => {
     await listBuckets(mainWindow, payload);
   });
 };
