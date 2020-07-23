@@ -7,6 +7,7 @@ const registerAddItemsSubscribe = require('./add-items-subscribe');
 const registerAppUpdate = require('./app-update');
 const registerShareUpdate = require('./share');
 const registerBucketSubscribe = require('./bucket');
+const registerBucketsListEvents = require('./buckets-list');
 
 const registerEvents = ({
   app,
@@ -22,6 +23,7 @@ const registerEvents = ({
   registerObjectsEvents(mainWindow);
   registerAddItemsSubscribe(mainWindow);
   registerBucketSubscribe(mainWindow);
+  registerBucketsListEvents(mainWindow);
 
   if (!isDev && process.env.SKIP_AUTOUPDATE !== 'true') {
     registerAppUpdate({ app, mainWindow });

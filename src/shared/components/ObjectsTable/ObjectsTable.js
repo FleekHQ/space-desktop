@@ -15,12 +15,14 @@ import Table, { TableCell, TableRow } from '@ui/Table';
 import useStyles from './styles';
 
 const ObjectsTable = ({
-  heads,
   rows,
-  onDropzoneDrop,
+  heads,
+  bucket,
   renderRow,
   withRowOptions,
   getRedirectUrl,
+  onOutsideClick,
+  onDropzoneDrop,
 }) => {
   const classes = useStyles();
   const history = useHistory();
@@ -67,6 +69,7 @@ const ObjectsTable = ({
     dispatch({
       payload,
       type: UPDATE_OBJECTS,
+      bucket,
     });
   };
 
@@ -96,6 +99,7 @@ const ObjectsTable = ({
     dispatch({
       type: UPDATE_OBJECTS,
       payload: newRows,
+      bucket,
     });
   };
 
@@ -117,24 +121,13 @@ const ObjectsTable = ({
     dispatch({
       type: UPDATE_OBJECTS,
       payload: newRows,
+      bucket,
     });
   };
 
   const handleTableOutsideClick = (event) => {
     if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
-      const detailePanel = document.getElementById('detail-panel');
-      if (detailePanel.contains(event.target)) {
-        return;
-      }
-
-      dispatch({
-        type: UPDATE_OBJECTS,
-        payload: rows.map((_row) => ({
-          ..._row,
-          pivote: false,
-          selected: false,
-        })),
-      });
+      onOutsideClick(event.target);
     }
   };
 
@@ -208,10 +201,12 @@ const ObjectsTable = ({
 ObjectsTable.defaultProps = {
   onDropzoneDrop: null,
   withRowOptions: false,
+  onOutsideClick: () => null,
 };
 
 ObjectsTable.propTypes = {
   onDropzoneDrop: PropTypes.func,
+  onOutsideClick: PropTypes.func,
   rows: PropTypes.arrayOf(PropTypes.object).isRequired,
   heads: PropTypes.arrayOf(PropTypes.shape({
     title: PropTypes.string.isRequired,
@@ -219,6 +214,7 @@ ObjectsTable.propTypes = {
   })).isRequired,
   renderRow: PropTypes.func.isRequired,
   getRedirectUrl: PropTypes.func.isRequired,
+  bucket: PropTypes.string.isRequired,
   withRowOptions: PropTypes.bool,
 };
 

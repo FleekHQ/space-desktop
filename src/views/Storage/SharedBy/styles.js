@@ -2,12 +2,13 @@ import { makeStyles } from '@material-ui/core/styles';
 
 export default makeStyles({
   root: {
+    flex: 1,
+    height: '100%',
     display: 'flex',
     flexDirection: 'column',
-    height: '100%',
-    padding: '6px 0',
+    paddingTop: 6,
   },
-  title: {
-    margin: '11px 18px 1px',
+  breadcrumbs: {
+    margin: '11px 18px',
   },
 });

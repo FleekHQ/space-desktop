@@ -9,23 +9,23 @@ import {
 } from 'react-router-dom';
 
 import Breadcrumbs from './components/Breadcrumbs';
-import BucketsTable from './components/BucketsTable';
-
-import { FileTable } from '../shared/components';
+import { FileTable, HeaderNav } from '../shared/components';
+import SharedByList from './components/SharedByList';
+import useStyles from './styles';
 
 const SharedWithMeView = () => {
   const match = useRouteMatch();
+  const classes = useStyles();
 
   return (
-    <div style={{ marginTop: 30, padding: '0 18px' }}>
-      <Breadcrumbs />
+    <div className={classes.root}>
+      <HeaderNav />
+      <div className={classes.breadcrumbs}>
+        <Breadcrumbs />
+      </div>
       <Switch>
         <Route exact path={match.path}>
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <span><strong>List of Buckets</strong></span>
-            <Link to={`${match.path}/bucket-test/`}>BUCKET-TEST</Link>
-            <BucketsTable />
-          </div>
+          <SharedByList />
         </Route>
         <Route
           path={`${match.path}/:bucket/*`}
@@ -44,18 +44,9 @@ const SharedWithMeView = () => {
         <Route
           path={`${match.path}/:bucket`}
           render={({ match: routeMatch }) => (
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <span><strong>Bucket:&nbsp;</strong>{routeMatch.params.bucket}</span>
-              <span><strong>Prefix:&nbsp;</strong>{routeMatch.params[0]}</span>
-              <Link to={`${routeMatch.url}/my-sub-folder`}>To my-sub-folder</Link>
-              <FileTable
-                bucket={routeMatch.params.bucket}
-                prefix={routeMatch.params[0] || '/'}
-              />
-            </div>
+            <Redirect to={`${routeMatch.url}/`} />
           )}
         />
-        <Redirect to={match.path} />
       </Switch>
     </div>
   );
