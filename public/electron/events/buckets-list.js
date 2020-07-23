@@ -1,11 +1,52 @@
 const { ipcMain } = require('electron');
 
 const spaceClient = require('../space-client');
+const { listDirectory } = require('./objects');
 
 const EVENT_PREFIX = 'buckets-list';
 const FETCH_EVENT = `${EVENT_PREFIX}:fetch`;
 const ERROR_EVENT = `${EVENT_PREFIX}:error`;
 const SUCCESS_EVENT = `${EVENT_PREFIX}:success`;
+
+const fakeSuccess = (mainWindow) => {
+  setTimeout(() => {
+    // mockup data with fake success event
+    const bucketsList = [
+      {
+        name: 'another-bucket',
+        membersList: [{
+          username: 'Username',
+          email: 'username@gmail.com',
+        }],
+      },
+      {
+        name: 'secondary-bucket',
+        membersList: [{
+          username: 'Another user',
+          email: 'anotheruser@gmail.com',
+        }],
+      },
+    ];
+
+    // const bucketsList = Array.from({ length: 20 }, (_, index) => ({
+    //   name: `bucket-${index}`,
+    //   membersList: [{
+    //     username: `Username-${index}`,
+    //     email: 'username@gmail.com',
+    //   }],
+    // }));
+
+    bucketsList.forEach((bucket) => {
+      listDirectory(mainWindow, {
+        bucket: bucket.name,
+        path: '',
+        fetchSubFolders: false,
+      });
+    });
+
+    mainWindow.webContents.send(SUCCESS_EVENT, { bucketsList });
+  }, 2000);
+};
 
 const getBucketData = (bucket) => ({
   key: bucket.getKey(),
@@ -26,19 +67,17 @@ const listBuckets = async (
     const bucketsList = res.getBucketsList().map(getBucketData);
 
     mainWindow.webContents.send(SUCCESS_EVENT, { bucketsList });
+
+    bucketsList.forEach((bucket) => {
+      listDirectory(mainWindow, {
+        bucket: bucket.name,
+        path: '',
+        fetchSubFolders: false,
+      });
+    });
   } catch (error) {
     mainWindow.webContents.send(ERROR_EVENT, error);
-
-    // mockup data with fake success event
-    const bucketsList = Array.from({ length: 20 }, (_, index) => ({
-      name: `bucket-${index}`,
-      membersList: [{
-        username: `Username-${index}`,
-        email: 'username@gmail.com',
-      }],
-    }));
-
-    mainWindow.webContents.send(SUCCESS_EVENT, { bucketsList });
+    fakeSuccess(mainWindow);
   }
 };
 
