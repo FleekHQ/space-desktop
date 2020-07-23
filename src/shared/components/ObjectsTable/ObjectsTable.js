@@ -17,7 +17,6 @@ import useStyles from './styles';
 const ObjectsTable = ({
   rows,
   heads,
-  bucket,
   renderRow,
   withRowOptions,
   getRedirectUrl,
