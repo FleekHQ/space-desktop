@@ -66,16 +66,19 @@ const ShareBox = ({
             ))
           )}
         </div>
-        {showViewAllBtn && (
-          <Button
-            color="primary"
-            onClick={onViewAllClick}
-            fullWidth
-            disableRipple
-            className={classes.viewAllBtn}
-          >
-            {i18n.viewAll}
-          </Button>
+        {(showViewAllBtn || !objectsList.length) && (
+          <Skeleton style={{ margin: 'auto' }}>
+            <Button
+              color="primary"
+              onClick={onViewAllClick}
+              fullWidth
+              disableRipple
+              className={classes.viewAllBtn}
+              disabled={!objectsList.length}
+            >
+              {i18n.viewAll}
+            </Button>
+          </Skeleton>
         )}
       </div>
     </div>
