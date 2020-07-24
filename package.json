@@ -15,7 +15,7 @@
     "test": "node scripts/test.js",
     "download-daemon": "rimraf resources && node scripts/download-daemon.js",
     "lint": "eslint ./ --ext .js --ext .jsx",
-    "electron:dev": "concurrently \"cross-env BROWSER=none DEV_DAEMON=true DAEMON_PATH=~/Documents/space-desktop-deamon/space_Darwin_x86_64 yarn start\" \"wait-on http://localhost:3000 && electron .\"",
+    "electron:dev": "concurrently \"cross-env BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",
     "electron-pack": "electron-builder -c.extraMetadata.main=build/electron-app.js",
     "preelectron-pack": "npm run clean && npm run build",
     "clean": "rimraf build dist",
@@ -23,7 +23,7 @@
     "build-storybook": "build-storybook -s public"
   },
   "dependencies": {
-    "@fleekhq/space-client": "file:.yalc/@fleekhq/space-client",
+    "@fleekhq/space-client": "^0.1.5",
     "@fortawesome/fontawesome-svg-core": "^1.2.28",
     "@fortawesome/free-brands-svg-icons": "^5.13.0",
     "@fortawesome/free-solid-svg-icons": "^5.13.0",
