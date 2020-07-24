@@ -45,8 +45,11 @@ const SharedBy = () => {
 
   const getContent = () => (
     sharedBuckets.length === 0
-      ? <Typography>empty</Typography>
-      : sharedBuckets.map((bucket) => (
+      ? (
+        <Typography color="secondary" className={classes.centerText}>
+          {t('modules.storage.sharedBy.emptyList')}
+        </Typography>
+      ) : sharedBuckets.map((bucket) => (
         <div key={bucket.name} className={classes.itemWrapper}>
           <ShareBox
             user={bucket.membersList[0]}
