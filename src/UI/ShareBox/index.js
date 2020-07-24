@@ -59,7 +59,7 @@ const ShareBox = ({
               <Skeleton key={index} width="100%">
                 <Button className={classes.objectItem}>
                   <span className={classes.iconWrapper}>
-                    <FileIcon />
+                    <FileIcon ext="default" />
                   </span>
                 </Button>
               </Skeleton>
