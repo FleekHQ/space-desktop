@@ -52,7 +52,7 @@ const SharedBy = () => {
       ) : sharedBuckets.map((bucket) => (
         <div key={bucket.name} className={classes.itemWrapper}>
           <ShareBox
-            user={bucket.membersList[0]}
+            usersList={bucket.membersList}
             objectsList={bucket.objects.slice(0, MAX_SHOWN_OBJECTS)}
             showViewAllBtn={bucket.objects.length > MAX_SHOWN_OBJECTS}
             onViewAllClick={() => {
