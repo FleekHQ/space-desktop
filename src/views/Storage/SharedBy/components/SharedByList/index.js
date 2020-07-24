@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import ShareBox from '@ui/ShareBox';
+import ShareBox, { ShareBoxSkeleton } from '@ui/ShareBox';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import Masonry from 'react-masonry-css';
@@ -24,9 +24,10 @@ const SharedBy = () => {
   const classes = useStyles();
   const { t } = useTranslation();
   const history = useHistory();
-  const bucketsList = useSelector((state) => (
-    Object.values(state.storage.buckets)
-  ));
+  const [bucketsList, loading] = useSelector((state) => [
+    Object.values(state.storage.buckets),
+    state.storage.loading,
+  ]);
 
   useEffect(() => {
     fetchBuckets();
@@ -36,6 +37,11 @@ const SharedBy = () => {
     (bucket) => bucket.name !== 'personal',
   );
 
+  const i18n = {
+    subtitle: t('modules.storage.sharedBy.mostRecentShared'),
+    viewAll: t('modules.storage.sharedBy.viewAll'),
+  };
+
   return (
     <div className={classes.root}>
       <Masonry
@@ -43,25 +49,24 @@ const SharedBy = () => {
         className={classes.masonryGrid}
         columnClassName={classes.masonryColumn}
       >
-        {sharedBuckets.map((bucket) => (
-          <div key={bucket.name} className={classes.itemWrapper}>
-            <ShareBox
-              user={bucket.membersList[0]}
-              objectsList={bucket.objects.slice(0, MAX_SHOWN_OBJECTS)}
-              showViewAllBtn={bucket.objects.length > MAX_SHOWN_OBJECTS}
-              onViewAllClick={() => {
-                history.push(`/storage/shared-by/${bucket.name}`);
-              }}
-              onObjectClick={(obj) => {
-                history.push(`/storage/shared-by/${bucket.name}/${obj.name}`);
-              }}
-              i18n={{
-                subtitle: t('modules.storage.sharedBy.mostRecentShared'),
-                viewAll: t('modules.storage.sharedBy.viewAll'),
-              }}
-            />
-          </div>
-        ))}
+        {loading
+          ? Array.from({ length: 5 }, () => <ShareBoxSkeleton i18n={i18n} />)
+          : sharedBuckets.map((bucket) => (
+            <div key={bucket.name} className={classes.itemWrapper}>
+              <ShareBox
+                user={bucket.membersList[0]}
+                objectsList={bucket.objects.slice(0, MAX_SHOWN_OBJECTS)}
+                showViewAllBtn={bucket.objects.length > MAX_SHOWN_OBJECTS}
+                onViewAllClick={() => {
+                  history.push(`/storage/shared-by/${bucket.name}`);
+                }}
+                onObjectClick={(obj) => {
+                  history.push(`/storage/shared-by/${bucket.name}/${obj.name}`);
+                }}
+                i18n={i18n}
+              />
+            </div>
+          ))}
       </Masonry>
     </div>
   );

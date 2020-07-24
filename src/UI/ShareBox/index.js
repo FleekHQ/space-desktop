@@ -1,10 +1,14 @@
+/* eslint-disable no-unreachable */
 import React from 'react';
 import PropTypes from 'prop-types';
+import Skeleton from '@material-ui/lab/Skeleton';
 import Typography from '@ui/Typography';
 import Avatar from '@ui/Avatar';
 import Button from '@material-ui/core/Button';
 import FileIcon from '@ui/FileIcon';
 import useStyles from './styles';
+
+export { default as ShareBoxSkeleton } from './Skeleton';
 
 const ShareBox = ({
   user,
@@ -35,7 +39,7 @@ const ShareBox = ({
           {i18n.subtitle}
         </Typography>
         <div className={classes.objectsList}>
-          {objectsList.map((obj) => (
+          {objectsList.length ? objectsList.map((obj) => (
             <Button
               key={obj.name}
               disableRipple
@@ -50,7 +54,17 @@ const ShareBox = ({
               </span>
               <Typography noWrap>{obj.name}</Typography>
             </Button>
-          ))}
+          )) : (
+            Array.from({ length: 3 }, (_, index) => (
+              <Skeleton key={index} width="100%">
+                <Button className={classes.objectItem}>
+                  <span className={classes.iconWrapper}>
+                    <FileIcon />
+                  </span>
+                </Button>
+              </Skeleton>
+            ))
+          )}
         </div>
         {showViewAllBtn && (
           <Button

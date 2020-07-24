@@ -3,7 +3,7 @@ import { storiesOf } from '@storybook/react';
 import { boolean, object, array } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 
-import ShareBox from './index';
+import ShareBox, { ShareBoxSkeleton } from './index';
 
 const categoryName = 'ShareBox';
 
@@ -38,12 +38,16 @@ storiesOf(categoryName, module).add('ShareBox', () => {
   };
 
   return (
-    <div
-      style={{
-        width: 171,
-      }}
-    >  
-      <ShareBox {...defaultProps} />
+    <div style={{ display: 'flex' }}>
+      <div style={{ width: 171 }}>  
+        <ShareBoxSkeleton i18n={defaultProps.i18n} />
+      </div>
+      <div style={{ width: 171, marginLeft: 20 }}>  
+        <ShareBox {...defaultProps} objectsList={[]} />
+      </div>
+      <div style={{ width: 171, marginLeft: 20 }} >  
+        <ShareBox {...defaultProps} />
+      </div>
     </div>
   );
 });
