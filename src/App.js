@@ -19,7 +19,6 @@ import Auth from './views/Auth';
 import Join from './views/Join';
 import Splash from './views/Splash';
 import Storage from './views/Storage';
-import ModalView from './views/Modal';
 import PrivateRoute from './shared/components/PrivateRoute';
 
 registerEvents();
@@ -48,9 +47,6 @@ const App = () => (
             </PrivateRoute>
             <PrivateRoute path="/storage">
               <Storage />
-            </PrivateRoute>
-            <PrivateRoute path="/modal/:modalKey">
-              <ModalView />
             </PrivateRoute>
             <Redirect to="/storage" />
           </Switch>
