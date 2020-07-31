@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, useLocation } from 'react-router-dom';
+import { /* Link , */ useHistory, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/pro-regular-svg-icons/faSpinner';
@@ -9,7 +9,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 
-import { singup } from '@events';
+import { singup, getPublicKey } from '@events';
 import { SIGNUP_ACTION_TYPES } from '@reducers/auth/signup';
 
 import helper from './helper';
@@ -77,13 +77,24 @@ const SignUp = () => {
   }, [state.success]);
 
   React.useEffect(() => {
-    if (state.loading) {
+    if (state.loading && !state.publicKey) {
+      getPublicKey();
+    } else if (state.publicKey) {
       singup({
-        email: state.tfEmail,
+        publicKey: state.publicKey,
         username: state.tfUsername,
       });
     }
   }, [state.loading]);
+
+  React.useEffect(() => {
+    if (state.publicKey) {
+      singup({
+        publicKey: state.publicKey,
+        username: state.tfUsername,
+      });
+    }
+  }, [state.publicKey]);
 
   return (
     <div className={classes.signupRoot}>
@@ -93,17 +104,6 @@ const SignUp = () => {
           variant="outlined"
           value={state.tfUsername}
           label={t('modules.signup.username')}
-          classes={tfClasses}
-          InputProps={InputProps}
-          InputLabelProps={InputLabelProps}
-          onChange={handleInputChange({ dispatch })}
-        />
-        <TextField
-          id="tfEmail"
-          type="email"
-          variant="outlined"
-          value={state.tfEmail}
-          label={t('modules.signup.email')}
           classes={tfClasses}
           InputProps={InputProps}
           InputLabelProps={InputLabelProps}
@@ -122,19 +122,26 @@ const SignUp = () => {
           {
             state.loading ? (
               <FontAwesomeIcon spin icon={faSpinner} size="lg" />
-            ) : t('modules.signup.explore')
+            ) : t('modules.signup.title')
           }
         </Button>
+        {
+          state.error && (
+            <div className={classes.alert}>
+              <Typography noWrap color="inherit" variant="body2">
+                {t(state.error, { defaultValue: t('modules.signup.errors.generic') })}
+              </Typography>
+            </div>
+          )
+        }
       </form>
-      {
-        state.error && (
-          <div className={classes.alert}>
-            <Typography noWrap color="inherit" variant="body2">
-              {t(state.error, { defaultValue: t('modules.signup.errors.generic') })}
-            </Typography>
-          </div>
-        )
-      }
+      {/* <Typography
+        to="/auth/signin"
+        component={Link}
+        className={classes.link}
+      >
+        {t('modules.signup.link')}<strong>&nbsp;{t('modules.signin.title')}</strong>
+      </Typography> */}
     </div>
   );
 };

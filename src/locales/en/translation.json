@@ -104,10 +104,22 @@
         }
       }
     },
+    "signin": {
+      "title": "Sign In",
+      "withUsername": "Sign In with Username",
+      "withPrivateKey": "Sign In with Private key",
+      "link": "Don't have an account?",
+      "errors": {
+        "generic": "Sorry, there was a problem.",
+        "username": "Sorry, this username is already taken.",
+        "address": "Sorry, the current address is already registered."
+      }
+    },
     "signup": {
-      "explore": "Explore Space",
-      "username": "Username",
+      "title": "Sign Up",
+      "username": "Pick a username",
       "email": "Email (Optional)",
+      "link": "Already have an account?",
       "errors": {
         "generic": "Sorry, there was a problem.",
         "username": "Sorry, this username is already taken.",
@@ -119,6 +131,11 @@
     "message": "<0>{{uploadedNumber}}</0> out of <0>{{totalNumber}}</0> files uploaded",
     "dismiss": "Dismiss",
     "defaultMessage": "Upload in progress..."
+  },
+  "sharingProgressModal": {
+    "message": "Shared <0>{{fileName}}",
+    "inProgress": "Sharing <0>{{fileName}}...",
+    "dismiss": "Close"
   },
   "modals": {
     "sharingModal": {
