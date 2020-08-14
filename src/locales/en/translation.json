@@ -144,6 +144,12 @@
         "address": "Sorry, the current address is already registered."
       }
     },
+    "recoverAccount": {
+      "inputLabel": "Type your paper key",
+      "keyNotFound": "No key found.",
+      "submit": "Import Key",
+      "createAccount": "Don't have an account? <0>Create an account</0>"
+    },
     "shared": {
       "passwordCheck": {
         "title": "Password must have",
