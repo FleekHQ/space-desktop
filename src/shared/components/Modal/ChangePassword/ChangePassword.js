@@ -17,7 +17,6 @@ const ChangePassword = (props) => {
   const classes = useStyles();
   const { t } = useTranslation();
   const [state, setState] = useState({
-    currPassword: '',
     newPassword: '',
     confirmPassword: '',
     error: 'error',
@@ -48,17 +47,7 @@ const ChangePassword = (props) => {
         </div>
         <form onSubmit={onSubmit} className={classes.bodyContainer}>
           <TextField
-            className={classes.row}
-            label={t('modals.changePassword.currPassword')}
-            variant="outlined"
-            type="password"
-            value={state.currPassword}
-            onChange={(event) => setState({
-              ...state,
-              currPassword: event.target.value,
-            })}
-          />
-          <TextField
+            autocomplete="new-password"
             className={classes.row}
             label={t('modals.changePassword.newPassword')}
             variant="outlined"
@@ -70,6 +59,7 @@ const ChangePassword = (props) => {
             })}
           />
           <TextField
+            autocomplete="off"
             className={classes.row}
             label={t('modals.changePassword.confirmPassword')}
             variant="outlined"
