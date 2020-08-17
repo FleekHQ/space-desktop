@@ -73,6 +73,7 @@ const RecoverAccount = () => {
               key: event.target.value,
               error: null,
             })}
+            disabled={state.loading}
           />
         </InputTooltip>
         <Button

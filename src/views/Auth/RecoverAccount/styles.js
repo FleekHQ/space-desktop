@@ -72,5 +72,8 @@ export default makeStyles((theme) => ({
     borderRadius: 3,
     padding: 11,
     color: theme.palette.palette.white,
+    '&.MuiInputBase-root.Mui-disabled': {
+      color: theme.palette.palette.white,
+    },
   },
 }));
