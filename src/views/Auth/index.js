@@ -37,7 +37,7 @@ const Auth = () => {
         <Route path={`${match.path}/recover-account`} exact>
           <RecoverAccount />
         </Route>
-        <Redirect to={`${match.path}/recover-account`} exact />
+        <Redirect to={`${match.path}/signup`} exact />
       </Switch>
     </div>
   );

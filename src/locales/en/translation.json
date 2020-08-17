@@ -147,8 +147,7 @@
     "recoverAccount": {
       "inputLabel": "Type your paper key",
       "keyNotFound": "No key found.",
-      "submit": "Import Key",
-      "createAccount": "Don't have an account? <0>Create an account</0>"
+      "submit": "Import Key"
     },
     "shared": {
       "passwordCheck": {

@@ -44,7 +44,7 @@ const App = () => (
             <PrivateRoute path="/storage">
               <Storage />
             </PrivateRoute>
-            <Redirect to="/auth" />
+            <Redirect to="/storage" />
           </Switch>
         </Router>
       </Box>
