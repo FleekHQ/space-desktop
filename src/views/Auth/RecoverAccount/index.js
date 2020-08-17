@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import { Link, useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/pro-regular-svg-icons/faSpinner';
-import classnames from 'classnames';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
@@ -12,37 +11,43 @@ import InputTooltip from '@ui/InputTooltip';
 import useStyles from './styles';
 
 const RecoverAccount = () => {
-  const classes = useStyles();
   const { t } = useTranslation();
   // eslint-disable-next-line no-unused-vars
   const history = useHistory();
   const [state, setState] = useState({
     key: '',
-    error: t('modules.recoverAccount.keyNotFound'),
+    error: null,
     loading: false,
   });
-
+  const classes = useStyles({ isError: !!state.error });
   const tfClasses = {
-    root: classnames(classes.textFieldRoot, {
-      [classes.textFieldRootError]: !!state.error,
-    }),
+    root: classes.textFieldRoot,
   };
   const InputProps = {
     classes: {
-      root: classes.inputPropsRoot,
-      input: classes.inputPropsInput,
-    },
-  };
-  const InputLabelProps = {
-    classes: {
-      root: classes.inputLabelPropsRoot,
-      shrink: classes.inputLabelPropsShrink,
+      multiline: classes.inputPropsMultiline,
     },
   };
 
+  const onSubmit = (event) => {
+    event.preventDefault();
+    setState({
+      ...state,
+      loading: true,
+    });
+    // pretend sending data to BE
+    setTimeout(() => {
+      setState({
+        ...state,
+        loading: false,
+        error: t('modules.recoverAccount.keyNotFound'),
+      });
+    }, 2000);
+  };
+
   return (
-    <div className={classes.signupRoot}>
-      <form className={classes.form} onSubmit={console.log} autoComplete="off">
+    <div className={classes.root}>
+      <form className={classes.form} onSubmit={onSubmit} autoComplete="off">
         <InputTooltip
           type="danger"
           bgColor="secondary"
@@ -50,10 +55,11 @@ const RecoverAccount = () => {
           tooltip={{
             arrow: true,
             open: !!state.error,
-            placement: 'right-start',
+            placement: 'right',
           }}
         >
           <TextField
+            autoFocus
             multiline
             rows={4}
             fullWidth
@@ -62,10 +68,10 @@ const RecoverAccount = () => {
             label={t('modules.recoverAccount.inputLabel')}
             classes={tfClasses}
             InputProps={InputProps}
-            InputLabelProps={InputLabelProps}
             onChange={(event) => setState({
               ...state,
               key: event.target.value,
+              error: null,
             })}
           />
         </InputTooltip>
