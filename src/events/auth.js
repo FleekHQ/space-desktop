@@ -2,6 +2,8 @@ import { ipcRenderer } from 'electron';
 
 import store from '../store';
 import { SIGNUP_ACTION_TYPES } from '../reducers/auth/signup';
+import { RESTORE_KEYS_MNEMONIC_ACTION_TYPES } from '../reducers/auth/restoreKeysMnemonic';
+import { USER_ACTION_TYPES } from '../reducers/user';
 
 const EVENT_PREFIX = 'auth';
 const SIGNUP_EVENT = `${EVENT_PREFIX}:signup`;
@@ -10,6 +12,9 @@ const SIGNUP_SUCCESS_EVENT = `${EVENT_PREFIX}:signup:success`;
 const CHECK_USERNAME_EVENT = `${EVENT_PREFIX}:check_username`;
 const CHECK_USERNAME_ERROR_EVENT = `${EVENT_PREFIX}:check_username:error`;
 const CHECK_USERNAME_SUCCESS_EVENT = `${EVENT_PREFIX}:check_username:success`;
+const RESTORE_KEYS_MNEMONIC_EVENT = `${EVENT_PREFIX}:restore_keys_mnemonic`;
+const RESTORE_KEYS_MNEMONIC_ERROR_EVENT = `${EVENT_PREFIX}:restore_keys_mnemonic:error`;
+const RESTORE_KEYS_MNEMONIC_SUCCESS_EVENT = `${EVENT_PREFIX}:restore_keys_mnemonic:success`;
 
 const registerAuthEvents = () => {
   /* Signup events */
@@ -27,6 +32,23 @@ const registerAuthEvents = () => {
     store.dispatch({
       type: SIGNUP_ACTION_TYPES.ON_SUBMIT_SUCCESS,
       user: data,
+    });
+  });
+
+  ipcRenderer.on(RESTORE_KEYS_MNEMONIC_ERROR_EVENT, (event, payload) => {
+    store.dispatch({
+      type: RESTORE_KEYS_MNEMONIC_ACTION_TYPES.ON_SUBMIT_ERROR,
+      payload: payload.message,
+    });
+  });
+
+  ipcRenderer.on(RESTORE_KEYS_MNEMONIC_SUCCESS_EVENT, (event, payload) => {
+    store.dispatch({
+      type: USER_ACTION_TYPES.ON_SET_PUBLIC_KEY,
+      payload: {
+        publicKey: payload.publicKey,
+        hubAuthToken: payload.hubAuthToken,
+      },
     });
   });
 
@@ -48,6 +70,10 @@ export const singup = (payload) => {
 
 export const checkUsername = (payload) => {
   ipcRenderer.send(CHECK_USERNAME_EVENT, payload);
+};
+
+export const restoreKeyPairViaMnemonic = (payload) => {
+  ipcRenderer.send(RESTORE_KEYS_MNEMONIC_EVENT, payload);
 };
 
 export default registerAuthEvents;
