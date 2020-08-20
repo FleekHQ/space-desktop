@@ -237,7 +237,8 @@
       },
       "usage": {
         "title": "Usage",
-        "using": "Using <0>{size}</0>",
+        "using": "Using <0>{{size}}</0>",
+        "usingOf": "Using <0>{{size}}</0> of <0>{{maxSize}}</0>",
         "storage": "Storage ({{size}})",
         "transferMonthly": "Transfer - Resets Monthly ({{size}})",
         "local": {

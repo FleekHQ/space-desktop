@@ -22,4 +22,8 @@ export default makeStyles((theme) => ({
   localUsageContainer: {
     marginBottom: 10,
   },
+  usageBarsWrapper: {
+    flexGrow: 1,
+    padding: '25px 0',
+  },
 }));
