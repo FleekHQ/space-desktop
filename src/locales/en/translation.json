@@ -10,6 +10,8 @@
     "done": "Done",
     "cancel": "Cancel",
     "confirm": "Confirm",
+    "on": "on",
+    "off": "off",
     "access": {
       "edit": {
         "title": "Can edit",
@@ -234,7 +236,17 @@
         "title": "Notifications"
       },
       "usage": {
-        "title": "Usage"
+        "title": "Usage",
+        "using": "Using <0>{size}</0>",
+        "storage": "Storage ({{size}})",
+        "transferMonthly": "Transfer - Resets Monthly ({{size}})",
+        "local": {
+          "diagramTitle": "Local Usage"
+        },
+        "backup": {
+          "switchTitle": "Backup Storage is <0>{{value}}</0>",
+          "diagramTitle": "Space Usage ({{size}} included in {{plan}})"
+        }
       },
       "referrals": {
         "title": "Referrals"

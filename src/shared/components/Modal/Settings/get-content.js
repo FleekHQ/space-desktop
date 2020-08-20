@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Security, Account } from './views';
+import { Security, Account, Usage } from './views';
 
 export default (t) => [
   {
@@ -22,7 +22,7 @@ export default (t) => [
   {
     id: 'usage',
     title: t('modals.settings.usage.title'),
-    content: <div>usage</div>,
+    content: <Usage />,
   },
   {
     id: 'referrals',
