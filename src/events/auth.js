@@ -3,7 +3,7 @@ import { ipcRenderer } from 'electron';
 import store from '../store';
 import { SIGNUP_ACTION_TYPES } from '../reducers/auth/signup';
 import { RESTORE_KEYS_MNEMONIC_ACTION_TYPES } from '../reducers/auth/restoreKeysMnemonic';
-import { USER_ACTION_TYPES } from '../reducers/user';
+import { UPDATE_USER } from '../reducers/user';
 
 const EVENT_PREFIX = 'auth';
 const SIGNUP_EVENT = `${EVENT_PREFIX}:signup`;
@@ -44,10 +44,9 @@ const registerAuthEvents = () => {
 
   ipcRenderer.on(RESTORE_KEYS_MNEMONIC_SUCCESS_EVENT, (event, payload) => {
     store.dispatch({
-      type: USER_ACTION_TYPES.ON_SET_PUBLIC_KEY,
-      payload: {
+      type: UPDATE_USER,
+      user: {
         publicKey: payload.publicKey,
-        hubAuthToken: payload.hubAuthToken,
       },
     });
   });
