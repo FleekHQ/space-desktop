@@ -2,8 +2,8 @@ import { combineReducers } from 'redux';
 
 import usageReducer from './usage';
 
-const authReducer = combineReducers({
+const settingsReducer = combineReducers({
   usage: usageReducer,
 });
 
-export default authReducer;
+export default settingsReducer;
