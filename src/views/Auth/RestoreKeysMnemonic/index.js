@@ -16,7 +16,7 @@ const RestoreKeysMnemonic = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const state = useSelector((_state) => _state.auth.restoreKeysMnemonic);
-  const isSuccess = useSelector((_state) => _state.user.publicKey);
+  const isSuccess = useSelector((_state) => !!_state.user);
   const history = useHistory();
   const classes = useStyles({ isError: !!state.error });
   const tfClasses = {

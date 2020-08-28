@@ -69,9 +69,7 @@ const registerAuthEvents = () => {
   ipcRenderer.on(RESTORE_KEYS_MNEMONIC_SUCCESS_EVENT, (event, payload) => {
     store.dispatch({
       type: UPDATE_USER,
-      user: {
-        publicKey: payload.publicKey,
-      },
+      user: payload,
     });
   });
 
