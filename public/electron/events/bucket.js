@@ -43,25 +43,18 @@ const listBuckets = async (
   }
 };
 
-const toggleBucketBackup = async (
-  mainWindow,
-  payload = {},
-) => {
-  try {
-    await spaceClient.toggleBucketBackup(payload);
-    mainWindow.webContents.send(TOGGLE_BUCKET_BACKUP_SUCCESS_EVENT);
-  } catch (error) {
-    mainWindow.webContents.send(TOGGLE_BUCKET_BACKUP_ERROR_EVENT, error);
-  }
-};
-
 const registerObjectsEvents = (mainWindow) => {
   ipcMain.on(LIST_FETCH_EVENT, async (event, payload) => {
     await listBuckets(mainWindow, payload);
   });
 
   ipcMain.on(TOGGLE_BUCKET_BACKUP_EVENT, async (event, payload) => {
-    await toggleBucketBackup(mainWindow, payload);
+    try {
+      await spaceClient.toggleBucketBackup(payload);
+      mainWindow.webContents.send(TOGGLE_BUCKET_BACKUP_SUCCESS_EVENT);
+    } catch (error) {
+      mainWindow.webContents.send(TOGGLE_BUCKET_BACKUP_ERROR_EVENT, error);
+    }
   });
 };
 
