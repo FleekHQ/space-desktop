@@ -69,7 +69,6 @@ export const toggleBucketBackup = (payload) => {
     payload: payload.backup,
     type: TOGGLE_BACKUP,
   });
-  console.log('TOGGLE_BACKUP', payload);
   ipcRenderer.send(TOGGLE_BUCKET_BACKUP_EVENT, payload);
 };
 

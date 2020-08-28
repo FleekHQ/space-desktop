@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { toggleBucketBackup } from '@events';
+import { useTranslation } from 'react-i18next';
+import { toggleBucketBackup, fetchUsageInfo } from '@events';
+import Prompt from '@shared/components/Modal/Prompt';
 import UsageVisual from './components/UsageVisual';
 
 const Usage = () => {
+  const { t } = useTranslation();
+  const [isModalShown, setIsModalShown] = useState(true);
   const state = useSelector((s) => s.settings.usage);
   const setBackupStorage = () => {
     toggleBucketBackup({
@@ -11,25 +15,36 @@ const Usage = () => {
       backup: !state.backup,
     });
   };
-  console.log(state);
+
+  useEffect(() => {
+    fetchUsageInfo();
+  }, []);
+
   return (
-    <UsageVisual
-      backupStorage={state.backup}
-      setBackupStorage={setBackupStorage}
-      isFreePlan
-      planName="Free plan"
-      localUsage={{
-        using: 4634563,
-        storage: 923552,
-        transfer: 3544362,
-      }}
-      backupUsage={{
-        storage: 4456352,
-        transfer: 3544362,
-        using: 43426,
-        maxUsing: 435345634,
-      }}
-    />
+    <>
+      <UsageVisual
+        backupStorage={state.backup}
+        setBackupStorage={setBackupStorage}
+        isFreePlan
+        planName={state.planName}
+        localUsage={state.localUsage}
+        backupUsage={state.backupUsage}
+      />
+      {isModalShown && (
+        <Prompt
+          title={t('modals.settings.usage.confirmModal.title')}
+          message={t('modals.settings.usage.confirmModal.message')}
+          onSubmit={() => console.log('onSubmit')}
+          validate={(value) => value}
+          closeModal={() => setIsModalShown(false)}
+          i18n={{
+            cancel: t('common.cancel'),
+            submit: t('common.confirm'),
+            label: t('modals.settings.usage.confirmModal.label'),
+          }}
+        />
+      )}
+    </>
   );
 };
 
