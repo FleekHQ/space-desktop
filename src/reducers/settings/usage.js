@@ -18,8 +18,8 @@ const defaultState = {
     combinedUsage: 0,
     limit: 0,
   },
-  backup: undefined, // to show optimistic response
-  backupPrevValue: undefined, // if error, revert to old value
+  backupEnabled: undefined, // to show optimistic response
+  backupEnabledPrevValue: undefined, // if error, revert to old value
 };
 
 export default (state = defaultState, action) => {
@@ -48,23 +48,23 @@ export default (state = defaultState, action) => {
     case TOGGLE_BACKUP: {
       return {
         ...state,
-        backupPrevValue: state.backup,
-        backup: action.payload,
+        backupEnabledPrevValue: state.backupEnabled,
+        backupEnabled: action.payload,
       };
     }
 
     case TOGGLE_BACKUP_ERROR: {
       return {
         ...state,
-        backupPrevValue: undefined,
-        backup: state.backupPrevValue,
+        backupEnabledPrevValue: undefined,
+        backupEnabled: state.backupEnabledPrevValue,
       };
     }
 
     case TOGGLE_BACKUP_SUCCESS: {
       return {
         ...state,
-        backupPrevValue: undefined,
+        backupEnabledPrevValue: undefined,
       };
     }
 

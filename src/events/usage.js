@@ -43,7 +43,7 @@ const registerUsageEvents = () => {
   });
 };
 
-export const fetchUsageInfo = () => {
+export const fetchUsageData = () => {
   store.dispatch({
     type: FETCH_USAGE_INFO,
   });
