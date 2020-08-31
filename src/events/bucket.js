@@ -6,11 +6,7 @@ import {
   SET_BUCKETS_LIST_ERROR_STATE,
   SET_BUCKETS_LIST_LOADING_STATE,
 } from '@reducers/storage';
-import {
-  TOGGLE_BACKUP,
-  TOGGLE_BACKUP_SUCCESS,
-  TOGGLE_BACKUP_ERROR,
-} from '@reducers/settings/usage';
+import { USAGE_SETTINGS_ACTION_TYPES } from '@reducers/settings/usage';
 
 import store from '../store';
 
@@ -43,14 +39,14 @@ const registerBucketEvents = () => {
   ipcRenderer.on(TOGGLE_BUCKET_BACKUP_SUCCESS_EVENT, (event, payload) => {
     store.dispatch({
       payload,
-      type: TOGGLE_BACKUP_ERROR,
+      type: USAGE_SETTINGS_ACTION_TYPES.TOGGLE_BACKUP_SUCCESS,
     });
   });
 
-  ipcRenderer.on(TOGGLE_BUCKET_BACKUP_ERROR_EVENT, (event, payload) => {
+  ipcRenderer.on(TOGGLE_BUCKET_BACKUP_ERROR_EVENT, (event, error) => {
     store.dispatch({
-      payload,
-      type: TOGGLE_BACKUP_SUCCESS,
+      payload: error,
+      type: USAGE_SETTINGS_ACTION_TYPES.TOGGLE_BACKUP_ERROR,
     });
   });
 };
@@ -67,7 +63,7 @@ export const fetchBuckets = () => {
 export const toggleBucketBackup = (payload) => {
   store.dispatch({
     payload: payload.backup,
-    type: TOGGLE_BACKUP,
+    type: USAGE_SETTINGS_ACTION_TYPES.TOGGLE_BACKUP,
   });
   ipcRenderer.send(TOGGLE_BUCKET_BACKUP_EVENT, payload);
 };

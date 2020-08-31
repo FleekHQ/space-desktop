@@ -1,9 +1,5 @@
 import { ipcRenderer } from 'electron';
-import {
-  FETCH_USAGE_INFO,
-  FETCH_USAGE_INFO_SUCCESS,
-  FETCH_USAGE_INFO_ERROR,
-} from '@reducers/settings/usage';
+import { USAGE_SETTINGS_ACTION_TYPES } from '@reducers/settings/usage';
 
 import store from '../store';
 
@@ -31,21 +27,21 @@ const registerUsageEvents = () => {
 
     store.dispatch({
       payload: data,
-      type: FETCH_USAGE_INFO_SUCCESS,
+      type: USAGE_SETTINGS_ACTION_TYPES.FETCH_USAGE_INFO_SUCCESS,
     });
   });
 
   ipcRenderer.on(FETCH_USAGE_ERROR_EVENT, (event, payload) => {
     store.dispatch({
       payload,
-      type: FETCH_USAGE_INFO_ERROR,
+      type: USAGE_SETTINGS_ACTION_TYPES.FETCH_USAGE_INFO_ERROR,
     });
   });
 };
 
 export const fetchUsageData = () => {
   store.dispatch({
-    type: FETCH_USAGE_INFO,
+    type: USAGE_SETTINGS_ACTION_TYPES.FETCH_USAGE_INFO,
   });
 
   ipcRenderer.send(FETCH_USAGE_EVENT);
