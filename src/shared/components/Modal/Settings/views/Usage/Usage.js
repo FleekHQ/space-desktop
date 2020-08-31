@@ -17,12 +17,14 @@ const Usage = () => {
   };
 
   const onConfirmBackupTurnOff = (password) => {
-    console.log(password);
-    toggleBucketBackup({
-      bucket: 'personal',
-      backup: !state.backupEnabled,
-      password, // this field is not supported at this moment
-    });
+    if (password) {
+      // TODO: validate password
+      toggleBucketBackup({
+        bucket: 'personal',
+        backup: !state.backupEnabled,
+      });
+      setIsModalShown(false);
+    }
   };
 
   const onChangeBackup = () => {
@@ -53,12 +55,15 @@ const Usage = () => {
           message={t('modals.settings.usage.confirmModal.message')}
           // eslint-disable-next-line no-console
           onSubmit={onConfirmBackupTurnOff}
-          validate={(value) => value}
+          validate={(value) => !value && t('modals.settings.usage.confirmModal.error.requiredPassword')}
           closeModal={() => setIsModalShown(false)}
           i18n={{
             cancel: t('common.cancel'),
             submit: t('common.confirm'),
             label: t('modals.settings.usage.confirmModal.label'),
+          }}
+          textFieldProps={{
+            type: 'password',
           }}
         />
       )}

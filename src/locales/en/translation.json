@@ -269,7 +269,10 @@
         "confirmModal": {
           "title": "Turn Backup Storage Off",
           "message": "Turning off backup storage will delete your backed up files. This is non reversible. If you would like to continue please enter your password.",
-          "label": "Enter Password"
+          "label": "Enter Password",
+          "error": {
+            "requiredPassword": "Password is required."
+          }
         },
         "info": {
           "upgrade": {
