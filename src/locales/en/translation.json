@@ -236,7 +236,8 @@
         "editDisplayName": "Edit Display Name",
         "displayNameLable": "Display Name",
         "editUsername": "Edit Username",
-        "usernameLabel": "Username"
+        "usernameLabel": "Username",
+        "fetchingError": "We had an issue loading your information, please try again."
       },
       "security": {
         "title": "Security",

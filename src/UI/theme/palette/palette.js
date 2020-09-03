@@ -21,6 +21,7 @@ const blue3 = '#79b3ff';
 const blue4 = '#b2d3ff';
 const blue5 = '#e9e8f9';
 const blue6 = '#0771ff';
+const redLight = '#f8dedf';
 const red = '#ef6a6e';
 const yellow = '#FFD700';
 const green = '#00a83e';
@@ -53,6 +54,7 @@ const palette = {
   blue4,
   blue5,
   blue6,
+  redLight,
   red,
   yellow,
   green,
