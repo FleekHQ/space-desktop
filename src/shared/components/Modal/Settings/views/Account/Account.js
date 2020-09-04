@@ -9,8 +9,6 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 import Avatar from '@ui/Avatar';
 import ErrorCard from '@ui/ErrorCard';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExclamationCircle } from '@fortawesome/pro-regular-svg-icons/faExclamationCircle';
 import getHandlers from './get-handlers';
 import useStyles from './styles';
 import {
@@ -40,7 +38,6 @@ const Account = ({
     avatarUrl,
     uploadingAvatar,
     displayName = '',
-    fetchingIdentityError,
   } = user;
 
   const {
@@ -168,14 +165,6 @@ const Account = ({
           <ErrorCard message={account.error} />
         )
       }
-      {fetchingIdentityError && (
-        <div className={classes.error}>
-          <FontAwesomeIcon icon={faExclamationCircle} className={classes.errorIcon} />
-          <Typography variant="body2">
-            {t('modals.settings.account.fetchingError')}
-          </Typography>
-        </div>
-      )}
     </div>
   );
 };

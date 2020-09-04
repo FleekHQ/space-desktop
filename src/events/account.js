@@ -36,7 +36,7 @@ const registerAccountEvents = () => {
   /* eslint-disable no-console */
   ipcRenderer.on(UPDATE_IDENTITY_ERROR_EVENT, (event, error) => {
     store.dispatch({
-      payload: error,
+      payload: error.message,
       type: USER_ACTION_TYPES.FETCHING_IDENTITY_ERROR,
     });
   });

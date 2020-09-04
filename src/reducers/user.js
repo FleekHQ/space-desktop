@@ -1,5 +1,5 @@
 import electronStore from '@electron-store';
-import omit from 'lodash/omit';
+
 import { SIGNIN_ACTION_TYPES } from './auth/signin';
 import { SIGNUP_ACTION_TYPES } from './auth/signup';
 import { RESTORE_KEYS_MNEMONIC_ACTION_TYPES } from './auth/restore-keys-mnemonic';
@@ -24,10 +24,9 @@ try {
 }
 
 const writeUser = (state, userInfo) => {
-  const dataToStore = omit(state, ['fetchingIdentityError', 'uploadingAvatar']);
   const newUserState = {
     username: '',
-    ...(dataToStore),
+    ...(state),
     ...userInfo,
   };
 
@@ -72,13 +71,6 @@ export default (state = user, action) => {
         ...action.user,
         uploadingAvatar: false,
       });
-    }
-
-    case USER_ACTION_TYPES.FETCHING_IDENTITY_ERROR: {
-      return {
-        ...state,
-        fetchingIdentityError: action.payload,
-      };
     }
 
     default: {
