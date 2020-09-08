@@ -21,9 +21,9 @@ const registerAddItemsSubscribeEvents = () => {
     });
   });
 
-  ipcRenderer.on(SUBSCRIBE_ERROR_EVENT, (event, error) => {
+  ipcRenderer.on(SUBSCRIBE_ERROR_EVENT, (event, payload) => {
     store.dispatch({
-      payload: error,
+      payload,
       type: SET_UPLOAD_ERROR_STATE,
     });
   });

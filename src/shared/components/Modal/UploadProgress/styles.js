@@ -21,19 +21,12 @@ export default makeStyles((theme) => ({
       display: 'block',
       width: ({ progress }) => `${progress * 100}%`,
       height: '100%',
-      backgroundColor: ({ error }) => (
-        error ? theme.palette.palette.red : theme.palette.palette.blue1
-      ),
+      backgroundColor: theme.palette.palette.blue1,
       transition: 'width ease-out 0.5s',
     },
   },
   button: {
     padding: 0,
     fontSize: 12,
-  },
-  message: {
-    color: ({ error }) => (
-      error ? theme.palette.palette.red : theme.palette.text.primary
-    ),
   },
 }));
