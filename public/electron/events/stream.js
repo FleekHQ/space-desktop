@@ -1,24 +1,45 @@
-const client = require('../client');
+const { spaceClient } = require('../clients');
 
 const EVENT_PREFIX = 'eventStream';
 
 const registerEventStream = (mainWindow) => {
-  const eventStream = client.Subscribe();
+  const eventStream = spaceClient.subscribe();
 
   eventStream.on('data', (event) => {
     // TODO: Check with BE event to update files on FE
     // mainWindow.webContents.send(`${EVENT_PREFIX}:data`, event);
 
-    if (event.type && event.entry) {
+    const type = event.getType().toString();
+    const entry = event.getEntry();
+
+    if (type && entry) {
       mainWindow.webContents.send(
         `${EVENT_PREFIX}:${event.type}`,
-        event.entry,
+        {
+          path: entry.getPath(),
+          name: entry.getName(),
+          isDir: entry.getIsdir(),
+          created: entry.getCreated(),
+          updated: entry.getUpdated(),
+          ipfsHash: entry.getIpfshash(),
+          sizeInBytes: entry.getSizeinbytes(),
+          fileExtension: entry.getFileextension(),
+          bucket: 'personal',
+          isLocallyAvailable: entry.getIslocallyavailable(),
+          backupCount: entry.getBackupcount(),
+          members: entry.getMembersList(),
+        },
       );
     }
   });
 
   eventStream.on('error', (error) => {
-    mainWindow.webContents.send(`${EVENT_PREFIX}:error`, error);
+    try {
+      mainWindow.webContents.send(`${EVENT_PREFIX}:error`, error);
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error(err);
+    }
   });
 
   return eventStream;

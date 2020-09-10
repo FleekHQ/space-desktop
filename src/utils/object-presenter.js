@@ -2,7 +2,8 @@ import get from 'lodash/get';
 
 import formatBytes from './format-bytes';
 
-const objectPresenter = (obj = {}, bucket = '') => {
+const objectPresenter = (obj = {}) => {
+  const bucket = get(obj, 'bucket', '') || '';
   const key = get(obj, 'path', '');
 
   const isFolder = get(obj, 'isDir', false);
@@ -17,20 +18,32 @@ const objectPresenter = (obj = {}, bucket = '') => {
   const size = parseInt(get(obj, 'sizeInBytes', 0), 10);
   const bytesSize = formatBytes(size);
 
+  const members = get(obj, 'members', []);
+  const backupCount = get(obj, 'backupCount', 0);
+  const isLocallyAvailable = get(obj, 'isLocallyAvailable', false);
+  const sourceBucket = get(obj, 'sourceBucket');
+  const dbId = get(obj, 'dbId');
+
   return {
     key,
     ext,
+    dbId,
     type,
     name,
     size,
     bucket,
+    members,
     created,
     bytesSize,
     lastModified,
+    isLocallyAvailable,
     selected: false,
     id: `${bucket}/${key}`,
     fullKey: `${bucket}/${key}`,
     ipfsHash: get(obj, 'ipfsHash'),
+    isAvailableInSpace: backupCount > 0,
+    sourceBucket: sourceBucket || bucket,
+    shareAmount: members.length,
   };
 };
 

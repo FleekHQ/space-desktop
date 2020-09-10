@@ -1,6 +1,6 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { text, number } from '@storybook/addon-knobs';
+import { text, number, boolean } from '@storybook/addon-knobs';
 
 import Avatar from './index';
 
@@ -9,8 +9,10 @@ const categoryName = 'Avatar';
 storiesOf(categoryName, module).add('Avatar', () => {
 
   const defaultProps = {
-    size: number('size', 80),
+    size: number('size', 50),
     imgUrl: text('imgUrl', null),
+    active: boolean('active', false),
+    isLoading: boolean('isLoading', false),
     username: text('username', 'someuser'),
   };
 

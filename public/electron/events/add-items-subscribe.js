@@ -1,7 +1,7 @@
 const { ipcMain } = require('electron');
 
-const client = require('../client');
-const { listDirectories } = require('./objects');
+const { spaceClient } = require('../clients');
+const { listDirectory } = require('./objects');
 
 const EVENT_PREFIX = 'addItemsSubscribe';
 const SUBSCRIBE_START_EVENT = `${EVENT_PREFIX}:start`;
@@ -12,17 +12,42 @@ const registerAddItemsSubscribe = (mainWindow) => {
   let eventStream;
 
   ipcMain.on(SUBSCRIBE_START_EVENT, (_, { id, payload }) => {
-    eventStream = client.AddItems(payload);
+    eventStream = spaceClient.addItems(payload);
 
-    eventStream.on('data', (event) => {
+    eventStream.on('data', async (event) => {
+      const result = event.getResult();
+
       mainWindow.webContents.send(
         SUBSCRIBE_SUCCESS_EVENT,
-        { id, payload: event },
+        {
+          id,
+          payload: {
+            result: {
+              sourcePath: result.getSourcepath(),
+              bucketPath: result.getBucketpath(),
+              error: result.getError(),
+            },
+            totalBytes: event.getTotalbytes(),
+            totalFiles: event.getTotalfiles(),
+            completedFiles: event.getCompletedfiles(),
+            completedBytes: event.getCompletedbytes(),
+          },
+        },
       );
-      listDirectories(mainWindow);
+
+      const listDirPayload = {
+        path: payload.targetPath,
+        fetchSubFolders: true,
+        ...(payload.bucket && { bucket: payload.bucket }),
+      };
+
+      await listDirectory(mainWindow, listDirPayload);
     });
 
     eventStream.on('error', (error) => {
+      // eslint-disable-next-line no-console
+      console.log('Error received in add item stream: ', error.message);
+
       mainWindow.webContents.send(
         SUBSCRIBE_ERROR_EVENT,
         { id, payload: error },
@@ -30,7 +55,8 @@ const registerAddItemsSubscribe = (mainWindow) => {
     });
 
     eventStream.on('end', () => {
-      eventStream.destroy();
+      // eslint-disable-next-line no-console
+      console.log('Add item steam ended');
     });
   });
 };

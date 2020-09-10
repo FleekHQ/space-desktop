@@ -5,7 +5,7 @@ import createFleekTheme from '@ui/theme';
 import DragableBar from '@shared/components/DragableBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { ThemeProvider } from '@material-ui/core/styles';
-import registerEvents, { fetchConfigInfo } from '@events';
+import registerEvents from '@events';
 
 import {
   Route,
@@ -18,11 +18,9 @@ import store from './store';
 import Auth from './views/Auth';
 import Splash from './views/Splash';
 import Storage from './views/Storage';
-import ModalView from './views/Modal';
 import PrivateRoute from './shared/components/PrivateRoute';
 
 registerEvents();
-fetchConfigInfo();
 
 const theme = createFleekTheme();
 
@@ -45,9 +43,6 @@ const App = () => (
             </Route>
             <PrivateRoute path="/storage">
               <Storage />
-            </PrivateRoute>
-            <PrivateRoute path="/modal/:modalKey">
-              <ModalView />
             </PrivateRoute>
             <Redirect to="/storage" />
           </Switch>

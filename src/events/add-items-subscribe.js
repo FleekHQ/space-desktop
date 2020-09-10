@@ -1,9 +1,11 @@
 import { ipcRenderer } from 'electron';
 import {
-  SET_UPLOAD_SUCCESS_STATE, SET_UPLOAD_ERROR_STATE,
+  SET_UPLOAD_SUCCESS_STATE,
+  SET_UPLOAD_ERROR_STATE,
+  INIT_UPLOAD_STATE,
 } from '@reducers/storage';
 import {
-  openModal, UPLOAD_PROGRESS_MODAL,
+  openModal, UPLOAD_PROGRESS_TOAST,
 } from '@shared/components/Modal/actions';
 
 import store from '../store';
@@ -21,16 +23,24 @@ const registerAddItemsSubscribeEvents = () => {
     });
   });
 
-  ipcRenderer.on(SUBSCRIBE_ERROR_EVENT, (event, payload) => {
+  ipcRenderer.on(SUBSCRIBE_ERROR_EVENT, (event, error) => {
     store.dispatch({
-      payload,
+      payload: error,
       type: SET_UPLOAD_ERROR_STATE,
     });
   });
 };
 
 export const addItems = (payload) => {
-  const modalId = store.dispatch(openModal(UPLOAD_PROGRESS_MODAL));
+  const modalId = store.dispatch(openModal(UPLOAD_PROGRESS_TOAST));
+  store.dispatch({
+    type: INIT_UPLOAD_STATE,
+    payload: {
+      id: modalId,
+      sourcePaths: payload.sourcePaths,
+      targetPath: payload.targetPath,
+    },
+  });
   ipcRenderer.send(SUBSCRIBE_START_EVENT, { id: modalId, payload });
 };
 

@@ -5,7 +5,15 @@ export const OPEN_MODAL = 'OPEN_MODAL';
 export const CLOSE_MODAL = 'CLOSE_MODAL';
 
 /* Modal Ids */
-export const UPLOAD_PROGRESS_MODAL = 'UPLOAD_PROGRESS_MODAL';
+export const UPLOAD_PROGRESS_TOAST = 'UPLOAD_PROGRESS_TOAST';
+export const SHARE_PROGRESS_TOAST = 'SHARE_PROGRESS_TOAST';
+export const SETTINGS_MODAL = 'SETTINGS_MODAL';
+export const SHARING_MODAL = 'SHARING_MODAL';
+export const PROMPT_MODAL = 'PROMPT_MODAL';
+export const CREATE_FOLDER = 'CREATE_FOLDER';
+export const DELETE_ACCOUNT = 'DELETE_ACCOUNT';
+export const SIGNOUT_CONFIRMATION = 'SIGNOUT_CONFIRMATION';
+export const ERROR_MODAL_TOAST = 'ERROR_MODAL_TOAST';
 
 /* Action creators */
 export const openModal = (modalType, props = {}) => (dispatch) => {
