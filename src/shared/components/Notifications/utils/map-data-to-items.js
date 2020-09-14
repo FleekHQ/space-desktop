@@ -8,7 +8,7 @@ export const USAGEALERT = 'USAGEALERT';
 export const SHARE_INVITE = 'share-invite';
 export const BACKUP_LIMIT = 'backup-limit';
 
-const getHighlighted = (item, lastSeenAt) => (item.createdAt > lastSeenAt);
+const getHighlighted = (item, lastSeenAt) => (item.createdAt * 1000 > lastSeenAt);
 
 const mapBackupLimitItem = (item, lastSeenAt) => {
   const { PUBLIC_URL } = process.env;
@@ -34,15 +34,15 @@ const mapBackupLimitItem = (item, lastSeenAt) => {
   });
 };
 
-const mapInvitationItem = (item, lastSeenAt, Trans, t, classes) => {
+const mapInvitationItem = (item, lastSeenAt, Trans, t, classes, identities) => {
   const {
     id,
-    subject,
     createdAt,
     invitationValue:
     {
       itemPaths,
       status,
+      inviterPublicKey,
     },
   } = item;
   const file = itemPaths[0].path;
@@ -76,7 +76,8 @@ const mapInvitationItem = (item, lastSeenAt, Trans, t, classes) => {
   return ({
     id,
     type: SHARE_INVITE,
-    username: subject,
+    username: identities[inviterPublicKey] && identities[inviterPublicKey].username,
+    imgUrl: identities[inviterPublicKey] && identities[inviterPublicKey].avatarUrl,
     timestamp: createdAt,
     description: getDescription(),
     files: itemPaths.map((itemPath) => {
@@ -95,17 +96,23 @@ const mapInvitationItem = (item, lastSeenAt, Trans, t, classes) => {
   });
 };
 
-const mapDataToItems = (data, Trans, t, classes) => {
+const mapDataToItems = (data, Trans, t, classes, identities) => {
   const { data: { notifications, lastSeenAt } } = data;
 
   const mappedData = notifications.reduce((arr, item) => {
-    const { type } = item;
+    const { type, relatedObject } = item;
+
+    //  a bug occured on the backend
+    if (relatedObject === 0) {
+      return arr;
+    }
+
     if (type === USAGEALERT) {
       return arr.concat(mapBackupLimitItem(item, lastSeenAt));
     }
 
     if (type === INVITATION) {
-      return arr.concat(mapInvitationItem(item, lastSeenAt, Trans, t, classes));
+      return arr.concat(mapInvitationItem(item, lastSeenAt, Trans, t, classes, identities));
     }
 
     return arr;

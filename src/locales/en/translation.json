@@ -120,6 +120,10 @@
           "lastModified": "Last Modified",
           "size": "Size",
           "tooltip": "The first icon is blue if the file is in local storage. The second is green if the file is in space storage. The last icon shows the amount of users the file has been shared with."
+        },
+        "error": {
+          "message": "We had an issue loading your files, please try refreshing.",
+          "buttonText": "Refresh Files"
         }
       },
       "sharedBy": {
@@ -191,7 +195,8 @@
     "retry": "Try again"
   },
   "errorModal": {
-    "usersNotFound": "Some usernames that you are trying to share with doesn't exists: <0>{{usernames}}</0>"
+    "usersNotFound": "Some usernames that you are trying to share with doesn't exists: <0>{{usernames}}</0>",
+    "handleInvitationFailed": "Failed to accept or reject file sharing invitation"
   },
   "sharingProgressModal": {
     "message": "Shared <0>{{fileName}}",
