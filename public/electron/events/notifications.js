@@ -2,6 +2,7 @@ const { ipcMain } = require('electron');
 
 const { spaceClient } = require('../clients');
 const { mapNotification } = require('../utils');
+const { listSharedFiles } = require('./objects');
 
 const EVENT_PREFIX = 'notifications';
 const READ_NOTIFICATION_EVENT = `${EVENT_PREFIX}:readNotification`;
@@ -34,6 +35,7 @@ const registerNotificationsEvents = (mainWindow) => {
 
       mainWindow.webContents.send(FETCH_NOTIFICATIONS_SUCCESS, {
         nextOffset: res.getNextoffset(),
+        lastSeenAt: res.getLastseenat(),
         notifications: res.getNotificationsList().map(
           (notification) => mapNotification(notification),
         ),
@@ -46,6 +48,7 @@ const registerNotificationsEvents = (mainWindow) => {
   ipcMain.on(HANDLE_FILES_INVITATION, async (event, payload) => {
     try {
       await spaceClient.handleFilesInvitation(payload);
+      await listSharedFiles(mainWindow);
 
       mainWindow.webContents.send(HANDLE_FILES_INVITATION_SUCCESS, payload);
     } catch (err) {
