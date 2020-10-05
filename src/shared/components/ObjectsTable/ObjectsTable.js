@@ -200,7 +200,7 @@ const ObjectsTable = ({
             )}
           />
         </div>
-        {!rows.length && <EmptyState />}
+        {!loading && !rows.length && <EmptyState />}
       </Dropzone>
       {error && (
       <div className={classes.errorCardContainer}>
