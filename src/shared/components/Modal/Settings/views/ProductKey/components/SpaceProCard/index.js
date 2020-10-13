@@ -1,5 +1,4 @@
 import React from 'react';
-import { shell } from 'electron';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -18,8 +17,8 @@ const formatter = new Intl.NumberFormat('en-US', {
 });
 
 const SpaceProCard = ({
-  username,
   activated,
+  onGetSpacePro,
 }) => {
   const classes = useStyles();
   const { t } = useTranslation();
@@ -90,7 +89,7 @@ const SpaceProCard = ({
                   classes={{
                     root: classes.btnRoot,
                   }}
-                  onClick={() => shell.openExternal(`https://square-truth-2906.on.fleek.co/#/checkout?username=${username}`)}
+                  onClick={onGetSpacePro}
                 >
                   {t('modals.settings.productKey.form.submit')}
                 </Button>
@@ -109,7 +108,7 @@ SpaceProCard.defaultProps = {
 
 SpaceProCard.propTypes = {
   activated: PropTypes.bool,
-  username: PropTypes.string.isRequired,
+  onGetSpacePro: PropTypes.func.isRequired,
 };
 
 export default SpaceProCard;
