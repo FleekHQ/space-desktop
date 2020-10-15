@@ -5,8 +5,9 @@ export default makeStyles((theme) => ({
     borderRadius: 6,
     padding: 4,
     // eslint-disable-next-line max-len
-    background: 'linear-gradient(134deg, #ed55eb 18%, #17e0d8 42%, #00ffc2 59%, #ffec06 81%)',
-    marginBottom: 11,
+    background: 'transparent linear-gradient(111deg, #ED55EB 0%, #17E0D8 37%, #00FFC2 64%, #FFEC06 100%) 0% 0% no-repeat padding-box',
+    boxShadow: '0px 3px 6px #00000029',
+    marginBottom: 15,
   },
   contentWrapper: {
     display: 'flex',

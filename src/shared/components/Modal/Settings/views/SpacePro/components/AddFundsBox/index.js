@@ -38,9 +38,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const AddFundsBox = ({
-  message,
   severity,
-  tooltipMessage,
   onAddFunds,
 }) => {
   const classes = useStyles();
@@ -59,32 +57,28 @@ const AddFundsBox = ({
           <FontAwesomeIcon icon={faExclamationTriangle} />
           <Box mx="3px">
             <Typography>
-              {message}
+              {t(`modals.settings.productKey.addFundsMessage.${severity}`)}
             </Typography>
           </Box>
-          {
-            tooltipMessage && tooltipMessage.length > 0 && (
-              <Tooltip
-                placement="bottom-end"
-                classes={{
-                  popper: classes.popperRoot,
-                  tooltip: classes.tooltipRoot,
-                }}
-                title={<Typography>{tooltipMessage}</Typography>}
-              >
-                <IconButton
-                  disableRipple
-                  disableFocusRipple
-                  aria-label="balance-info"
-                  classes={{
-                    root: classes.iconBtnRoot,
-                  }}
-                >
-                  <FontAwesomeIcon icon={faInfoCircle} />
-                </IconButton>
-              </Tooltip>
-            )
-          }
+          <Tooltip
+            placement="bottom-end"
+            classes={{
+              popper: classes.popperRoot,
+              tooltip: classes.tooltipRoot,
+            }}
+            title={<Typography>{t(`modals.settings.productKey.addFundsTooltip.${severity}`)}</Typography>}
+          >
+            <IconButton
+              disableRipple
+              disableFocusRipple
+              aria-label="balance-info"
+              classes={{
+                root: classes.iconBtnRoot,
+              }}
+            >
+              <FontAwesomeIcon icon={faInfoCircle} />
+            </IconButton>
+          </Tooltip>
         </Box>
         <Button
           variant="contained"
@@ -101,9 +95,7 @@ const AddFundsBox = ({
 };
 
 AddFundsBox.propTypes = {
-  message: PropTypes.string.isRequired,
   severity: PropTypes.string.isRequired,
-  tooltipMessage: PropTypes.string.isRequired,
   onAddFunds: PropTypes.func.isRequired,
 };
 

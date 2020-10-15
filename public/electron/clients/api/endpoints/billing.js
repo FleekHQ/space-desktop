@@ -1,4 +1,4 @@
-const DEFAULT_PATH = '/wallet';
+const DEFAULT_PATH = '/account';
 
 /**
  * @typedef {Object} PlanInfo
@@ -13,19 +13,17 @@ const DEFAULT_PATH = '/wallet';
  * @param {string} payload.token
  * @returns {import('axios').AxiosResponse<PlanInfo>}
  */
-function claim(payload) {
+function getAccount(payload) {
   return this.instance({
-    method: 'post',
-    url: `${DEFAULT_PATH}/claim`,
+    method: 'get',
+    url: DEFAULT_PATH,
+    baseURL: process.env.SPACE_BILLING_SERVICE_URL,
     headers: {
       Authorization: payload.token,
-    },
-    data: {
-      key: payload.key,
     },
   });
 }
 
 module.exports = {
-  claim,
+  getAccount,
 };

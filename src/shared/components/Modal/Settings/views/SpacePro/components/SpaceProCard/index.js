@@ -61,23 +61,23 @@ const SpaceProCard = ({
           !activated && (
             <>
               <Box mt="14px">
-                <Typography className={classes.message}>
-                  <Box fontWeight={600} fontSize="22px" component="span">
+                <Typography>
+                  <Box fontWeight={600} fontSize="38px" component="span">
                     {formatter.format(11)}
                   </Box>
-                  <Box fontWeight={500} fontSize="15px" component="span">
+                  <Box fontWeight={500} fontSize="18px" component="span">
                     {t('modals.settings.productKey.form.price.per')}
                   </Box>
                 </Typography>
               </Box>
               <Box mt="11px">
-                <Typography className={classes.message}>
-                  <Box fontSize="14px" component="span">
+                <Typography>
+                  <Box fontSize="14px" component="span" color="#5A5A5A">
                     {t('modals.settings.productKey.form.price.usage')}
                   </Box>
                 </Typography>
-                <Typography className={classes.message}>
-                  <Box color="#8f8f8f" fontSize="10px" component="span">
+                <Typography>
+                  <Box color="#5A5A5A" fontSize="10px" component="span">
                     {t('modals.settings.productKey.form.price.extra')}
                   </Box>
                 </Typography>

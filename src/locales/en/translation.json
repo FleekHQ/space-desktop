@@ -330,6 +330,16 @@
       "productKey": {
         "title": "Space Pro",
         "addFunds": "Add Funds",
+        "addFundsMessage": {
+          "danger": "Balance is dangerously low. Refill now to avoid losing files.",
+          "success": "Balance is dangerously low. Refill now to avoid losing files.",
+          "warning": "Balance is dangerously low. Refill now to avoid losing files."
+        },
+        "addFundsTooltip": {
+          "danger": "If you don't add funds to your balance to cover your next monthly bill, your files will be removed from Space 14 days after your next billing date. Please add funds now to avoid any disruption in service and potentially losing your files.",
+          "success": "If you don't add funds to your balance to cover your next monthly bill, your files will be removed from Space 14 days after your next billing date. Please add funds now to avoid any disruption in service and potentially losing your files.",
+          "warning": "If you don't add funds to your balance to cover your next monthly bill, your files will be removed from Space 14 days after your next billing date. Please add funds now to avoid any disruption in service and potentially losing your files."
+        },
         "form": {
           "activated": "Space Pro Activated",
           "noactivated": "Upgrade to Space Pro",
@@ -339,8 +349,8 @@
           "submit": "Get Space Pro",
           "price": {
             "per": "/month",
-            "extra": "$0.10 per extra GB",
-            "usage": "100 GB of Storage & Bandwidth"
+            "extra": "$0.10 per extra GB per month",
+            "usage": "Includes 100 GB of Storage & Bandwidth"
           }
         },
         "messageBox": {
@@ -354,7 +364,7 @@
           "paymentType": "Payment Type: <bold>{{paymentType}}</bold>",
           "crypto": "Cryptocurrency",
           "creditCard": "Credit Card",
-          "nextBill": "Next Bill: <bold>{{billDate}}</bold> for <bold>${{price}}</bold>",
+          "nextBill": "Next Bill: <bold>{{billDate}}</bold>",
           "creditBalance": "Credit Balance",
           "replenishBalance": "Replenish your balance",
           "balanceLow": "Your balance is getting low, add more credits to your account to continue backing up your files.",
@@ -365,7 +375,11 @@
             "balance": "Balance",
             "addFunds": "Add Funds",
             "timeRemaining": "Time Remaining:",
-            "tooltipMessage": "Current balance can cover the next {{timeRemaining}} (estimate) based on your last bill. Exact amount is subject to change based on your Space storage & bandwidth usage."
+            "tooltipMessage": {
+              "danger": "Current balance can cover the next {{timeRemaining}} (estimate) based on your last bill. Exact amount is subject to change based on your Space storage & bandwidth usage.",
+              "success": "Current balance can cover the next {{timeRemaining}} (estimate) based on your last bill. Exact amount is subject to change based on your Space storage & bandwidth usage.",
+              "warning": "Current balance can cover the next {{timeRemaining}} (estimate) based on your last bill. Exact amount is subject to change based on your Space storage & bandwidth usage."
+            }
           }
         }
       }

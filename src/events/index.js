@@ -13,7 +13,7 @@ import registerFolderEvents from './folder';
 import registerIdentitiesEvents from './identities';
 import registerUsageEvents from './usage';
 import registerNotificationSubscribe from './notifications-subscribe';
-import walletSubscribe from './wallet';
+import registerBillingEvents from './billing';
 
 const registerEvents = () => {
   registerShortcuts();
@@ -31,7 +31,7 @@ const registerEvents = () => {
   registerIdentitiesEvents();
   registerUsageEvents();
   registerNotificationSubscribe();
-  walletSubscribe();
+  registerBillingEvents();
 };
 
 export default registerEvents;
@@ -46,4 +46,4 @@ export * from './account';
 export * from './folder';
 export * from './identities';
 export * from './usage';
-export * from './wallet';
+export * from './billing';
