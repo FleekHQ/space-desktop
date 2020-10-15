@@ -18,7 +18,6 @@ const registerWalletEvents = (mainWindow) => {
 
       mainWindow.webContents.send(GET_ACCOUNT_SUCCESS_EVENT, data);
     } catch (error) {
-      console.log('error', error);
       mainWindow.webContents.send(GET_ACCOUNT_ERROR_EVENT, {
         message: error.message,
       });
