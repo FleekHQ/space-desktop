@@ -332,8 +332,7 @@
         "addFunds": "Add Funds",
         "addFundsMessage": {
           "danger": "Balance is dangerously low. Refill now to avoid losing files.",
-          "success": "Balance is dangerously low. Refill now to avoid losing files.",
-          "warning": "Balance is dangerously low. Refill now to avoid losing files."
+          "warning": "Your balance is getting low, add funds soon."
         },
         "addFundsTooltip": {
           "danger": "Balance is low. Refill now to avoid losing files.",
