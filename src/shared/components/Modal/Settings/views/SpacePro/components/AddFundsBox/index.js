@@ -4,12 +4,9 @@ import { useTranslation } from 'react-i18next';
 
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
-import Tooltip from '@material-ui/core/Tooltip';
-import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInfoCircle } from '@fortawesome/pro-regular-svg-icons/faInfoCircle';
 import { faExclamationTriangle } from '@fortawesome/pro-regular-svg-icons/faExclamationTriangle';
 
 import SeverityBox from '@terminal-packages/space-ui/core/SeverityBox';
@@ -60,25 +57,6 @@ const AddFundsBox = ({
               {t(`modals.settings.productKey.addFundsMessage.${severity}`)}
             </Typography>
           </Box>
-          <Tooltip
-            placement="bottom-end"
-            classes={{
-              popper: classes.popperRoot,
-              tooltip: classes.tooltipRoot,
-            }}
-            title={<Typography>{t(`modals.settings.productKey.addFundsTooltip.${severity}`)}</Typography>}
-          >
-            <IconButton
-              disableRipple
-              disableFocusRipple
-              aria-label="balance-info"
-              classes={{
-                root: classes.iconBtnRoot,
-              }}
-            >
-              <FontAwesomeIcon icon={faInfoCircle} />
-            </IconButton>
-          </Tooltip>
         </Box>
         <Button
           variant="contained"

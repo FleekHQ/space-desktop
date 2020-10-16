@@ -25,24 +25,42 @@ const registerWalletEvents = () => {
     const amount = get(payload, 'credits', 0) || 0;
     const isActive = !!get(payload, 'billingMode');
     const billingPeriodEnd = get(payload, 'billingPeriodEnd');
+    const estimatedCost = get(payload, 'estimatedCost', 1) || 1;
 
     let paymentType = null;
+    let severity = '';
+    let timeRemaining = '';
     const plan = isActive ? 'Space Pro' : 'Basic';
+    const monthRemaining = amount / estimatedCost;
     const billDate = isActive ? moment(billingPeriodEnd).format('MM/DD/YYYY') : '';
 
     if (isActive) {
       if (payload.billingMode === 'credits') {
         paymentType = 'crypto';
       } else {
-        paymentType = 'crypto';
+        paymentType = 'card';
       }
     }
 
-    // TODO: for crypto subscription
+    if (monthRemaining < 1) {
+      severity = 'danger';
+      timeRemaining = '0 months';
+    }
+
+    if (monthRemaining >= 1 && monthRemaining < 2) {
+      severity = 'warning';
+      timeRemaining = '1-2 months';
+    }
+
+    if (monthRemaining >= 2) {
+      severity = 'success';
+      timeRemaining = `${monthRemaining.toFixed()} months`;
+    }
+
     const credits = {
-      amount: amount / 100, // amount is on cents
-      severity: 'success', // should depend on time remaining
-      timeRemaining: '30 days', // not sure how this will be estimated
+      severity,
+      timeRemaining,
+      amount: amount / 100, // cents to dolars
     };
 
     store.dispatch({

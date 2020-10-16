@@ -91,7 +91,7 @@ const PlanDetails = (props) => {
             onAddFunds={onAddFounds}
             timeRemaining={timeRemaining}
             i18n={t('modals.settings.productKey.planDetails.balanceBox', { returnObjects: true })}
-            tooltipMessage={t(`modals.settings.productKey.planDetails.balanceBox.tooltipMessage.${severity}`, { timeRemaining })}
+            tooltipMessage={t('modals.settings.productKey.planDetails.balanceBox.tooltipMessage', { timeRemaining })}
           />
         </div>
       )}

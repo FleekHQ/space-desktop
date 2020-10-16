@@ -336,9 +336,8 @@
           "warning": "Balance is dangerously low. Refill now to avoid losing files."
         },
         "addFundsTooltip": {
-          "danger": "If you don't add funds to your balance to cover your next monthly bill, your files will be removed from Space 14 days after your next billing date. Please add funds now to avoid any disruption in service and potentially losing your files.",
-          "success": "If you don't add funds to your balance to cover your next monthly bill, your files will be removed from Space 14 days after your next billing date. Please add funds now to avoid any disruption in service and potentially losing your files.",
-          "warning": "If you don't add funds to your balance to cover your next monthly bill, your files will be removed from Space 14 days after your next billing date. Please add funds now to avoid any disruption in service and potentially losing your files."
+          "danger": "Balance is low. Refill now to avoid losing files.",
+          "warning": "Your balance is getting low, add funds soon."
         },
         "form": {
           "activated": "Space Pro Activated",
@@ -375,11 +374,7 @@
             "balance": "Balance",
             "addFunds": "Add Funds",
             "timeRemaining": "Time Remaining:",
-            "tooltipMessage": {
-              "danger": "Current balance can cover the next {{timeRemaining}} (estimate) based on your last bill. Exact amount is subject to change based on your Space storage & bandwidth usage.",
-              "success": "Current balance can cover the next {{timeRemaining}} (estimate) based on your last bill. Exact amount is subject to change based on your Space storage & bandwidth usage.",
-              "warning": "Current balance can cover the next {{timeRemaining}} (estimate) based on your last bill. Exact amount is subject to change based on your Space storage & bandwidth usage."
-            }
+            "tooltipMessage": "Current balance can cover the next {{timeRemaining}} (estimate) based on your last bill. Exact amount is subject to change based on your Space storage & bandwidth usage."
           }
         }
       }
