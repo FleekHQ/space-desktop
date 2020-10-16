@@ -3,7 +3,7 @@ import { shell } from 'electron';
 import { useSelector } from 'react-redux';
 
 import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
+// import Button from '@material-ui/core/Button';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { getAccount } from '@events';
 
@@ -71,7 +71,8 @@ const SpacePro = () => {
           />
         )
       }
-      {
+      {/* {
+        // TODO: cancel plan is not prioritize yet
         spacePro && spacePro.planInfo && spacePro.planInfo.plan !== 'Basic' && (
           <Box mt="15px" color="#b5b5b5">
             <Button
@@ -82,7 +83,7 @@ const SpacePro = () => {
             </Button>
           </Box>
         )
-      }
+      } */}
     </>
   );
 };
