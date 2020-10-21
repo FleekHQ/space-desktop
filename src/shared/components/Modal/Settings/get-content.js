@@ -4,7 +4,7 @@ import {
   Usage,
   Account,
   Security,
-  ProductKey,
+  SpacePro,
 } from './views';
 
 export default ({
@@ -48,6 +48,6 @@ export default ({
     id: 'product-key',
     default: defaultItem === 'product-key',
     title: t('modals.settings.productKey.title'),
-    content: <ProductKey t={t} />,
+    content: <SpacePro t={t} />,
   },
 ];

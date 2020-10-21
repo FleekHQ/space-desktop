@@ -4,12 +4,9 @@ import { useTranslation } from 'react-i18next';
 
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
-import Tooltip from '@material-ui/core/Tooltip';
-import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInfoCircle } from '@fortawesome/pro-regular-svg-icons/faInfoCircle';
 import { faExclamationTriangle } from '@fortawesome/pro-regular-svg-icons/faExclamationTriangle';
 
 import SeverityBox from '@terminal-packages/space-ui/core/SeverityBox';
@@ -38,9 +35,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const AddFundsBox = ({
-  message,
   severity,
-  tooltipMessage,
   onAddFunds,
 }) => {
   const classes = useStyles();
@@ -59,32 +54,9 @@ const AddFundsBox = ({
           <FontAwesomeIcon icon={faExclamationTriangle} />
           <Box mx="3px">
             <Typography>
-              {message}
+              {t(`modals.settings.productKey.addFundsMessage.${severity}`)}
             </Typography>
           </Box>
-          {
-            tooltipMessage && tooltipMessage.length > 0 && (
-              <Tooltip
-                placement="bottom-end"
-                classes={{
-                  popper: classes.popperRoot,
-                  tooltip: classes.tooltipRoot,
-                }}
-                title={<Typography>{tooltipMessage}</Typography>}
-              >
-                <IconButton
-                  disableRipple
-                  disableFocusRipple
-                  aria-label="balance-info"
-                  classes={{
-                    root: classes.iconBtnRoot,
-                  }}
-                >
-                  <FontAwesomeIcon icon={faInfoCircle} />
-                </IconButton>
-              </Tooltip>
-            )
-          }
         </Box>
         <Button
           variant="contained"
@@ -101,9 +73,7 @@ const AddFundsBox = ({
 };
 
 AddFundsBox.propTypes = {
-  message: PropTypes.string.isRequired,
   severity: PropTypes.string.isRequired,
-  tooltipMessage: PropTypes.string.isRequired,
   onAddFunds: PropTypes.func.isRequired,
 };
 

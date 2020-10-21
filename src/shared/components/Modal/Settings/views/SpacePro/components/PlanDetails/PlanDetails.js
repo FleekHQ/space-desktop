@@ -6,7 +6,7 @@ import { Trans, useTranslation } from 'react-i18next';
 import Typography from '@material-ui/core/Typography';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import BalanceBox from '@terminal-packages/space-ui/core/BalanceBox';
-import { faUsdCircle } from '@fortawesome/pro-solid-svg-icons/faUsdCircle';
+import { faInfoCircle } from '@fortawesome/pro-solid-svg-icons/faInfoCircle';
 
 import useStyles from './styles';
 import { BaseCard } from '../../../../components';
@@ -15,7 +15,6 @@ import { BaseCard } from '../../../../components';
 const PlanDetails = (props) => {
   const {
     plan,
-    price,
     amount,
     billDate,
     severity,
@@ -41,7 +40,7 @@ const PlanDetails = (props) => {
       <div className={classes.leftSection}>
         <Typography variant="body1">
           <FontAwesomeIcon
-            icon={faUsdCircle}
+            icon={faInfoCircle}
             className={classes.icon}
           />
           <Box fontWeight={600} component="span">
@@ -73,11 +72,11 @@ const PlanDetails = (props) => {
             </ButtonBase>
           </div>
         )}
-        {billDate && price && (
+        {billDate && (
           <Typography variant="body1">
             <Trans
               i18nKey="modals.settings.productKey.planDetails.nextBill"
-              values={{ billDate, price }}
+              values={{ billDate }}
               {...transBoldOptions}
             />
           </Typography>
@@ -102,7 +101,6 @@ const PlanDetails = (props) => {
 
 PlanDetails.defaultProps = {
   plan: '',
-  price: '',
   amount: 0,
   billDate: '',
   timeRemaining: '',
@@ -113,13 +111,12 @@ PlanDetails.defaultProps = {
 
 PlanDetails.propTypes = {
   plan: PropTypes.string,
-  price: PropTypes.string,
   amount: PropTypes.number,
   billDate: PropTypes.string,
   onAddFounds: PropTypes.func,
+  paymentType: PropTypes.string,
   timeRemaining: PropTypes.string,
   onChangePlan: PropTypes.func.isRequired,
-  paymentType: PropTypes.oneOf(['crypto', 'card']),
   severity: PropTypes.oneOf(['danger', 'success', 'warning']),
 };
 

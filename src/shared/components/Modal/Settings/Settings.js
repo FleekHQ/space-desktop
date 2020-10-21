@@ -6,6 +6,7 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/pro-solid-svg-icons/faTimes';
 import { useTranslation } from 'react-i18next';
+import { getAccount } from '@events';
 
 import useStyles from './styles';
 import getContent from './get-content';
@@ -27,6 +28,10 @@ const Settings = ({
   const [contentId, setContentId] = useState(dItem.id);
 
   const selectedContentItem = contentItems.find((item) => item.id === contentId);
+
+  React.useEffect(() => {
+    getAccount();
+  }, []);
 
   return (
     <BaseModal

@@ -330,6 +330,14 @@
       "productKey": {
         "title": "Space Pro",
         "addFunds": "Add Funds",
+        "addFundsMessage": {
+          "danger": "Balance is dangerously low. Refill now to avoid losing files.",
+          "warning": "Your balance is getting low, add funds soon."
+        },
+        "addFundsTooltip": {
+          "danger": "Balance is low. Refill now to avoid losing files.",
+          "warning": "Your balance is getting low, add funds soon."
+        },
         "form": {
           "activated": "Space Pro Activated",
           "noactivated": "Upgrade to Space Pro",
@@ -339,8 +347,8 @@
           "submit": "Get Space Pro",
           "price": {
             "per": "/month",
-            "extra": "$0.10 per extra GB",
-            "usage": "100 GB of Storage & Bandwidth"
+            "extra": "$0.10 per extra GB per month",
+            "usage": "Includes 100 GB of Storage & Bandwidth"
           }
         },
         "messageBox": {
@@ -354,7 +362,7 @@
           "paymentType": "Payment Type: <bold>{{paymentType}}</bold>",
           "crypto": "Cryptocurrency",
           "creditCard": "Credit Card",
-          "nextBill": "Next Bill: <bold>{{billDate}}</bold> for <bold>${{price}}</bold>",
+          "nextBill": "Next Bill: <bold>{{billDate}}</bold>",
           "creditBalance": "Credit Balance",
           "replenishBalance": "Replenish your balance",
           "balanceLow": "Your balance is getting low, add more credits to your account to continue backing up your files.",
