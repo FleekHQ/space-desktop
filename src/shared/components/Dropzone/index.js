@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
 import get from 'lodash/get';
 import useStyles, { rowHeight, headHeight } from './styles';
 
@@ -59,9 +58,7 @@ const Dropzone = ({
     <div
       // eslint-disable-next-line react/jsx-props-no-spreading
       {...getRootProps()}
-      className={classnames(classes.root, {
-        [classes.active]: isDragActive,
-      })}
+      className={classes.root}
     >
       <div ref={wrapperNode}>
         {isDragActive && (

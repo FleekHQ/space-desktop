@@ -3,15 +3,12 @@ import { makeStyles } from '@material-ui/core/styles';
 export const rowHeight = 35;
 export const headHeight = 27;
 
-export default makeStyles((theme) => ({
+export default makeStyles({
   root: {
     position: 'relative', // to set boundaries for rainbow field during drag'n'drop
     '&:focus': {
       outline: 'none',
     },
-  },
-  active: {
-    borderColor: theme.palette.palette.blue1,
   },
   rainbowField: {
     position: 'absolute',
@@ -32,4 +29,4 @@ export default makeStyles((theme) => ({
       borderRadius: 4,
     },
   },
-}));
+});
