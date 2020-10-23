@@ -58,9 +58,9 @@ const FileTable = ({
     });
   };
 
-  const onDropzoneDrop = (files) => {
+  const onDropzoneDrop = (files, target) => {
     addItems({
-      targetPath: prefix,
+      targetPath: target || prefix,
       sourcePaths: files.map((file) => file.path),
     });
   };
