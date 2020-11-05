@@ -1,12 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Trans, useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
+import classnames from 'classnames';
 import Typography from '@material-ui/core/Typography';
+import AreaChart from '@terminal-packages/space-ui/core/AreaChart';
+import PieChart from '@terminal-packages/space-ui/core/PieChart';
+// import formatUsageData from './format-usage-data';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faInfoCircle } from '@fortawesome/pro-regular-svg-icons/faInfoCircle';
+import Tooltip from '@material-ui/core/Tooltip';
 import Box from '@material-ui/core/Box';
-import Skeleton from '@material-ui/lab/Skeleton';
-import UsageBars from '@ui/UsageBars';
-import palette from '@terminal-packages/space-ui/core/theme/palette';
-import formatUsageData from './format-usage-data';
 import {
   UpgradeAccount,
   BackupBenefits,
@@ -15,137 +18,112 @@ import {
 } from '../InfoBoxes';
 
 import useStyles from './styles';
-import { BaseCard, Header, Section } from '../../../../components';
-
-const getUsageComponent = (size, isShownMaxSize, maxSize) => (
-  <Typography variant="body2" color="secondary" component="span">
-    <Trans
-      i18nKey={`modals.settings.usage.${isShownMaxSize ? 'usingOf' : 'using'}`}
-      values={{ size, maxSize }}
-      components={[<Box color="text.primary" component="span" />]}
-    />
-  </Typography>
-);
+import { BaseCard } from '../../../../components';
 
 const Usage = ({
-  // eslint-disable-next-line no-unused-vars
-  loading,
-  backupStorage,
-  isFreePlan,
-  planName,
-  localUsage,
-  backupUsage,
   showInfo,
 }) => {
-  const classes = useStyles({ backupStorage });
+  const classes = useStyles();
   const { t } = useTranslation();
-  const switchBtnI18n = {
-    enable: t('common.on'),
-    disable: t('common.off'),
-  };
-  const { localUsageFormatted, backupUsageFormatted } = formatUsageData(
-    localUsage,
-    backupUsage,
+
+  const getHeader = (title, subTitle, tooltip, usedMemory, totalMemory, widerTooltip) => (
+    <div className={classes.header}>
+      <Typography>
+        <Box fontWeight={600}>{title}</Box>
+      </Typography>
+      <Typography color="secondary">
+        <Box ml="5px">{subTitle}</Box>
+      </Typography>
+      <Tooltip
+        interactive
+        placement="bottom"
+        title={tooltip}
+        classes={{
+          popper: classes.popperRoot,
+          tooltip: classnames(classes.tooltipRoot, {
+            [classes.widerTooltip]: widerTooltip,
+          }),
+        }}
+      >
+        <span className={classes.iconBtn}>
+          <FontAwesomeIcon
+            icon={faInfoCircle}
+            className={classes.infoIcon}
+          />
+        </span>
+      </Tooltip>
+      <Typography className={classes.boldText} color="secondary">
+        <span className={classes.accentText}>
+          <Box component="span" fontSize={23}>{usedMemory}</Box>
+          MB
+        </span>
+        {t('common.of')}
+        <Box component="span" ml="4px" fontSize={23}>{totalMemory}</Box>
+        GB
+      </Typography>
+    </div>
   );
 
   return (
     <div>
-      <BaseCard className={classes.localUsageContainer}>
-        <Header>
-          <div className={classes.usageBarsWrapper}>
-            <UsageBars
-              loading={loading}
-              title={t('modals.settings.usage.local.diagramTitle')}
-              borderColor={palette.palette.blue4}
-              items={[
-                {
-                  key: 'storage',
-                  text: t('modals.settings.usage.storage', {
-                    size: localUsageFormatted.storage,
-                  }),
-                  color: palette.palette.blue1,
-                  width: localUsageFormatted.storagePercent,
-                },
-                {
-                  key: 'transfer',
-                  text: t('modals.settings.usage.transferMonthly', {
-                    size: localUsageFormatted.bandwidth,
-                  }),
-                  color: palette.palette.blue3,
-                  width: localUsageFormatted.bandwidthPercent,
-                },
-              ]}
-              using={getUsageComponent(
-                localUsageFormatted.combinedUsage,
-                false,
-                localUsageFormatted.limit,
-              )}
-            />
-          </div>
-        </Header>
+      {showInfo === 'upgrade' && <UpgradeAccount />}
+      {showInfo === 'backupBenefits' && <BackupBenefits />}
+      {showInfo === 'backupLimitReaching' && (
+        <BackupLimitReaching backupLimit="500GB" />
+      )}
+      {showInfo === 'backupLimitReached' && (
+        <BackupLimitReached backupLimit="500GB" />
+      )}
+      <BaseCard className={classes.panel}>
+        {getHeader(
+          t('modals.settings.usage.currentStorage.title'),
+          '',
+          t('modals.settings.usage.currentStorage.tooltip'),
+          728,
+          1,
+          false,
+        )}
+        <AreaChart
+          width={530}
+          height={136}
+          xTickWidth={25}
+          ticksNumber={5}
+          roundingPrecision={50 * 1024}
+          yTicksFormatter={(value) => `${Math.floor(value / 1024)}MB`}
+          data={[
+            { x: '02/01', y: 204800 },
+            { x: '02/03', y: 337920 },
+            { x: '02/06', y: 296960 },
+            { x: '02/08', y: 419840 },
+            { x: '02/10', y: 389120 },
+            { x: '02/12', y: 389120 },
+            { x: '02/14', y: 440320 },
+            { x: '02/16', y: 430080 },
+            { x: '02/18', y: 808960 },
+            { x: '02/20', y: 450560 },
+            { x: '02/22', y: 629760 },
+            { x: '02/24', y: 686080 },
+          ]}
+        />
       </BaseCard>
-      <BaseCard className={classes.backupSwitchContainer}>
-        <Header>
-          <Section>
-            <Typography variant="body1" weight="medium" component="span">
-              {loading ? <Skeleton width={150} /> : (
-                <Trans
-                  i18nKey="modals.settings.usage.backup.switchTitle"
-                  values={{ value: backupStorage ? switchBtnI18n.enable : switchBtnI18n.disable }}
-                  components={[
-                    <Box fontWeight="600" component="span" className={classes.backupValue} />,
-                  ]}
-                />
-              )}
-            </Typography>
-          </Section>
-        </Header>
-      </BaseCard>
-      <BaseCard className={classes.backupDiagramContainer}>
-        <Header>
-          <div className={classes.usageBarsWrapper}>
-            <UsageBars
-              loading={loading}
-              disabled={!backupStorage}
-              title={t('modals.settings.usage.backup.diagramTitle', {
-                size: backupUsageFormatted.limit,
-                plan: planName,
-              })}
-              borderColor={palette.palette.green3}
-              items={[
-                {
-                  key: 'storage',
-                  text: t('modals.settings.usage.storage', {
-                    size: backupUsageFormatted.storage,
-                  }),
-                  color: palette.palette.green2,
-                  width: backupUsageFormatted.storagePercent,
-                },
-                {
-                  key: 'transfer',
-                  text: t('modals.settings.usage.transferMonthly', {
-                    size: backupUsageFormatted.bandwidth,
-                  }),
-                  color: palette.palette.green4,
-                  width: backupUsageFormatted.bandwidthPercent,
-                },
-              ]}
-              using={getUsageComponent(
-                backupUsageFormatted.combinedUsage,
-                isFreePlan && backupStorage,
-                backupUsageFormatted.limit,
-              )}
-            />
-            {showInfo === 'upgrade' && <UpgradeAccount />}
-            {showInfo === 'backupBenefits' && <BackupBenefits />}
-            {showInfo === 'backupLimitReaching' && (
-              <BackupLimitReaching backupLimit={backupUsageFormatted.limit} />
-            )}
-            {showInfo === 'backupLimitReached' && (
-              <BackupLimitReached backupLimit={backupUsageFormatted.limit} />
-            )}
-          </div>
-        </Header>
+      <BaseCard className={classes.panel}>
+        {getHeader(
+          t('modals.settings.usage.currentUsage.title'),
+          '(10/01/20 - 10/30/20)',
+          t('modals.settings.usage.currentUsage.tooltip'),
+          800,
+          1,
+          true,
+        )}
+        <div className={classes.pieChartWrapper}>
+          <PieChart
+            data={[
+              { label: 'Bandwidth (150MB)', value: 150, color: '#59F66E' },
+              { label: 'Storage (650MB)', value: 650, color: '#0063FF' },
+            ]}
+            mainLabel={['800', 'MB']}
+          />
+        </div>
       </BaseCard>
     </div>
   );
@@ -153,27 +131,9 @@ const Usage = ({
 
 Usage.defaultProps = {
   showInfo: undefined,
-  backupStorage: false,
-  isFreePlan: false,
-  planName: '',
 };
 
 Usage.propTypes = {
-  backupStorage: PropTypes.bool,
-  loading: PropTypes.bool.isRequired,
-  isFreePlan: PropTypes.bool,
-  planName: PropTypes.string,
-  localUsage: PropTypes.shape({
-    combinedUsage: PropTypes.number.isRequired,
-    storage: PropTypes.number.isRequired,
-    bandwidth: PropTypes.number.isRequired,
-  }).isRequired,
-  backupUsage: PropTypes.shape({
-    combinedUsage: PropTypes.number.isRequired,
-    limit: PropTypes.number.isRequired,
-    storage: PropTypes.number.isRequired,
-    bandwidth: PropTypes.number.isRequired,
-  }).isRequired,
   showInfo: PropTypes.oneOf([
     'upgrade',
     'backupBenefits',
