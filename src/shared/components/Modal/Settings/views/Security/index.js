@@ -161,28 +161,24 @@ const Security = ({ t }) => {
 
     switch (provider) {
       case 'google':
-        options.push({
-          [OPTION_IDS.GOOGLE]: {
-            id: OPTION_IDS.GOOGLE,
-            text: t('addBackupSignIn.google'),
-            text2: linkedAddress.metadata.email,
-            text3: t('modals.settings.security.disconnect'),
-            imgSrc: 'https://fleek-team-bucket.storage.fleek.co/third-party-logo/Google__G__Logo.svg',
-            redText3: true,
-          },
-        });
+        options[OPTION_IDS.GOOGLE] = {
+          id: OPTION_IDS.GOOGLE,
+          text: t('addBackupSignIn.google'),
+          text2: linkedAddress.metadata.email,
+          text3: t('modals.settings.security.disconnect'),
+          imgSrc: 'https://fleek-team-bucket.storage.fleek.co/third-party-logo/Google__G__Logo.svg',
+          redText3: true,
+        };
         break;
       case 'twitter':
-        options.push({
-          [OPTION_IDS.TWITTER]: {
-            id: OPTION_IDS.TWITTER,
-            text: t('addBackupSignIn.twitter'),
-            text2: linkedAddress.metadata.name,
-            text3: t('modals.settings.security.disconnect'),
-            imgSrc: 'https://fleek-team-bucket.storage.fleek.co/third-party-logo/Twitter_Logo_Blue.svg',
-            redText3: true,
-          },
-        });
+        options[OPTION_IDS.TWITTER] = {
+          id: OPTION_IDS.TWITTER,
+          text: t('addBackupSignIn.twitter'),
+          text2: linkedAddress.metadata.name,
+          text3: t('modals.settings.security.disconnect'),
+          imgSrc: 'https://fleek-team-bucket.storage.fleek.co/third-party-logo/Twitter_Logo_Blue.svg',
+          redText3: true,
+        };
         break;
       default:
         break;
@@ -191,11 +187,8 @@ const Security = ({ t }) => {
 
   const modalOptions = Object.keys(OPTION_IDS).filter((optionId) => {
     const isOptionNotAdded = !options[optionId];
-    const isTwitter = optionId === OPTION_IDS.TWITTER;
-    const isGoogle = optionId === OPTION_IDS.GOOGLE;
     const isEmail = optionId === OPTION_IDS.EMAIL;
-
-    return ((isOptionNotAdded || isTwitter || isGoogle) && !isEmail);
+    return ((isOptionNotAdded) && !isEmail);
   });
 
   return (

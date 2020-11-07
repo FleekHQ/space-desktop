@@ -164,6 +164,10 @@ const registerAuthEvents = (mainWindow) => {
         address: payload.torusRes.publicAddress,
         provider: payload.provider,
         createdAt: new Date().toISOString(),
+        metadata: {
+          email: payload.torusRes.userInfo.email,
+          name: payload.torusRes.userInfo.name,
+        },
       });
     } catch (error) {
       console.error('ADD_LINKED_ADDRESS_ERROR_EVENT', error);
