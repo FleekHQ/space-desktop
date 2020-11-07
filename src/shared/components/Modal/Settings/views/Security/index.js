@@ -14,8 +14,10 @@ import classnames from 'classnames';
 import MessageBox from '@ui/MessageBox';
 import { faShieldAlt } from '@fortawesome/pro-regular-svg-icons/faShieldAlt';
 import { useTheme } from '@material-ui/core/styles';
-import { useSelector } from 'react-redux';
-import { getLinkedAddresses } from '@events';
+import { useSelector, useDispatch } from 'react-redux';
+import { getLinkedAddresses, addLinkedAddress } from '@events';
+import { useTorusSdk } from '@utils';
+import { LINKED_ADDRESSES_ACTION_TYPES } from '@reducers/linked-addresses';
 
 import useStyles from './styles';
 import SeedPhraseModal from '../../../SeedPhrase';
@@ -29,6 +31,8 @@ import {
   BaseCard,
 } from '../../components';
 
+const ADD_BACKUP_SIGN_IN = 'addBackUpSignIn';
+
 const Security = ({ t }) => {
   const [state, setState] = React.useState({
     [OPTION_IDS.EMAIL]: false,
@@ -36,13 +40,15 @@ const Security = ({ t }) => {
     [OPTION_IDS.GOOGLE]: false,
     [OPTION_IDS.TWITTER]: false,
     [OPTION_IDS.SEED_PHRASE]: false,
-    addBackUpSignIn: false,
+    [ADD_BACKUP_SIGN_IN]: false,
     createUsernamePassword: false,
   });
 
   const theme = useTheme();
   const classes = useStyles();
   const [error, setError] = useState(false);
+  const dispatch = useDispatch();
+  const { torusTriggerLogin } = useTorusSdk();
   const [user, linkedAddresses] = useSelector((reduxState) => [
     reduxState.user,
     reduxState.linkedAddresses,
@@ -56,12 +62,51 @@ const Security = ({ t }) => {
     event.preventDefault();
 
     setError(false);
+    const targetId = event.currentTarget.id;
+    if (targetId === ADD_BACKUP_SIGN_IN) {
+      dispatch({
+        type: LINKED_ADDRESSES_ACTION_TYPES.ON_ADD_NEW_LINKED_ADDRESS_RESET,
+      });
+    }
 
     setState((prevState) => ({
       ...prevState,
-      [event.currentTarget.id]: true,
+      [targetId]: true,
     }));
   };
+
+  const addLinkedAddressTorus = async (provider) => {
+    dispatch({
+      type: LINKED_ADDRESSES_ACTION_TYPES.ON_ADD_NEW_LINKED_ADDRESS,
+    });
+    console.log(provider);
+    const tRes = await torusTriggerLogin({ provider });
+
+    if (tRes) {
+      addLinkedAddress({
+        torusPrivateKey: tRes.privateKey,
+        torusPublicAddress: tRes.publicAddress,
+        provider,
+        uuid: user.uuid,
+      });
+    } else {
+      dispatch({
+        type: LINKED_ADDRESSES_ACTION_TYPES.ON_ADD_NEW_LINKED_ADDRESS_ERROR,
+        error: t('addBackupSignIn.torusError'),
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (linkedAddresses.addLinkedAddress.success) {
+      setState((prevState) => ({
+        ...prevState,
+        [OPTION_IDS.GOOGLE]: false,
+        [OPTION_IDS.TWITTER]: false,
+        addBackUpSignIn: false,
+      }));
+    }
+  }, [linkedAddresses.addLinkedAddress.success]);
 
   const onClickNewMethod = (methodId) => {
     switch (methodId) {
@@ -71,6 +116,11 @@ const Security = ({ t }) => {
           addBackUpSignIn: false,
           createUsernamePassword: true,
         }));
+        break;
+      }
+      case OPTION_IDS.TWITTER:
+      case OPTION_IDS.GOOGLE: {
+        addLinkedAddressTorus(methodId.toLowerCase());
         break;
       }
       default: {
@@ -163,7 +213,7 @@ const Security = ({ t }) => {
               {t('modals.settings.security.warning.description')}
             </Typography>
             <Button
-              id="addBackUpSignIn"
+              id={ADD_BACKUP_SIGN_IN}
               variant="primary"
               onClick={handleOpenModal}
             >
@@ -274,6 +324,8 @@ const Security = ({ t }) => {
       {
         state.addBackUpSignIn && (
           <AddBackUpSignIn
+            loading={linkedAddresses.addLinkedAddress.loading}
+            error={linkedAddresses.addLinkedAddress.error}
             options={modalOptions}
             onClickContinue={onClickNewMethod}
             closeModal={() => (
