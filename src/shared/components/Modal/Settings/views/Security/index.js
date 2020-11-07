@@ -79,13 +79,12 @@ const Security = ({ t }) => {
     dispatch({
       type: LINKED_ADDRESSES_ACTION_TYPES.ON_ADD_NEW_LINKED_ADDRESS,
     });
-    console.log(provider);
+
     const tRes = await torusTriggerLogin({ provider });
 
     if (tRes) {
       addLinkedAddress({
-        torusPrivateKey: tRes.privateKey,
-        torusPublicAddress: tRes.publicAddress,
+        torusRes: tRes,
         provider,
         uuid: user.uuid,
       });

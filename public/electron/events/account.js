@@ -138,17 +138,30 @@ const registerAuthEvents = (mainWindow) => {
     try {
       await spaceClient.backupKeysByPassphrase({
         uuid: payload.uuid,
-        passphrase: payload.torusPrivateKey,
+        passphrase: payload.torusRes.privateKey,
       });
       const apiSessionRes = await spaceClient.getAPISessionTokens();
+      console.log({
+        token: apiSessionRes.getServicestoken(),
+        address: payload.torusRes.publicAddress,
+        provider: payload.provider,
+        metadata: {
+          email: payload.torusRes.userInfo.email,
+          name: payload.torusRes.userInfo.name,
+        },
+      });
       await apiClient.identity.addEthAddress({
         token: apiSessionRes.getServicestoken(),
-        address: payload.torusPublicAddress,
+        address: payload.torusRes.publicAddress,
         provider: payload.provider,
+        metadata: {
+          email: payload.torusRes.userInfo.email,
+          name: payload.torusRes.userInfo.name,
+        },
       });
       mainWindow.webContents.send(ADD_LINKED_ADDRESS_SUCCESS_EVENT, {
         uuid: payload.uuid,
-        address: payload.torusPublicAddress,
+        address: payload.torusRes.publicAddress,
         provider: payload.provider,
         createdAt: new Date().toISOString(),
       });
