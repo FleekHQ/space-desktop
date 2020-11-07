@@ -158,13 +158,13 @@ const Security = ({ t }) => {
 
   linkedAddresses.data.forEach((linkedAddress) => {
     const { provider } = linkedAddress;
-
+    const metadata = linkedAddress.metadata || {};
     switch (provider) {
       case 'google':
         options[OPTION_IDS.GOOGLE] = {
           id: OPTION_IDS.GOOGLE,
           text: t('addBackupSignIn.google'),
-          text2: linkedAddress.metadata.email,
+          text2: metadata.email,
           text3: t('modals.settings.security.disconnect'),
           imgSrc: 'https://fleek-team-bucket.storage.fleek.co/third-party-logo/Google__G__Logo.svg',
           redText3: true,
@@ -174,7 +174,7 @@ const Security = ({ t }) => {
         options[OPTION_IDS.TWITTER] = {
           id: OPTION_IDS.TWITTER,
           text: t('addBackupSignIn.twitter'),
-          text2: linkedAddress.metadata.name,
+          text2: metadata.name,
           text3: t('modals.settings.security.disconnect'),
           imgSrc: 'https://fleek-team-bucket.storage.fleek.co/third-party-logo/Twitter_Logo_Blue.svg',
           redText3: true,
