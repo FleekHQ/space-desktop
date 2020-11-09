@@ -1,4 +1,5 @@
 import get from 'lodash/get';
+
 import bucketReducer, {
   STORE_DIR,
   ADD_OBJECT,
@@ -7,6 +8,10 @@ import bucketReducer, {
   UPDATE_OBJECT,
   UPDATE_OBJECTS,
   STORE_BUCKETS,
+  SET_LOADING_STATE_BUCKET,
+  SET_ERROR_BUCKET,
+  SET_OPEN_ERROR_BUCKET,
+  UPDATE_OR_ADD_OBJECT,
 } from './bucket';
 
 export * from './bucket';
@@ -19,6 +24,10 @@ const DEFAULT_STATE = {
     personal: {
       ...bucketReducer(undefined, {}),
       name: 'personal',
+    },
+    'shared-with-me': {
+      ...bucketReducer(undefined, {}),
+      name: 'shared-with-me',
     },
   },
   uploadError: null,
@@ -148,8 +157,16 @@ export default (state = DEFAULT_STATE, action) => {
     case ADD_OBJECT:
     case DELETE_OBJECT:
     case UPDATE_OBJECT:
-    case UPDATE_OBJECTS: {
-      const bucket = get(action.payload, '[0].bucket');
+    case UPDATE_OBJECTS:
+    case UPDATE_OR_ADD_OBJECT: {
+      let bucket = null;
+
+      if (Array.isArray(action.payload)) {
+        bucket = get(action.payload, '[0].bucket');
+      } else {
+        bucket = get(action.payload, 'bucket');
+      }
+
       if (bucket) {
         return {
           ...state,
@@ -161,6 +178,22 @@ export default (state = DEFAULT_STATE, action) => {
       }
 
       return state;
+    }
+
+    case SET_LOADING_STATE_BUCKET:
+    case SET_ERROR_BUCKET:
+    case SET_OPEN_ERROR_BUCKET: {
+      const { bucket, ...payload } = action.payload;
+      return {
+        ...state,
+        buckets: {
+          ...state.buckets,
+          [bucket]: bucketReducer(state.buckets[bucket], {
+            type: action.type,
+            ...payload,
+          }),
+        },
+      };
     }
 
     default:

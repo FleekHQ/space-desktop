@@ -2,7 +2,7 @@ import get from 'lodash/get';
 
 import formatBytes from './format-bytes';
 
-const objectPresenter = (obj = {}) => {
+const objectPresenter = (obj = {}, isRootDir = false) => {
   const bucket = get(obj, 'bucket', '') || '';
   const key = get(obj, 'path', '');
 
@@ -23,6 +23,7 @@ const objectPresenter = (obj = {}) => {
   const isLocallyAvailable = get(obj, 'isLocallyAvailable', false);
   const sourceBucket = get(obj, 'sourceBucket');
   const dbId = get(obj, 'dbId');
+  const isPublicLink = get(obj, 'isPublicLink', false);
 
   return {
     key,
@@ -36,10 +37,11 @@ const objectPresenter = (obj = {}) => {
     created,
     bytesSize,
     lastModified,
+    isPublicLink,
     isLocallyAvailable,
     selected: false,
     id: `${bucket}/${key}`,
-    fullKey: `${bucket}/${key}`,
+    fullKey: `${bucket}/${isRootDir ? name : key}`,
     ipfsHash: get(obj, 'ipfsHash'),
     isAvailableInSpace: backupCount > 0,
     sourceBucket: sourceBucket || bucket,

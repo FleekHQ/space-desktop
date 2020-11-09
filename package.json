@@ -23,7 +23,7 @@
     "build-storybook": "build-storybook -s public"
   },
   "dependencies": {
-    "@fleekhq/space-client": "^1.0.3",
+    "@fleekhq/space-client": "^1.1.3",
     "@fortawesome/fontawesome-svg-core": "^1.2.28",
     "@fortawesome/free-brands-svg-icons": "^5.13.0",
     "@fortawesome/free-solid-svg-icons": "^5.13.0",
@@ -33,6 +33,8 @@
     "@fortawesome/react-fontawesome": "^0.1.9",
     "@material-ui/core": "^4.9.14",
     "@material-ui/lab": "^4.0.0-alpha.56",
+    "@terminal-packages/space-ui": "^0.3.7",
+    "@toruslabs/torus-direct-web-sdk": "^3.4.1",
     "axios": "^0.20.0",
     "chalk": "^4.1.0",
     "chokidar": "^3.4.0",
@@ -41,6 +43,7 @@
     "electron-is-dev": "^1.2.0",
     "electron-store": "^5.2.0",
     "electron-updater": "^4.3.1",
+    "eth-crypto": "^1.8.0",
     "glob": "^7.1.6",
     "i18next": "^19.4.4",
     "lodash": "^4.17.15",
@@ -49,10 +52,11 @@
     "prop-types": "^15.7.2",
     "query-string": "^6.13.1",
     "react": "^16.13.1",
+    "react-custom-scrollbars": "^4.2.1",
     "react-dom": "^16.13.1",
     "react-dropzone": "^11.0.1",
     "react-electron-contextmenu": "^1.0.0",
-    "react-i18next": "^11.4.0",
+    "react-i18next": "^11.7.3",
     "react-masonry-css": "^1.0.14",
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.2.0",
@@ -155,6 +159,12 @@
     "appId": "com.electron.space-app",
     "afterSign": "./scripts/notarize.js",
     "artifactName": "${name}-${version}-${os}-${arch}.${ext}",
+    "protocols": {
+      "name": "space-protocol",
+      "schemes": [
+        "space"
+      ]
+    },
     "publish": {
       "provider": "github",
       "repo": "desktop-storage",
@@ -224,6 +234,7 @@
       "^react-native$": "react-native-web",
       "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy",
       "^@ui(.*)$": "<rootDir>/src/UI$1",
+      "^@config(.*)$": "<rootDir>/src/config$1",
       "^@shared(.*)$": "<rootDir>/src/shared$1",
       "^@events(.*)$": "<rootDir>/src/events$1",
       "^@reducers(.*)$": "<rootDir>/src/reducers$1",

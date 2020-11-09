@@ -7,14 +7,44 @@ export const DELETE_OBJECT = 'DELETE_OBJECT';
 export const UPDATE_OBJECT = 'UPDATE_OBJECT';
 export const UPDATE_OBJECTS = 'UPDATE_OBJECTS';
 export const STORE_BUCKETS = 'STORE_BUCKETS';
+export const UPDATE_OR_ADD_OBJECT = 'UPDATE_OBJECT';
+export const SET_LOADING_STATE_BUCKET = 'SET_LOADING_STATE_BUCKET';
+export const SET_ERROR_BUCKET = 'SET_ERROR_BUCKET';
+export const SET_OPEN_ERROR_BUCKET = 'SET_OPEN_ERROR_BUCKET';
 
 const DEFAULT_STATE = {
   membersList: [],
   objects: [],
+  loading: false,
+  error: null,
+  openError: null,
 };
 
 export default (state = DEFAULT_STATE, action) => {
   switch (action.type) {
+    case SET_LOADING_STATE_BUCKET: {
+      return {
+        ...state,
+        loading: action.loading,
+        error: null,
+      };
+    }
+
+    case SET_ERROR_BUCKET: {
+      return {
+        ...state,
+        loading: false,
+        error: action.error,
+      };
+    }
+
+    case SET_OPEN_ERROR_BUCKET: {
+      return {
+        ...state,
+        openError: action.error,
+      };
+    }
+
     case STORE_BUCKETS: {
       return {
         ...state,
@@ -70,9 +100,50 @@ export default (state = DEFAULT_STATE, action) => {
       return {
         ...state,
         objects: state.objects.map((obj) => {
-          if (obj.fullKey === action.payload.fullKey) return action.payload;
+          if (obj.fullKey === action.payload.fullKey) {
+            return {
+              ...obj,
+              ...action.payload,
+              members: [
+                ...obj.members,
+                ...action.payload.members,
+              ],
+            };
+          }
           return obj;
         }),
+      };
+    }
+
+    case UPDATE_OR_ADD_OBJECT: {
+      let objects = [];
+      const objectIndex = state.objects.findIndex((obj) => obj.fullKey === action.payload.fullKey);
+
+      if (objectIndex >= 0) {
+        objects = state.objects.map((obj) => {
+          if (obj.fullKey === action.payload.fullKey) {
+            return {
+              ...obj,
+              ...action.payload,
+              members: [
+                ...obj.members,
+                ...action.payload.members,
+              ],
+            };
+          }
+
+          return obj;
+        });
+      } else {
+        objects = [
+          ...state.objects,
+          action.payload,
+        ];
+      }
+
+      return {
+        ...state,
+        objects,
       };
     }
 

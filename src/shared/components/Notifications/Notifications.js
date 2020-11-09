@@ -11,15 +11,18 @@ import {
   NotificationMenu,
   NotificationButton,
 } from '@ui/Notification';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { openModal, LICENSE_REGISTRATION } from '@shared/components/Modal/actions';
 import mapDataToItems from './utils/map-data-to-items';
 
 import useStyles from './styles';
 
 const Notifications = () => {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const { t } = useTranslation();
 
+  const [highlighted, setHighlighted] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
 
   const [notifications, identities] = useSelector(
@@ -48,9 +51,13 @@ const Notifications = () => {
       timestamp: Date.now(),
     });
     setAnchorEl(null);
+    setHighlighted(false);
   };
 
-  const onClickHandler = (event) => setAnchorEl(event.currentTarget);
+  const onClickHandler = (event) => {
+    setAnchorEl(event.currentTarget);
+    setHighlighted(true);
+  };
 
   const hideNewNotifications = () => {
     const { data: { lastSeenAt, notifications: notificationsData } } = notifications;
@@ -110,6 +117,7 @@ const Notifications = () => {
     <>
       <NotificationButton
         badgeInvisible={hideNewNotifications()}
+        highlighted={highlighted}
         onClick={onClickHandler}
         className={classes.root}
       />
@@ -122,6 +130,9 @@ const Notifications = () => {
           horizontal: 260,
         }}
         loadMore={loadMore}
+        upgradeOnClick={() => {
+          dispatch(openModal(LICENSE_REGISTRATION));
+        }}
         onAcceptInvitation={handleInvitationStatus(true)}
         onRejectInvitation={handleInvitationStatus(false)}
       />

@@ -3,8 +3,10 @@
   "createNew": "Create New",
   "common": {
     "search": "Search",
+    "add": "Add",
     "at": "at",
     "yes": "Yes",
+    "open": "Open",
     "enable": "Enable",
     "remove": "Remove",
     "owner": "Owner",
@@ -17,6 +19,16 @@
     "confirm": "Confirm",
     "on": "on",
     "off": "off",
+    "change": "Change",
+    "crypto": "Crypto",
+    "card": "Card",
+    "username": "Username",
+    "password": "Password",
+    "remindMeLater": "Remind me later",
+    "highlyRecommended": "Highly Recommended",
+    "noResults": "No results",
+    "comingSoon": "Coming Soon!",
+    "goBack": "Go Back",
     "access": {
       "edit": {
         "title": "Can edit",
@@ -49,13 +61,7 @@
     "notifications": "Notifications",
     "empty": "No notifications",
     "shared": "Shared <0>{{file}}</0> with you.",
-    "files": "{{amount}} files",
-    "backupLimit": {
-      "title": "Space",
-      "warning": "Reaching backup limit.",
-      "using": "Using <0>{{current}}</0> of <0>{{limit}}</0>",
-      "upgrade": "Upgrade to Space Pro"
-    }
+    "files": "{{amount}} files"
   },
   "detailsPanel": {
     "title": "Details Panel",
@@ -97,7 +103,7 @@
   "createNewMenu": {
     "fileUpload": "File Upload",
     "folderUpload": "Folder Upload",
-    "folder": "Folder",
+    "folder": "New Folder",
     "textDoc": "Text Doc",
     "googleDoc": "Google Doc",
     "word": "Word",
@@ -122,8 +128,21 @@
           "tooltip": "The first icon is blue if the file is in local storage. The second is green if the file is in space storage. The last icon shows the amount of users the file has been shared with."
         },
         "error": {
-          "message": "We had an issue loading your files, please try refreshing.",
+          "message": "Failed to fetch files, please try refreshing.",
           "buttonText": "Refresh Files"
+        },
+        "openError": {
+          "message": "Failed to open file, please try again.",
+          "buttonText": "Okay"
+        },
+        "storageLimitReached": {
+          "warning": "Backup Limit Reached",
+          "description": "This file is not backed up, upgrade to Space Pro to back up this file.",
+          "button": "Upgrade to Space Pro"
+        },
+        "empty": {
+          "title": "Hmm, you don't have any files yet",
+          "message": "Add your first file by dragging it here or use the <0/> icon top left"
         }
       },
       "sharedBy": {
@@ -146,6 +165,10 @@
       "recover": "Recover Account",
       "link": "Don't have an account?",
       "errors": {
+        "torus": "There was an error with torus integration",
+        "noData": "There is no data from torus",
+        "timeout": "Websocket Timeout",
+        "notFound": "User not found.",
         "generic": "Sorry, there was a problem.",
         "invalid": "Invalid username or password."
       },
@@ -163,29 +186,59 @@
       "email": "Email (Optional)",
       "link": "Already have an account?",
       "forgotPassword": "Forgot password?",
+      "agreenment": {
+        "part1": "By signing up, I agree to the",
+        "privacy": "Privacy",
+        "terms": "Terms"
+      },
       "errors": {
         "generic": "Sorry, there was a problem.",
         "username": "Username is taken.",
         "identity": "Sorry, there was a problem getting your identity.",
-        "address": "Sorry, the current address is already registered."
+        "address": "Sorry, the current address is already registered.",
+        "torus": "There was an error with torus integration",
+        "noData": "There is no data from torus",
+        "timeout": "Websocket Timeout"
       }
     },
     "restoreKeysMnemonic": {
-      "inputLabel": "Enter 12 Word Account Recovery Phase",
+      "title": "Enter Seed Phrase",
+      "description": "Enter your Seed Phrase below to gain access to your account on this device.",
+      "inputLabel": "Enter Seed Phrase",
       "keyNotFound": "No key found.",
       "submit": "Import Key"
     },
+    "forgotPassword": {
+      "title": "Forgot Password?",
+      "description": "Choose one of your back up sign in methods to access your account and reset your password. Make sure the option you choose is already added to your Space account.",
+      "recover": {
+        "google": "Recover with Google",
+        "twitter": "Recover with Twitter",
+        "key": "Recover with Seed Phrase"
+      },
+      "errors": {
+        "torus": "There was an error with torus integration",
+        "noData": "There is no data from torus",
+        "timeout": "Websocket Timeout",
+        "notFound": "User not found.",
+        "signin": "Sorry, there was an error when trying to recover your account."
+      }
+    },
     "shared": {
       "passwordCheck": {
-        "title": "Password must have",
+        "title": "Password must have:",
         "requirements": {
-          "number": "One number",
-          "lowerCase": "Lowercase character",
-          "upperCase": "Uppercase character",
-          "specialChar": "One special character",
-          "charLength": "8 characters minimun"
+          "number": "At least one number",
+          "upperCase": "Upper & lowercase letters",
+          "charLength": "8 or more characters"
         }
       }
+    },
+    "createPassword": {
+      "title": "Create Password",
+      "description": "Please create a new password for your Space account.",
+      "confirm": "Confirm Password",
+      "remind": "<tip>Tip:</tip> Remember it this time"
     }
   },
   "uploadProgressModal": {
@@ -204,6 +257,14 @@
     "dismiss": "Close"
   },
   "modals": {
+    "createUsernamePassword": {
+      "title": "Create Username & Password",
+      "username": "Username",
+      "password": "Password",
+      "create": "Create",
+      "cancel": "Cancel",
+      "usernameError": "Username is taken, please try another."
+    },
     "sharingModal": {
       "to": "To",
       "inputPlaceholder": "Username",
@@ -239,6 +300,7 @@
         "setDisplayName": "Set Display Name",
         "username": "Username",
         "setUsername": "Pick a Username",
+        "changeUsername": "Change Username",
         "profileId": "Profile ID",
         "dangerZone": "Danger Zone",
         "deleteAccount": "Delete Account",
@@ -250,16 +312,29 @@
       "security": {
         "title": "Security",
         "password": "Password",
-        "paperKey": "Account Recovery Phase",
-        "paperKeyTitle": "What is the Account Recovery Phase?",
-        "downloadPaperKey": "Show Account Recovery Phase",
+        "paperKey": "Account Recovery Phrase",
+        "paperKeyTitle": "What is the Account Recovery Phrase?",
+        "downloadPaperKey": "Show Account Recovery Phrase",
         "changePassword": "Change Password",
-        "paperKeyInfo": "Is a phase where a 12 words mnemonic seed will be created and it's going to be useful to access your account in case you lost your key pair.",
+        "paperKeyInfo": "A 12 words mnemonic seed will be created and it's going to be useful to access your account in case you lost your key pair.",
         "seedPhraseModal": {
-          "title": "Account Recovery Phase",
-          "description": "Please take note of your 12 words seed phrase.",
-          "confirmation": "Yes, I wrote this down."
-        }
+          "title": "Seed Phrase",
+          "description": "Please write down your seed phrase and keep it somewhere safe, this will help you gain access to your account if you forget your password and have no other account recovery method."
+        },
+        "addNew": "Add New",
+        "signIn": "Sign In Methods",
+        "space": "Space",
+        "twitter": "Twitter",
+        "google": "Google",
+        "seedPhrase": "Seed Phrase",
+        "disconnect": "Disconnect",
+        "showSeed": "Show Seed Phrase",
+        "warning": {
+          "title": "Add Another Sign In Method",
+          "description": "We highly recommend adding another sign in method so you are still able to access your account in case you forget your password or lose access to your default sign in method.",
+          "button": "Add New"
+        },
+        "addNewError": "Failed to connect sign in method, please try again."
       },
       "notifications": {
         "title": "Notifications"
@@ -274,7 +349,7 @@
           "diagramTitle": "Local Usage"
         },
         "backup": {
-          "switchTitle": "Backup Storage is <0>{{value}}</0>",
+          "switchTitle": "Space Storage is <0>{{value}}</0>",
           "diagramTitle": "Space Usage ({{size}} included in {{plan}})"
         },
         "confirmModal": {
@@ -313,13 +388,58 @@
       },
       "referrals": {
         "title": "Referrals"
+      },
+      "productKey": {
+        "title": "Space Pro",
+        "addFunds": "Add Funds",
+        "form": {
+          "activated": "Space Pro Activated",
+          "noactivated": "Upgrade to Space Pro",
+          "message": "Input your product key below to activate Space Pro.",
+          "inputLabel": "Product Key",
+          "placeholder": "Enter Product Key",
+          "submit": "Get Space Pro",
+          "price": {
+            "per": "/month",
+            "extra": "$0.10 per extra GB",
+            "usage": "100 GB of Storage & Bandwidth"
+          }
+        },
+        "messageBox": {
+          "title": "Don't have a Product Key yet?",
+          "description": "Visit our store to purchase a product key to activate Space Pro.",
+          "buy": "Buy Product Key"
+        },
+        "planDetails": {
+          "title": "Plan Details",
+          "currentPlan": "Current Plan: <bold>{{plan}}</bold>",
+          "paymentType": "Payment Type: <bold>{{paymentType}}</bold>",
+          "crypto": "Cryptocurrency",
+          "creditCard": "Credit Card",
+          "nextBill": "Next Bill: <bold>{{billDate}}</bold> for <bold>${{price}}</bold>",
+          "creditBalance": "Credit Balance",
+          "replenishBalance": "Replenish your balance",
+          "balanceLow": "Your balance is getting low, add more credits to your account to continue backing up your files.",
+          "addCredits": "Add Credits",
+          "changePaymentMethod": "Change Payment Method",
+          "cancelPlan": "Cancel Plan",
+          "balanceBox": {
+            "balance": "Balance",
+            "addFunds": "Add Funds",
+            "timeRemaining": "Time Remaining:",
+            "tooltipMessage": "Current balance can cover the next {{timeRemaining}} (estimate) based on your last bill. Exact amount is subject to change based on your Space storage & bandwidth usage."
+          }
+        }
       }
     },
     "changePassword": {
       "title": "Change Password",
       "currPassword": "Current Password",
       "newPassword": "New Password",
-      "confirmPassword": "Confirm New Password"
+      "confirmPassword": "Confirm New Password",
+      "currentPassword": "Current Password",
+      "testKeysError": "Incorrect current password",
+      "backupKeysError": "Failed to update password"
     },
     "createFolder": {
       "title": "Create New Folder",
@@ -333,21 +453,49 @@
       "title": "Do you know your password?",
       "description": "If you don't have a password or written down mnemonic then you might not get back access to your files.",
       "passwordLabel": "Enter your password"
+    },
+    "license": {
+      "title": "Register Space Pro",
+      "description": "To register Space Pro, you’ll need a license key",
+      "description1": "Visit our store to make a purchase if you haven’t already.",
+      "placeholder": "Enter License Key",
+      "buy": "Buy License",
+      "register": "Register",
+      "upgradedTitle": "Upgraded to Space Pro",
+      "upgradedDescription": "Enjoy 100GB more Space storage."
+    },
+    "fileLinkPassword": {
+      "description": "File is locked",
+      "openText": "Enter password to open file",
+      "error": "Incorrect password, please try again."
     }
   },
   "welcome": {
     "remind": "Remind me later",
     "backup": {
-      "title": "Backup your account",
-      "description": "Write down your Account Recovery Phase to keep your account secure."
+      "title": "Add backup sign in method",
+      "description": "Add a backup sign in method to make sure you never lose access to your account."
     },
     "username": {
       "title": "Create a Username & Password",
       "description": "To log in & out easier we recommend creating a username & password."
     },
     "integrations": {
-      "title": "Explorer Integration",
-      "description": "If you want a local drive mounting for all your Space files, please enable it."
+      "title": "Add Space to your local drive",
+      "description": "Browse files in Space from your computer (not just from the app)."
     }
+  },
+  "addBackupSignIn": {
+    "title": "Add Backup Sign In Method",
+    "description": "Choose one of the following options to add to your account as an additional sign in method. This will help ensure you never lose access to your account.",
+    "email": "Email",
+    "username": "Username",
+    "google": "Google",
+    "twitter": "Twitter",
+    "seedPhrase": "Seed Phrase",
+    "morePrivate": "More Private",
+    "cancel": "Cancel",
+    "continue": "Continue",
+    "torusError": "Something went wrong, please try again later."
   }
 }

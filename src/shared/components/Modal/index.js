@@ -10,6 +10,10 @@ import CreateFolder from './CreateFolder';
 import DeleteAccountConfirmation from './DeleteAccountConfirmation';
 import SignoutConfirmation from './SignoutConfirmation';
 import ErrorModal from './Error';
+import LicenseRegistration from './LicenseRegistration';
+import FileLinkPassword from './FileLinkPassword';
+import AddBackUpSignIn from './AddBackupSignIn';
+import CreateUsernamePassword from './CreateUsernamePassword';
 import useStyles from './styles';
 
 import {
@@ -23,6 +27,10 @@ import {
   DELETE_ACCOUNT,
   SIGNOUT_CONFIRMATION,
   ERROR_MODAL_TOAST,
+  LICENSE_REGISTRATION,
+  ADD_BACK_UP_SIGN_IN,
+  FILE_LINK_PASSWORD,
+  CREATE_USERNAME_PASSWORD,
 } from './actions';
 
 const MODALS = {
@@ -35,6 +43,10 @@ const MODALS = {
   [DELETE_ACCOUNT]: DeleteAccountConfirmation,
   [SIGNOUT_CONFIRMATION]: SignoutConfirmation,
   [ERROR_MODAL_TOAST]: ErrorModal,
+  [LICENSE_REGISTRATION]: LicenseRegistration,
+  [FILE_LINK_PASSWORD]: FileLinkPassword,
+  [ADD_BACK_UP_SIGN_IN]: AddBackUpSignIn,
+  [CREATE_USERNAME_PASSWORD]: CreateUsernamePassword,
 };
 
 const getModalsComponents = (modals, dispatch) => modals.map(({ id, type, props }) => {

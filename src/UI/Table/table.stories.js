@@ -10,6 +10,7 @@ import {
   TableRow,
   TableCell,
   IconsCell,
+  LoadingCell,
 } from './components';
 
 const categoryName = 'ElementalComponents/Table';
@@ -48,11 +49,38 @@ const renderRow = ({ row }) => (
     </TableCell>
     <TableCell align="right">
       <Typography variant="body2">
-        <IconsCell />
+        <IconsCell
+          storageLimitWarning={false}
+          upgradeOnClick={(e) => { e.preventDefault(); }}
+          i18n={{
+            warning: "Backup Limit Reached",
+            description: "This file is not backed up, upgrade to Space Pro to back up this file.",
+            button: "Upgrade to Space Pro",
+          }}
+        />
       </Typography>
     </TableCell>
   </TableRow>
 );
+
+const renderLoadingRows = () => [...Array(20)].map((_, index) => (
+  <TableRow
+    key={index}
+  >
+    <TableCell>
+      <LoadingCell isIconCell />
+    </TableCell>
+    <TableCell>
+      <LoadingCell />
+    </TableCell>
+    <TableCell>
+      <LoadingCell />
+    </TableCell>
+    <TableCell>
+      <LoadingCell isLastCell/>
+    </TableCell>
+  </TableRow>
+));
 
 storiesOf(categoryName, module).add('Table', () => {
   const defaultProps = {
@@ -62,6 +90,7 @@ storiesOf(categoryName, module).add('Table', () => {
       'Last Modified',
       '',
     ]),
+    loading: boolean('loading', true),
     rows: object('rows', [
       {
         id: 'a1',
@@ -133,7 +162,7 @@ storiesOf(categoryName, module).add('Table', () => {
     onDoubleClickRow: action('onDoubleClickRow'),
     renderRow,
     renderHead,
-    // renderLoadingRows,
+    renderLoadingRows,
   };
 
   return (

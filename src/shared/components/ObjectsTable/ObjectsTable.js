@@ -11,22 +11,20 @@ import { openObject } from '@events';
 import { UPDATE_OBJECTS } from '@reducers/storage';
 import Dropzone from '@shared/components/Dropzone';
 import Table, { TableCell, TableRow } from '@ui/Table';
-import ErrorCardRefresh from '@ui/ErrorCardRefresh';
 
 import useStyles from './styles';
 
 const ObjectsTable = ({
   rows,
   heads,
-  renderRow,
+  renderRow: RenderRow,
   withRowOptions,
   getRedirectUrl,
   onOutsideClick,
   onDropzoneDrop,
-  error,
-  errorMessage,
-  buttonErrorMessage,
-  fetchObjects,
+  loading,
+  renderLoadingRows,
+  EmptyState,
 }) => {
   const classes = useStyles();
   const history = useHistory();
@@ -91,7 +89,14 @@ const ObjectsTable = ({
       }));
     } else if (row.type === 'file') {
       const rowBucket = row.sourceBucket || row.bucket;
-      openObject(row.key, row.dbId, rowBucket);
+      openObject({
+        path: row.key,
+        dbId: row.dbId,
+        bucket: rowBucket,
+        name: row.name,
+        ipfsHash: row.ipfsHash,
+        isPublicLink: row.isPublicLink,
+      });
 
       newRows = rows.map((_row) => ({
         ..._row,
@@ -146,14 +151,19 @@ const ObjectsTable = ({
       <Dropzone
         noClick
         onDrop={onDropzoneDrop}
-        classes={{ root: classes.dropzone, active: classes.dropzoneActive }}
         disabled={!onDropzoneDrop}
+        objectsList={rows.map((obj) => ({
+          isFolder: obj.type === 'folder',
+          name: obj.key,
+        }))}
       >
         <div ref={wrapperRef}>
           <Table
             head={withRowOptions ? [...heads, { width: 43 }] : heads}
             rows={rows}
             className={classes.root}
+            renderLoadingRows={renderLoadingRows}
+            loading={loading}
             renderHead={({ head = [] }) => (
               <TableRow>
                 {head.map(({ width, title }) => (
@@ -176,7 +186,7 @@ const ObjectsTable = ({
                 onContextMenu={handleRowRightClick({ row })}
                 onDoubleClick={handleDoubleRowClick({ row })}
               >
-                {renderRow(row)}
+                <RenderRow row={row} />
                 {withRowOptions && (
                   <TableCell align="right">
                     <Button
@@ -195,16 +205,8 @@ const ObjectsTable = ({
             )}
           />
         </div>
+        {!loading && !rows.length && <EmptyState />}
       </Dropzone>
-      {error && (
-      <div className={classes.errorCardContainer}>
-        <ErrorCardRefresh
-          message={errorMessage}
-          buttonText={buttonErrorMessage}
-          buttonOnClick={fetchObjects}
-        />
-      </div>
-      )}
     </div>
   );
 };
@@ -213,10 +215,9 @@ ObjectsTable.defaultProps = {
   onDropzoneDrop: null,
   withRowOptions: false,
   onOutsideClick: () => null,
-  error: false,
-  errorMessage: '',
-  buttonErrorMessage: '',
-  fetchObjects: () => null,
+  renderLoadingRows: () => null,
+  loading: false,
+  EmptyState: () => null,
 };
 
 ObjectsTable.propTypes = {
@@ -227,13 +228,12 @@ ObjectsTable.propTypes = {
     title: PropTypes.string.isRequired,
     width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   })).isRequired,
-  renderRow: PropTypes.func.isRequired,
+  renderRow: PropTypes.elementType.isRequired,
   getRedirectUrl: PropTypes.func.isRequired,
   withRowOptions: PropTypes.bool,
-  error: PropTypes.bool,
-  errorMessage: PropTypes.string,
-  buttonErrorMessage: PropTypes.string,
-  fetchObjects: PropTypes.func,
+  renderLoadingRows: PropTypes.func,
+  loading: PropTypes.bool,
+  EmptyState: PropTypes.elementType,
 };
 
 export default ObjectsTable;

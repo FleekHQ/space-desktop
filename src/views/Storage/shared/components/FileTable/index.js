@@ -10,7 +10,8 @@ import { UPDATE_OBJECTS } from '@reducers/storage';
 import ObjectsTable from '@shared/components/ObjectsTable';
 import { SHARING_MODAL } from '@shared/components/Modal/actions';
 
-import { renderRow } from '../../renderRow';
+import renderLoadingRows from '../../render-loading-rows';
+import RenderRow from '../../RenderRow';
 import getTableHeads from '../../getTableHeads';
 
 const FileTable = ({
@@ -18,11 +19,12 @@ const FileTable = ({
   prefix,
   baseRedirectUrl,
   fetchObjects,
+  EmptyState,
 }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
-  const [rows, isSharingModalVisible, error] = useSelector((state) => [
+  const [rows, isSharingModalVisible, loading] = useSelector((state) => [
     objectsSelector(
       state,
       bucket,
@@ -30,7 +32,8 @@ const FileTable = ({
       '/',
     ),
     state.modals.some((modal) => modal.type === SHARING_MODAL),
-    state.storage.error,
+    state.storage.buckets[bucket].loading,
+    state.storage,
   ]);
 
   const handleTableOutsideClick = (target) => {
@@ -54,9 +57,9 @@ const FileTable = ({
     });
   };
 
-  const onDropzoneDrop = (files) => {
+  const onDropzoneDrop = (files, target) => {
     addItems({
-      targetPath: prefix,
+      targetPath: target || prefix,
       sourcePaths: files.map((file) => file.path),
     });
   };
@@ -65,15 +68,15 @@ const FileTable = ({
     <ObjectsTable
       rows={rows}
       bucket={bucket}
-      renderRow={renderRow}
-      error={!!error}
-      errorMessage={t('modules.storage.fileTable.error.message')}
-      buttonErrorMessage={t('modules.storage.fileTable.error.buttonText')}
+      loading={rows.length <= 0 && loading}
+      renderLoadingRows={renderLoadingRows}
+      renderRow={RenderRow}
       fetchObjects={fetchObjects}
       heads={getTableHeads(t)}
-      getRedirectUrl={(row) => path.join(baseRedirectUrl, prefix, row.name)}
+      getRedirectUrl={(row) => path.posix.join(baseRedirectUrl, prefix, row.name)}
       onDropzoneDrop={onDropzoneDrop}
       onOutsideClick={handleTableOutsideClick}
+      EmptyState={EmptyState}
     />
   );
 };
@@ -81,6 +84,7 @@ const FileTable = ({
 FileTable.defaultProps = {
   baseRedirectUrl: '/storage/files',
   fetchObjects: () => {},
+  EmptyState: () => null,
 };
 
 FileTable.propTypes = {
@@ -88,6 +92,7 @@ FileTable.propTypes = {
   prefix: PropTypes.string.isRequired,
   baseRedirectUrl: PropTypes.string,
   fetchObjects: PropTypes.func,
+  EmptyState: PropTypes.elementType,
 };
 
 export default FileTable;

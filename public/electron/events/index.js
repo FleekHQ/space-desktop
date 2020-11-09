@@ -1,5 +1,4 @@
 const registerAuthEvents = require('./auth');
-// const registerModalEvents = require('./modal');
 const registerEventStream = require('./stream');
 const registerTxlSubscribe = require('./txl-subscribe');
 const registerObjectsEvents = require('./objects').default;
@@ -14,6 +13,9 @@ const registerFolderEvents = require('./folder');
 const registerIdentitiesEvents = require('./identities');
 const registerUsageEvents = require('./usage');
 const registerNotificationNotificationSuscribe = require('./notifications-subscribe');
+const registerWalletEvents = require('./wallet');
+const registerWinResizeEvents = require('./win-resize');
+const registerShellEvents = require('./shell');
 
 const registerEvents = ({
   app,
@@ -25,7 +27,6 @@ const registerEvents = ({
   const notificationStream = registerNotificationNotificationSuscribe(mainWindow);
 
   registerAuthEvents(mainWindow);
-  // registerModalEvents(mainWindow);
   registerShareUpdate(mainWindow);
   registerObjectsEvents(mainWindow);
   registerAddItemsSubscribe(mainWindow);
@@ -36,6 +37,9 @@ const registerEvents = ({
   registerFolderEvents(mainWindow);
   registerIdentitiesEvents(mainWindow);
   registerUsageEvents(mainWindow);
+  registerWalletEvents(mainWindow);
+  registerWinResizeEvents(mainWindow);
+  registerShellEvents(mainWindow);
 
   if (!isDev && process.env.SKIP_AUTOUPDATE !== 'true') {
     registerAppUpdate({ app, mainWindow });

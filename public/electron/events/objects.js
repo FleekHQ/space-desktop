@@ -5,6 +5,7 @@ const { spaceClient } = require('../clients');
 
 const EVENT_PREFIX = 'objects';
 const OPEN_EVENT = `${EVENT_PREFIX}:open`;
+const OPEN_ERROR_EVENT = `${EVENT_PREFIX}:open:error`;
 const FETCH_EVENT = `${EVENT_PREFIX}:fetch`;
 const ERROR_EVENT = `${EVENT_PREFIX}:error`;
 const SUCCESS_EVENT = `${EVENT_PREFIX}:success`;
@@ -13,6 +14,12 @@ const SUCCESS_DIR_EVENT = `${EVENT_PREFIX}:successDir`;
 const FETCH_SHARED_OBJECTS_EVENT = `${EVENT_PREFIX}:fetchShared`;
 const FETCH_SHARED_OBJECTS_ERROR_EVENT = `${EVENT_PREFIX}:fetchShared:error`;
 const FETCH_SHARED_OBJECTS_SUCCESS_EVENT = `${EVENT_PREFIX}:fetchShared:success`;
+const OPEN_PUBLIC_FILE_EVENT = `${EVENT_PREFIX}:openPublicFile`;
+const OPEN_PUBLIC_FILE_ERROR_EVENT = `${EVENT_PREFIX}:openPublicFile:error`;
+const OPEN_PUBLIC_FILE_SUCCESS_EVENT = `${EVENT_PREFIX}:openPublicFile:success`;
+const SEARCH_EVENT = `${EVENT_PREFIX}:search`;
+const SEARCH_ERROR_EVENT = `${SEARCH_EVENT}:error`;
+const SEARCH_SUCCESS_EVENT = `${SEARCH_EVENT}:success`;
 
 const DEFAULT_BUCKET = 'personal';
 
@@ -34,6 +41,7 @@ const entryToObject = (entry, bucket) => ({
   })),
 });
 
+/* eslint-disable no-console */
 const listDirectories = async (mainWindow, payload = {}) => {
   const bucket = get(payload, 'bucket', DEFAULT_BUCKET) || DEFAULT_BUCKET;
 
@@ -43,8 +51,9 @@ const listDirectories = async (mainWindow, payload = {}) => {
     const entriesList = res.getEntriesList();
     const entries = entriesList.map((entry) => entryToObject(entry, bucket));
 
-    mainWindow.webContents.send(SUCCESS_EVENT, { entries });
+    mainWindow.webContents.send(SUCCESS_EVENT, { entries, bucket });
   } catch (err) {
+    console.error(`${ERROR_EVENT}-listDirectories`, err);
     mainWindow.webContents.send(ERROR_EVENT, err);
   }
 };
@@ -65,14 +74,19 @@ const listSharedFiles = async (mainWindow, payload = {}) => {
         return {
           dbId: item.getDbid(),
           sourceBucket: item.getBucket(),
+          isPublicLink: item.getIspubliclink(),
           ...entryToObject(entry, 'shared-with-me'),
         };
       }),
     };
 
-    mainWindow.webContents.send(FETCH_SHARED_OBJECTS_SUCCESS_EVENT, objects);
-  } catch (err) {
-    mainWindow.webContents.send(FETCH_SHARED_OBJECTS_ERROR_EVENT, err);
+    mainWindow.webContents.send(FETCH_SHARED_OBJECTS_SUCCESS_EVENT, {
+      objects,
+      bucket: 'shared-with-me',
+    });
+  } catch (error) {
+    console.error('FETCH_SHARED_OBJECTS_ERROR_EVENT', error);
+    mainWindow.webContents.send(FETCH_SHARED_OBJECTS_ERROR_EVENT, { error, bucket: 'shared-with-me' });
   }
 };
 
@@ -86,7 +100,7 @@ const listDirectory = async (
     const res = await spaceClient.listDirectory(payload);
     const entries = res.getEntriesList().map((entry) => entryToObject(entry, bucket));
 
-    mainWindow.webContents.send(SUCCESS_DIR_EVENT, { entries });
+    mainWindow.webContents.send(SUCCESS_DIR_EVENT, { entries, bucket });
 
     // fetch sub-folders
     if (payload.fetchSubFolders) {
@@ -100,7 +114,8 @@ const listDirectory = async (
       });
     }
   } catch (error) {
-    mainWindow.webContents.send(ERROR_EVENT, error);
+    console.error(`${ERROR_EVENT}-listDirectory`, error);
+    mainWindow.webContents.send(ERROR_EVENT, { error, bucket });
   }
 };
 
@@ -117,8 +132,41 @@ const registerObjectsEvents = (mainWindow) => {
 
       shell.openItem(location);
     } catch (err) {
-      /* eslint-disable no-console */
-      console.error(err);
+      console.error('OPEN_ERROR_EVENT', err);
+      mainWindow.webContents.send(OPEN_ERROR_EVENT, payload);
+    }
+  });
+
+  ipcMain.on(OPEN_PUBLIC_FILE_EVENT, async (event, payload) => {
+    try {
+      const openPublicFilePayload = {
+        fileCid: payload.fileCid,
+        filename: payload.filename,
+      };
+
+      if (payload.password) {
+        openPublicFilePayload.password = payload.password;
+      }
+
+      const res = await spaceClient.openPublicFile(openPublicFilePayload);
+
+      const location = res.getLocation();
+
+      if (!location) {
+        throw new Error('location not provided');
+      }
+
+      if (payload.reloadFiles) {
+        await listSharedFiles(mainWindow);
+      }
+
+      mainWindow.webContents.send(OPEN_PUBLIC_FILE_SUCCESS_EVENT, { location });
+      shell.openItem(location);
+    } catch (err) {
+      console.error('OPEN_PUBLIC_FILE_ERROR_EVENT', err);
+      mainWindow.webContents.send(OPEN_PUBLIC_FILE_ERROR_EVENT, {
+        message: err.message,
+      });
     }
   });
 
@@ -133,6 +181,32 @@ const registerObjectsEvents = (mainWindow) => {
   ipcMain.on(FETCH_SHARED_OBJECTS_EVENT, async (event, payload = {}) => {
     await listSharedFiles(mainWindow, payload);
   });
+
+  ipcMain.on(SEARCH_EVENT, async (event, payload) => {
+    try {
+      const res = await spaceClient.searchFiles({ query: payload });
+
+      const entries = res.getEntriesList().map((item) => {
+        const dbId = item.getDbid();
+        const entry = item.getEntry();
+        const sourceBucket = item.getBucket();
+        const bucket = sourceBucket === 'personal' ? 'personal' : 'shared-with-me';
+
+        return {
+          sourceBucket,
+          ...entryToObject(entry, bucket),
+          ...(bucket !== 'personal' && { dbId }),
+        };
+      });
+
+      mainWindow.webContents.send(SEARCH_SUCCESS_EVENT, { entries });
+    } catch (err) {
+      console.error('SEARCH_ERROR_EVENT', err);
+      mainWindow.webContents.send(SEARCH_ERROR_EVENT, {
+        message: err.message,
+      });
+    }
+  });
 };
 
 module.exports = {
@@ -140,4 +214,5 @@ module.exports = {
   listDirectories,
   listDirectory,
   listSharedFiles,
+  entryToObject,
 };
