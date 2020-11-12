@@ -254,6 +254,7 @@
   "sharingProgressModal": {
     "message": "Shared <0>{{fileName}}",
     "inProgress": "Sharing <0>{{fileName}}...",
+    "failedToShare": "Failed to share file",
     "dismiss": "Close"
   },
   "modals": {
@@ -273,12 +274,14 @@
       "noLinkDescription": "No link created yet.",
       "linkDescription": "Anyone with this link can view the folder.",
       "copyLink": "Copy link",
+      "copied": "Copied",
       "createLink": "Create link",
       "emailPlaceholder": "Add a message (optional)",
       "shareEmailButton": "Share",
       "errors": {
         "invalidEmail": "Email is invalid",
-        "duplicateEmail": "This email is already selected"
+        "duplicateEmail": "This email is already selected",
+        "failedShare": "Failed to share file, please try again."
       },
       "shareLink": {
         "title": "Share via Password Protected Link",

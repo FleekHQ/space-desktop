@@ -28,14 +28,15 @@ const registerShareEvents = (mainWindow) => {
   });
 
   ipcMain.on(SHARE_FILES_BY_PUBLIC_KEY_EVENT, async (event, payload) => {
+    const { notificationId } = payload;
     try {
       let usersNotFound = [];
       let usernamesPubKeys = [];
 
       const paths = get(payload, 'paths', []) || [];
       const usernames = get(payload, 'usernames', []) || [];
-      const publicKeys = get(payload, 'publicKeys', []) || [];
-
+      const publicKeysInput = get(payload, 'publicKeys', []) || [];
+      let identities = [];
       if (usernames.length > 0) {
         const apiTokens = await spaceClient.getAPISessionTokens();
         const { data } = await apiClient.identities.getByUsername({
@@ -43,7 +44,7 @@ const registerShareEvents = (mainWindow) => {
           token: apiTokens.getServicestoken(),
         });
 
-        const identities = isArray(data.data) ? data.data : [data.data];
+        identities = isArray(data.data) ? data.data : [data.data];
 
         usersNotFound = usernames.reduce((acc, user) => {
           const userExist = identities.findIndex((identity) => {
@@ -60,18 +61,36 @@ const registerShareEvents = (mainWindow) => {
           .map((identity) => identity.publicKey);
       }
 
+      const publicKeys = [
+        ...publicKeysInput,
+        ...usernamesPubKeys,
+      ];
+
       await spaceClient.shareFilesViaPublicKey({
         paths,
-        publicKeys: [
-          ...publicKeys,
-          ...usernamesPubKeys,
-        ],
+        publicKeys,
       });
 
-      mainWindow.webContents.send(SHARE_FILES_BY_PUBLIC_KEY_SUCCESS_EVENT, { usersNotFound });
-    } catch (err) {
-      console.error('SHARE_FILES_BY_PUBLIC_KEY_ERROR_EVENT', err);
-      mainWindow.webContents.send(SHARE_FILES_BY_PUBLIC_KEY_ERROR_EVENT, err);
+      const getAddress = (publicKey) => {
+        const user = identities.find((identity) => identity.publicKey === publicKey);
+        return user ? user.address : '';
+      };
+
+      mainWindow.webContents.send(SHARE_FILES_BY_PUBLIC_KEY_SUCCESS_EVENT, {
+        notificationId,
+        usersNotFound,
+        objects: paths,
+        newMembers: publicKeys.map((publicKey) => ({
+          publicKey,
+          address: getAddress(publicKey),
+        })),
+      });
+    } catch (error) {
+      console.error('SHARE_FILES_BY_PUBLIC_KEY_ERROR_EVENT', error);
+      mainWindow.webContents.send(SHARE_FILES_BY_PUBLIC_KEY_ERROR_EVENT, {
+        error,
+        notificationId,
+      });
     }
   });
 
