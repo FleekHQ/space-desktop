@@ -1,13 +1,13 @@
 {
   "name": "space-app",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": true,
   "main": "public/electron-app.js",
   "author": "Fleek Labs Inc.",
   "homepage": "./",
   "repository": {
     "type": "git",
-    "url": "https://github.com/FleekHQ/desktop-storage.git"
+    "url": "https://github.com/FleekHQ/space-desktop.git"
   },
   "scripts": {
     "start": "node scripts/start.js",
@@ -167,9 +167,8 @@
     },
     "publish": {
       "provider": "github",
-      "repo": "desktop-storage",
-      "owner": "FleekHQ",
-      "private": true
+      "repo": "space-desktop",
+      "owner": "FleekHQ"
     },
     "files": [
       "build/**/*",
@@ -201,6 +200,24 @@
     },
     "linux": {
       "icon": "build/icon.png"
+    },
+    "dmg": {
+      "background": "build/background.png",
+      "icon": "build/icon.png",
+      "iconSize": 70,
+      "contents": [
+        {
+          "x": 129,
+          "y": 217,
+          "type": "file"
+        },
+        {
+          "x": 481,
+          "y": 217,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
     }
   },
   "jest": {
