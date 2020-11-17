@@ -15,10 +15,11 @@ const GET_MNEMONIC_SEED_SUCCESS_EVENT = `${EVENT_PREFIX}:get_mnemomnic:success`;
 const BACKUP_KEYS_BY_PASSPHRASE_SEED_EVENT = `${EVENT_PREFIX}:backupByPassphrase`;
 const BACKUP_KEYS_BY_PASSPHRASE_SEED_ERROR_EVENT = `${EVENT_PREFIX}:backupByPassphrase:error`;
 const BACKUP_KEYS_BY_PASSPHRASE_SEED_SUCCESS_EVENT = `${EVENT_PREFIX}:backupByPassphrase:success`;
-const TEST_KEYS_BY_PASSPHRASE_EVENT = `${EVENT_PREFIX}:testKeys`;
-const TEST_KEYS_BY_PASSPHRASE_ERROR_EVENT = `${EVENT_PREFIX}:testKeys:error`;
-const TEST_KEYS_BY_PASSPHRASE_SUCCESS_EVENT = `${EVENT_PREFIX}:testKeys:success`;
+const TEST_KEYS_BY_PASSPHRASE_AND_SIGN_OUT_EVENT = `${EVENT_PREFIX}:testKeysAndSignOut`;
+const TEST_KEYS_BY_PASSPHRASE_AND_SIGN_OUT_ERROR_EVENT = `${EVENT_PREFIX}:testKeysAndSignOut:error`;
+const TEST_KEYS_BY_PASSPHRASE_AND_SIGN_OUT_SUCCESS_EVENT = `${EVENT_PREFIX}:testKeysAndSignOut:success`;
 
+/* eslint-disable no-console */
 const registerKeysEvents = (mainWindow) => {
   ipcMain.on(GET_PUBLIC_KEY_EVENT, async () => {
     try {
@@ -28,6 +29,7 @@ const registerKeysEvents = (mainWindow) => {
         publicKey: res.getPublickey(),
       });
     } catch (err) {
+      console.error('GET_PUBLIC_KEY_ERROR_EVENT', err);
       mainWindow.webContents.send(GET_PUBLIC_KEY_ERROR_EVENT, err);
     }
   });
@@ -38,6 +40,7 @@ const registerKeysEvents = (mainWindow) => {
 
       mainWindow.webContents.send(DELETE_KEY_PAIR_SUCCESS);
     } catch (err) {
+      console.error('DELETE_KEY_PAIR_ERROR', err);
       mainWindow.webContents.send(DELETE_KEY_PAIR_ERROR, err);
     }
   });
@@ -50,28 +53,56 @@ const registerKeysEvents = (mainWindow) => {
         mnemonic: res.getMnemonic(),
       });
     } catch (err) {
+      console.error('GET_MNEMONIC_SEED_ERROR_EVENT', err);
       mainWindow.webContents.send(GET_MNEMONIC_SEED_ERROR_EVENT, err);
     }
   });
 
   ipcMain.on(BACKUP_KEYS_BY_PASSPHRASE_SEED_EVENT, async (_, payload) => {
+    const {
+      uuid,
+      passphrase,
+      currentPassphrase,
+    } = payload;
+
+    if (currentPassphrase) {
+      try {
+        await spaceClient.testKeysPassphrase({
+          uuid,
+          passphrase: currentPassphrase,
+        });
+      } catch (err) {
+        console.error('BACKUP_KEYS_BY_PASSPHRASE_SEED_ERROR_EVENT:testKeysPassphrase', err);
+        mainWindow.webContents.send(BACKUP_KEYS_BY_PASSPHRASE_SEED_ERROR_EVENT, 'testKeysError');
+        return;
+      }
+    }
+
     try {
-      await spaceClient.backupKeysByPassphrase(payload);
+      await spaceClient.backupKeysByPassphrase({
+        type: 0, // 0 = PASSWORD; 1 = ETH
+        uuid,
+        passphrase,
+      });
 
       mainWindow.webContents.send(BACKUP_KEYS_BY_PASSPHRASE_SEED_SUCCESS_EVENT);
     } catch (err) {
-      mainWindow.webContents.send(BACKUP_KEYS_BY_PASSPHRASE_SEED_ERROR_EVENT, err);
+      console.error('BACKUP_KEYS_BY_PASSPHRASE_SEED_ERROR_EVENT:backupKeysByPassphrase', err);
+      mainWindow.webContents.send(BACKUP_KEYS_BY_PASSPHRASE_SEED_ERROR_EVENT, 'backupKeysError');
     }
   });
 
-  ipcMain.on(TEST_KEYS_BY_PASSPHRASE_EVENT, async (_, payload) => {
+  ipcMain.on(TEST_KEYS_BY_PASSPHRASE_AND_SIGN_OUT_EVENT, async (_, payload) => {
     try {
-      await spaceClient.testKeysPassphrase(payload);
+      if (payload.passphrase) {
+        await spaceClient.testKeysPassphrase(payload);
+      }
       await spaceClient.deleteKeyPair();
 
-      mainWindow.webContents.send(TEST_KEYS_BY_PASSPHRASE_SUCCESS_EVENT);
+      mainWindow.webContents.send(TEST_KEYS_BY_PASSPHRASE_AND_SIGN_OUT_SUCCESS_EVENT);
     } catch (error) {
-      mainWindow.webContents.send(TEST_KEYS_BY_PASSPHRASE_ERROR_EVENT, {
+      console.error('TEST_KEYS_BY_PASSPHRASE_ERROR_EVENT', error);
+      mainWindow.webContents.send(TEST_KEYS_BY_PASSPHRASE_AND_SIGN_OUT_ERROR_EVENT, {
         message: error.message,
       });
     }

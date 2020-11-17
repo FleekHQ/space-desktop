@@ -14,6 +14,7 @@ import registerIdentitiesEvents from './identities';
 import registerUsageEvents from './usage';
 import registerNotificationSubscribe from './notifications-subscribe';
 import registerBillingEvents from './billing';
+import registerSubscriptions from './subscriptions';
 
 const registerEvents = () => {
   registerShortcuts();
@@ -32,6 +33,8 @@ const registerEvents = () => {
   registerUsageEvents();
   registerNotificationSubscribe();
   registerBillingEvents();
+  registerSubscriptions();
+  registerSubscriptions();
 };
 
 export default registerEvents;
@@ -47,3 +50,5 @@ export * from './folder';
 export * from './identities';
 export * from './usage';
 export * from './billing';
+export * from './win-resize';
+export * from './subscriptions';

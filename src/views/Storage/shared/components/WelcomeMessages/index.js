@@ -1,9 +1,10 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
-
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import { useDispatch, useSelector } from 'react-redux';
+import Button from '@terminal-packages/space-ui/core/Button';
+import { faLaptop } from '@fortawesome/pro-regular-svg-icons/faLaptop';
+import { faShieldAlt } from '@fortawesome/pro-regular-svg-icons/faShieldAlt';
 
 import MessageBox from '@ui/MessageBox';
 import { WELCOME_ACTION_TYPES } from '@reducers/welcome';
@@ -39,11 +40,28 @@ const WelcomeMessages = () => {
     return null;
   }
 
+  // Delete this variable when we have integrated drive mounting
+  // and want it to show up
+  const disableDriveMountingModal = true;
+
   return (
     <div className={classes.rootWelcome}>
       {
         !state.hideBackup && (
-          <MessageBox title={t('welcome.backup.title')} bgColor="primary">
+          <MessageBox
+            bgColor="primary"
+            icon={faShieldAlt}
+            title={(
+              <div className={classes.messageTitleContainer}>
+                <Typography variant="body2" className={classes.title}>
+                  {t('welcome.backup.title')}
+                </Typography>
+                <Typography variant="body2" color="textSecondary" className={classes.title}>
+                  {t('common.highlyRecommended')}
+                </Typography>
+              </div>
+            )}
+          >
             <Typography variant="body2" color="textPrimary">
               {t('welcome.backup.description')}
             </Typography>
@@ -51,19 +69,20 @@ const WelcomeMessages = () => {
               <Button
                 id="security"
                 type="button"
-                variant="contained"
+                variant="primary"
                 classes={{ root: classes.btn }}
                 onClick={handleSettingsModal({ dispatch })}
               >
-                {t('common.backup')}
+                {t('common.add')}
               </Button>
               <Button
                 type="button"
                 id="hideBackup"
+                variant="text"
                 classes={{ root: classes.btn }}
                 onClick={handleDismiss({ dispatch })}
               >
-                {t('common.dismiss')}
+                {t('common.remindMeLater')}
               </Button>
             </div>
           </MessageBox>
@@ -71,7 +90,7 @@ const WelcomeMessages = () => {
       }
       {
         !state.hideUsername && (
-          <MessageBox title={t('welcome.username.title')}>
+          <MessageBox title={t('welcome.username.title')} bgColor="secondary">
             <Typography variant="body2" color="textPrimary">
               {t('welcome.username.description')}
             </Typography>
@@ -79,7 +98,7 @@ const WelcomeMessages = () => {
               <Button
                 id="account"
                 type="button"
-                variant="contained"
+                variant="primary"
                 classes={{ root: classes.btn }}
                 onClick={handleSettingsModal({ dispatch })}
               >
@@ -87,6 +106,7 @@ const WelcomeMessages = () => {
               </Button>
               <Button
                 type="button"
+                variant="text"
                 id="hideUsername"
                 classes={{ root: classes.btn }}
                 onClick={handleDismiss({ dispatch })}
@@ -98,8 +118,22 @@ const WelcomeMessages = () => {
         )
       }
       {
-        !state.hideIntegration && (
-          <MessageBox title={t('welcome.integrations.title')}>
+        !state.hideIntegration && !disableDriveMountingModal && (
+          <MessageBox
+            bgColor="secondary"
+            icon={faLaptop}
+            iconSize={12}
+            title={(
+              <div className={classes.messageTitleContainer}>
+                <Typography variant="body2" className={classes.title}>
+                  {t('welcome.integrations.title')}
+                </Typography>
+                <Typography variant="body2" color="textSecondary" className={classes.title}>
+                  {t('common.highlyRecommended')}
+                </Typography>
+              </div>
+            )}
+          >
             <Typography variant="body2" color="textPrimary">
               {t('welcome.integrations.description')}
             </Typography>
@@ -107,14 +141,15 @@ const WelcomeMessages = () => {
               <Button
                 id="usage"
                 type="button"
-                variant="contained"
+                variant="primary"
                 classes={{ root: classes.btn }}
-                onClick={handleSettingsModal({ dispatch })}
+                onClick={() => null}
               >
                 {t('common.enable')}
               </Button>
               <Button
                 type="button"
+                variant="text"
                 id="hideIntegration"
                 classes={{ root: classes.btn }}
                 onClick={handleDismiss({ dispatch })}

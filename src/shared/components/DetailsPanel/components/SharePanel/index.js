@@ -2,9 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import Button from '@terminal-packages/space-ui/core/Button';
 
 import { getIdentitiesByAddress } from '@events';
 
@@ -34,13 +33,13 @@ const SharePanel = (props) => {
     if (addresses.length > 0) {
       getIdentitiesByAddress({ addresses });
     }
-  }, []);
+  }, [members]);
 
   return (
     <div className={classes.root}>
       <Button
         fullWidth
-        variant="contained"
+        variant="primary"
         onClick={onShare}
       >
         {t('detailsPanel.share.share')}
@@ -49,7 +48,7 @@ const SharePanel = (props) => {
         <Typography variant="body1">
           {t('detailsPanel.share.with')}
         </Typography>
-        <Typography component="a" variant="body1" color="textSecondary">
+        <Typography component="a" variant="body1" color="textSecondary" className="manageLink" onClick={onShare}>
           {t('detailsPanel.share.manage')}
         </Typography>
       </div>
