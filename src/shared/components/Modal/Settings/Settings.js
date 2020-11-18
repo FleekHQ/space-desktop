@@ -35,6 +35,7 @@ const Settings = ({
 
   return (
     <BaseModal
+      onClose={closeModal}
       paperProps={{
         className: classes.root,
       }}

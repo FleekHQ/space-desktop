@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import FileIcon from '@ui/FileIcon';
+import FileIcon from '@terminal-packages/space-ui/core/FileIcon';
 import Typography from '@ui/Typography';
 import Badge from '@material-ui/core/Badge';
 
@@ -31,13 +31,14 @@ const FileCard = (props) => {
             horizontal: 'right',
           }}
           classes={{
+            root: classes.badgeRoot,
             badge: classes.badge,
           }}
         >
           <div className={classes.iconContainer}>
             <FileIcon ext={ext} />
           </div>
-          <Typography variant="body2">
+          <Typography noWrap variant="body2">
             { name }
           </Typography>
         </Badge>

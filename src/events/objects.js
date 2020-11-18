@@ -7,12 +7,16 @@ import {
   SET_LOADING_STATE_BUCKET,
   SET_ERROR_BUCKET,
   SET_LOADING_STATE,
+  SET_OPEN_ERROR_BUCKET,
 } from '@reducers/storage';
+import { SEARCH_ACTION_TYPES } from '@reducers/search';
+import { OPEN_PUBLIC_FILE_ACTION_TYPES } from '@reducers/open-public-file';
 
 import store from '../store';
 
 const EVENT_PREFIX = 'objects';
 const OPEN_EVENT = `${EVENT_PREFIX}:open`;
+const OPEN_ERROR_EVENT = `${EVENT_PREFIX}:open:error`;
 const FETCH_EVENT = `${EVENT_PREFIX}:fetch`;
 const ERROR_EVENT = `${EVENT_PREFIX}:error`;
 const SUCCESS_EVENT = `${EVENT_PREFIX}:success`;
@@ -21,6 +25,12 @@ const SUCCESS_DIR_EVENT = `${EVENT_PREFIX}:successDir`;
 const FETCH_SHARED_OBJECTS_EVENT = `${EVENT_PREFIX}:fetchShared`;
 const FETCH_SHARED_OBJECTS_ERROR_EVENT = `${EVENT_PREFIX}:fetchShared:error`;
 const FETCH_SHARED_OBJECTS_SUCCESS_EVENT = `${EVENT_PREFIX}:fetchShared:success`;
+const OPEN_PUBLIC_FILE_EVENT = `${EVENT_PREFIX}:openPublicFile`;
+const OPEN_PUBLIC_FILE_ERROR_EVENT = `${EVENT_PREFIX}:openPublicFile:error`;
+const OPEN_PUBLIC_FILE_SUCCESS_EVENT = `${EVENT_PREFIX}:openPublicFile:success`;
+const SEARCH_EVENT = `${EVENT_PREFIX}:search`;
+const SEARCH_ERROR_EVENT = `${SEARCH_EVENT}:error`;
+const SEARCH_SUCCESS_EVENT = `${SEARCH_EVENT}:success`;
 
 const registerObjectsEvents = () => {
   ipcRenderer.on(SUCCESS_EVENT, (event, payload) => {
@@ -64,7 +74,7 @@ const registerObjectsEvents = () => {
 
   ipcRenderer.on(FETCH_SHARED_OBJECTS_SUCCESS_EVENT, (event, payload) => {
     const entries = get(payload, 'objects.items', []) || [];
-    const objects = entries.map((obj) => objectPresenter(obj));
+    const objects = entries.map((obj) => objectPresenter(obj, true));
 
     store.dispatch({
       payload: {
@@ -86,7 +96,51 @@ const registerObjectsEvents = () => {
       type: SET_ERROR_BUCKET,
     });
   });
+
+  ipcRenderer.on(OPEN_PUBLIC_FILE_ERROR_EVENT, (event, error) => {
+    // eslint-disable-next-line no-console
+    console.error('Error when trying to opening a public file: ', error.message);
+
+    store.dispatch({
+      error: error.message,
+      type: OPEN_PUBLIC_FILE_ACTION_TYPES.ON_ERROR,
+    });
+  });
+
+  ipcRenderer.on(OPEN_PUBLIC_FILE_SUCCESS_EVENT, (event, payload) => {
+    store.dispatch({
+      location: payload.location,
+      type: OPEN_PUBLIC_FILE_ACTION_TYPES.ON_SUCCESS,
+    });
+  });
+
+  ipcRenderer.on(SEARCH_SUCCESS_EVENT, (event, payload) => {
+    const entries = get(payload, 'entries', []) || [];
+    const objects = entries.map((obj) => objectPresenter(obj));
+
+    store.dispatch({
+      type: SEARCH_ACTION_TYPES.SET_RESULTS,
+      payload: objects,
+    });
+  });
+
+  ipcRenderer.on(SEARCH_ERROR_EVENT, () => {
+    store.dispatch({
+      type: SEARCH_ACTION_TYPES.SET_RESULTS,
+      payload: null,
+    });
+  });
 };
+
+ipcRenderer.on(OPEN_ERROR_EVENT, (event, payload) => {
+  store.dispatch({
+    payload: {
+      ...payload,
+      error: true,
+    },
+    type: SET_OPEN_ERROR_BUCKET,
+  });
+});
 
 export const fetchSharedObjects = (seek = '', limit = 100) => {
   store.dispatch({
@@ -120,10 +174,50 @@ export const fetchDir = (path = '', bucket = 'personal', fetchSubFolders = true)
   ipcRenderer.send(FETCH_DIR_EVENT, { path, bucket, fetchSubFolders });
 };
 
-export const openObject = (path, dbId, bucket = 'personal') => ipcRenderer.send(OPEN_EVENT, {
+export const openObject = ({
   path,
-  bucket,
-  ...(dbId && { dbId }),
-});
+  dbId,
+  name,
+  ipfsHash,
+  isPublicLink = false,
+  bucket = 'personal',
+}) => {
+  if (isPublicLink) {
+    ipcRenderer.send(OPEN_PUBLIC_FILE_EVENT, {
+      filename: name,
+      fileCid: ipfsHash,
+    });
+    return;
+  }
+
+  ipcRenderer.send(OPEN_EVENT, {
+    path,
+    bucket,
+    ...(dbId && { dbId }),
+  });
+};
+
+export const openPublicFile = (payload) => {
+  store.dispatch({
+    type: OPEN_PUBLIC_FILE_ACTION_TYPES.ON_OPEN,
+  });
+  ipcRenderer.send(OPEN_PUBLIC_FILE_EVENT, payload);
+};
+
+export const searchFiles = (searchTerm) => {
+  store.dispatch({
+    type: SEARCH_ACTION_TYPES.SET_SEARCHTERM,
+    payload: searchTerm,
+  });
+
+  if (searchTerm === '') {
+    store.dispatch({
+      type: SEARCH_ACTION_TYPES.SET_RESULTS,
+      payload: null,
+    });
+  } else {
+    ipcRenderer.send(SEARCH_EVENT, searchTerm);
+  }
+};
 
 export default registerObjectsEvents;

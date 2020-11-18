@@ -2,23 +2,22 @@ import { makeStyles } from '@material-ui/core/styles';
 
 export default makeStyles((theme) => ({
   root: {
-    width: 344,
-    backgroundColor: 'transparent',
+    maxWidth: 321,
     boxShadow: 'none',
   },
   modalContent: {
     backgroundColor: theme.palette.palette.white,
-    padding: '12px 15px 16px',
+    padding: '39px 18px 18px 18px',
     borderRadius: 6,
-  },
-  titleContainer: {
     display: 'flex',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
+    flexDirection: 'column',
   },
   bodyContainer: {
     display: 'flex',
     flexDirection: 'column',
+    width: '100%',
   },
   footer: {
     display: 'flex',
@@ -26,6 +25,17 @@ export default makeStyles((theme) => ({
     '& > button': {
       width: 94,
     },
+  },
+  closeButton: {
+    borderRadius: '50%',
+    width: 16,
+    height: 16,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    right: 18,
+    top: 18,
   },
   closeIcon: {
     fontSize: 12,
@@ -37,17 +47,41 @@ export default makeStyles((theme) => ({
   confirmBtn: {
     marginLeft: 12,
   },
-  error: {
-    marginTop: 10,
-    backgroundColor: theme.palette.palette.red,
-    color: theme.palette.palette.white,
-    textAlign: 'center',
-    padding: '6px 0',
-    borderRadius: 6,
-    minHeight: 25,
-    '&:empty': {
-      opacity: 0,
-      pointerEvents: 'none',
+  errorContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    marginTop: 5,
+  },
+  errorIcon: {
+    color: theme.palette.palette.red,
+    fontSize: 9,
+    marginRight: 5,
+  },
+  errorMessage: {
+    color: theme.palette.palette.red,
+    fontSize: 10,
+  },
+  adornment: {
+    position: 'absolute',
+    right: 5,
+    '& svg': {
+      color: theme.palette.palette.gray18,
     },
+  },
+  iconButton: {
+    width: 18,
+  },
+  icon: {
+    fontSize: 14,
+    color: theme.palette.palette.gray18,
+  },
+  title: {
+    fontWeight: 600,
+    fontSize: 16,
+  },
+  logo: {
+    width: 45,
+    marginBottom: 10,
   },
 }));

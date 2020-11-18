@@ -13,7 +13,8 @@ const { getMenuOptions, trayIcon } = require('./electron/tray-menu');
 
 let appIcon;
 let mainWindow;
-let destroyStream = () => {};
+let goTo = null;
+global.destroyStream = () => {};
 
 const daemon = new DaemonProcess();
 
@@ -31,7 +32,7 @@ const restoreWindow = (windowInstance) => {
   if (!windowInstance) {
     mainWindow = createMainWindow();
 
-    destroyStream = registerEvents({
+    registerEvents({
       app,
       isDev,
       mainWindow,
@@ -42,6 +43,7 @@ const restoreWindow = (windowInstance) => {
   }
 };
 
+app.userAgentFallback = 'Chrome';
 app.setAsDefaultProtocolClient('space');
 
 /**
@@ -51,14 +53,28 @@ app.on('second-instance', () => {
   restoreWindow(mainWindow);
 });
 
-app.on('open-url', (event) => {
+app.on('open-url', (event, data) => {
   event.preventDefault();
+
+  goTo = decodeURIComponent(data.replace('space://', ''));
+
+  if (mainWindow) {
+    const fileUrl = url.format({
+      hash: goTo,
+      protocol: 'file',
+      pathname: path.resolve(__dirname, '../build/index.html'),
+    });
+
+    mainWindow.loadURL(isDev
+      ? `http://localhost:3000${goTo ? `/#/${goTo}` : ''}`
+      : fileUrl);
+  }
 });
 
 app.on('window-all-closed', () => {
   // eslint-disable-next-line no-console
   console.log('All windows are closed...');
-  destroyStream();
+  global.destroyStream();
 
   if (process.platform !== 'darwin' || app.newUpdate) {
     app.quit();
@@ -94,12 +110,13 @@ app.on('ready', () => {
  */
 daemon.on('ready', () => {
   const fileUrl = url.format({
+    hash: goTo,
     protocol: 'file',
     pathname: path.resolve(__dirname, '../build/index.html'),
   });
 
   mainWindow.loadURL(isDev
-    ? 'http://localhost:3000'
+    ? `http://localhost:3000${goTo ? `/#/${goTo}` : ''}`
     : fileUrl);
 
   mainWindow.setSize(1200, 680);
@@ -118,7 +135,7 @@ daemon.on('ready', () => {
     }
   });
 
-  destroyStream = registerEvents({
+  registerEvents({
     app,
     isDev,
     mainWindow,

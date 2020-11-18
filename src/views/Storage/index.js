@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Route,
   Switch,
   Redirect,
   useRouteMatch,
 } from 'react-router-dom';
+import { getLinkedAddresses, subscribeToStreams } from '@events';
 
 import Layout from '@shared/components/Layout';
 
@@ -18,6 +19,13 @@ import useStyles from './styles';
 const Storage = () => {
   const classes = useStyles();
   const match = useRouteMatch();
+
+  // pre-fetching data for Settings
+  // subscribing to streams, which occurs only for a logged in user
+  useEffect(() => {
+    getLinkedAddresses();
+    subscribeToStreams();
+  }, []);
 
   return (
     <Layout>

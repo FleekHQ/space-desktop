@@ -24,9 +24,9 @@ const FileTable = ({ bucket, prefix }) => {
     state.storage.loading,
   ]);
 
-  const onDropzoneDrop = (files) => {
+  const onDropzoneDrop = (files, target) => {
     addItems({
-      targetPath: prefix,
+      targetPath: target || prefix,
       sourcePaths: files.map((file) => file.path),
     });
   };
@@ -40,7 +40,7 @@ const FileTable = ({ bucket, prefix }) => {
       loading={loading}
       withRowOptions
       onDropzoneDrop={onDropzoneDrop}
-      getRedirectUrl={(row) => path.join('/storage/files', prefix, row.name)}
+      getRedirectUrl={(row) => path.posix.join('/storage/files', prefix, row.name)}
     />
   );
 };

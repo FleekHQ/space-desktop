@@ -8,40 +8,38 @@ const PasswordCheckTooltip = ({
   open,
   password,
   children,
+  bgColor,
+  tooltipPlacement,
 }) => {
   const { t } = useTranslation();
+  const isLongEnough = /.{8,}/.test(password);
+  const containsUpperLowerCase = /[A-Z]/.test(password) && /[a-z]/.test(password);
+  const containsNumber = /[0-9]/.test(password);
+
+  const successfulCheck = isLongEnough && containsUpperLowerCase && containsNumber;
 
   return (
     <InputTooltip
-      type="info"
-      bgColor="primary"
+      bgColor={bgColor}
       title={t('modules.shared.passwordCheck.title')}
       tooltip={{
-        open,
+        open: open && !successfulCheck,
         arrow: true,
-        placement: 'right-start',
+        placement: tooltipPlacement,
       }}
       requirements={(
         <>
           <Requirement
-            isCorrect={/[0-9]/.test(password)}
-            requirement={t('modules.shared.passwordCheck.requirements.number')}
+            isCorrect={isLongEnough}
+            requirement={t('modules.shared.passwordCheck.requirements.charLength')}
           />
           <Requirement
-            isCorrect={/[A-Z]/.test(password)}
+            isCorrect={containsUpperLowerCase}
             requirement={t('modules.shared.passwordCheck.requirements.upperCase')}
           />
           <Requirement
-            isCorrect={/[a-z]/.test(password)}
-            requirement={t('modules.shared.passwordCheck.requirements.lowerCase')}
-          />
-          <Requirement
-            isCorrect={/[\W]/.test(password)}
-            requirement={t('modules.shared.passwordCheck.requirements.specialChar')}
-          />
-          <Requirement
-            isCorrect={/.{8,}/.test(password)}
-            requirement={t('modules.shared.passwordCheck.requirements.charLength')}
+            isCorrect={containsNumber}
+            requirement={t('modules.shared.passwordCheck.requirements.number')}
           />
         </>
       )}
@@ -54,11 +52,15 @@ const PasswordCheckTooltip = ({
 PasswordCheckTooltip.defaultProps = {
   open: false,
   password: '',
+  bgColor: 'primary',
+  tooltipPlacement: 'right-start',
 };
 
 PasswordCheckTooltip.propTypes = {
   open: PropTypes.bool,
+  bgColor: PropTypes.string,
   password: PropTypes.string,
+  tooltipPlacement: PropTypes.string,
   children: PropTypes.node.isRequired,
 };
 

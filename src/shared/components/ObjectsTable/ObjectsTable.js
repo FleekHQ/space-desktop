@@ -11,7 +11,6 @@ import { openObject } from '@events';
 import { UPDATE_OBJECTS } from '@reducers/storage';
 import Dropzone from '@shared/components/Dropzone';
 import Table, { TableCell, TableRow } from '@ui/Table';
-import ErrorCardRefresh from '@ui/ErrorCardRefresh';
 
 import useStyles from './styles';
 
@@ -23,10 +22,6 @@ const ObjectsTable = ({
   getRedirectUrl,
   onOutsideClick,
   onDropzoneDrop,
-  error,
-  errorMessage,
-  buttonErrorMessage,
-  fetchObjects,
   loading,
   renderLoadingRows,
   EmptyState,
@@ -94,7 +89,14 @@ const ObjectsTable = ({
       }));
     } else if (row.type === 'file') {
       const rowBucket = row.sourceBucket || row.bucket;
-      openObject(row.key, row.dbId, rowBucket);
+      openObject({
+        path: row.key,
+        dbId: row.dbId,
+        bucket: rowBucket,
+        name: row.name,
+        ipfsHash: row.ipfsHash,
+        isPublicLink: row.isPublicLink,
+      });
 
       newRows = rows.map((_row) => ({
         ..._row,
@@ -149,8 +151,11 @@ const ObjectsTable = ({
       <Dropzone
         noClick
         onDrop={onDropzoneDrop}
-        classes={{ root: classes.dropzone, active: classes.dropzoneActive }}
         disabled={!onDropzoneDrop}
+        objectsList={rows.map((obj) => ({
+          isFolder: obj.type === 'folder',
+          name: obj.key,
+        }))}
       >
         <div ref={wrapperRef}>
           <Table
@@ -202,15 +207,6 @@ const ObjectsTable = ({
         </div>
         {!loading && !rows.length && <EmptyState />}
       </Dropzone>
-      {error && (
-      <div className={classes.errorCardContainer}>
-        <ErrorCardRefresh
-          message={errorMessage}
-          buttonText={buttonErrorMessage}
-          buttonOnClick={fetchObjects}
-        />
-      </div>
-      )}
     </div>
   );
 };
@@ -219,10 +215,6 @@ ObjectsTable.defaultProps = {
   onDropzoneDrop: null,
   withRowOptions: false,
   onOutsideClick: () => null,
-  error: false,
-  errorMessage: '',
-  buttonErrorMessage: '',
-  fetchObjects: () => null,
   renderLoadingRows: () => null,
   loading: false,
   EmptyState: () => null,
@@ -239,10 +231,6 @@ ObjectsTable.propTypes = {
   renderRow: PropTypes.elementType.isRequired,
   getRedirectUrl: PropTypes.func.isRequired,
   withRowOptions: PropTypes.bool,
-  error: PropTypes.bool,
-  errorMessage: PropTypes.string,
-  buttonErrorMessage: PropTypes.string,
-  fetchObjects: PropTypes.func,
   renderLoadingRows: PropTypes.func,
   loading: PropTypes.bool,
   EmptyState: PropTypes.elementType,

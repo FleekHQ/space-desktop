@@ -1,15 +1,20 @@
 import get from 'lodash/get';
+
 import bucketReducer, {
   STORE_DIR,
   ADD_OBJECT,
   STORE_OBJECTS,
   DELETE_OBJECT,
-  UPDATE_OBJECT,
   UPDATE_OBJECTS,
   STORE_BUCKETS,
   SET_LOADING_STATE_BUCKET,
   SET_ERROR_BUCKET,
+  SET_OPEN_ERROR_BUCKET,
+  UPDATE_OR_ADD_OBJECT,
+  UPDATE_SHARE_AMOUNT_OBJECTS,
 } from './bucket';
+
+import { CREATE_FOLDER_ACTION_TYPES } from '../create-folder';
 
 export * from './bucket';
 
@@ -153,9 +158,18 @@ export default (state = DEFAULT_STATE, action) => {
     case STORE_DIR:
     case ADD_OBJECT:
     case DELETE_OBJECT:
-    case UPDATE_OBJECT:
-    case UPDATE_OBJECTS: {
-      const bucket = get(action.payload, '[0].bucket');
+    case UPDATE_OBJECTS:
+    case UPDATE_OR_ADD_OBJECT:
+    case UPDATE_SHARE_AMOUNT_OBJECTS:
+    case CREATE_FOLDER_ACTION_TYPES.ON_SUBMIT_SUCCESS: {
+      let bucket = null;
+
+      if (Array.isArray(action.payload)) {
+        bucket = get(action.payload, '[0].bucket');
+      } else {
+        bucket = get(action.payload, 'bucket');
+      }
+
       if (bucket) {
         return {
           ...state,
@@ -170,7 +184,8 @@ export default (state = DEFAULT_STATE, action) => {
     }
 
     case SET_LOADING_STATE_BUCKET:
-    case SET_ERROR_BUCKET: {
+    case SET_ERROR_BUCKET:
+    case SET_OPEN_ERROR_BUCKET: {
       const { bucket, ...payload } = action.payload;
       return {
         ...state,
