@@ -7,7 +7,7 @@ const { app, Tray } = require('electron');
 const isDev = require('electron-is-dev');
 
 const DaemonProcess = require('./electron/daemon');
-const FuseInstallerProcess = require('./electron/fuse');
+// const FuseInstallerProcess = require('./electron/fuse');
 const registerEvents = require('./electron/events');
 const createMainWindow = require('./electron/window/main');
 const { getMenuOptions, trayIcon } = require('./electron/tray-menu');
