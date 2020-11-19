@@ -1,7 +1,7 @@
 const path = require('path');
 const chalk = require('chalk');
 const get = require('lodash/get');
-const { spawn } = require('child_process');
+const { spawn, exec } = require('child_process');
 
 const installerName = 'Space FUSE Installer';
 
@@ -28,7 +28,9 @@ class FuseInstallerProcess {
   }
 
   callHandlers(key, args) {
-    this.handlers[key].forEach((handler) => handler(args));
+    if (this.handlers[key]) {
+      this.handlers[key].forEach((handler) => handler(args));
+    }
   }
 
   start(isDev) {
@@ -55,8 +57,10 @@ class FuseInstallerProcess {
       // eslint-disable-next-line no-console
       console.log(chalk.blue(outputLog));
 
-      if (outputLog.includes('The install was successful') || outputLog.includes('The upgrade was successful')) {
-        this.callHandlers('success');
+      if (outputLog.includes('the install was successful') || outputLog.includes('the upgrade was successful')) {
+        // eslint-disable-next-line no-console
+        console.log(chalk.blue('OsxFuse Kernel Installed'));
+        this.loadFuseKernel();
       }
     });
 
@@ -66,13 +70,26 @@ class FuseInstallerProcess {
       this.callHandlers('error');
     });
 
-    this.childProcess.on('close', () => {
-      // eslint-disable-next-line no-console
-      console.log(chalk.blue(`${installerName} finished`));
-      this.stop();
-    });
-
     this.callHandlers('pending');
+  }
+
+  loadFuseKernel() {
+    // eslint-disable-next-line no-console
+    console.log(chalk.blue('Loading OsxFuse Kernel'));
+    exec('/Library/Filesystems/osxfuse.fs/Contents/Resources/load_osxfuse', (err, stdout) => {
+      if (err) {
+        // eslint-disable-next-line no-console
+        console.error(chalk.red(err.message));
+        this.callHandlers('error');
+        return;
+      }
+
+      // eslint-disable-next-line no-console
+      console.log(chalk.blue(stdout));
+      // eslint-disable-next-line no-console
+      console.log(chalk.blue('Loading OsxFuse Kernel was successful'));
+      this.callHandlers('success');
+    });
   }
 
   stop() {

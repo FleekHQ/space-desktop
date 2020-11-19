@@ -7,7 +7,7 @@ const { app, Tray } = require('electron');
 const isDev = require('electron-is-dev');
 
 const DaemonProcess = require('./electron/daemon');
-// const FuseInstallerProcess = require('./electron/fuse');
+const FuseInstallerProcess = require('./electron/fuse');
 const registerEvents = require('./electron/events');
 const createMainWindow = require('./electron/window/main');
 const { getMenuOptions, trayIcon } = require('./electron/tray-menu');
@@ -19,7 +19,7 @@ let goTo = getRedirectPath(process.argv);
 global.destroyStream = () => {};
 
 const daemon = new DaemonProcess();
-// const fuseInstaller = new FuseInstallerProcess();
+const fuseInstaller = new FuseInstallerProcess();
 
 const enableDevDaemon = process.env.DEV_DAEMON === 'true';
 
@@ -74,7 +74,7 @@ app.on('open-url', (event, data) => {
   event.preventDefault();
 
   goTo = getRedirectPath([data]);
-
+  fuseInstaller.start(isDev);
   if (mainWindow) {
     const fileUrl = url.format({
       hash: goTo,
