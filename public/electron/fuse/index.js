@@ -3,8 +3,6 @@ const chalk = require('chalk');
 const get = require('lodash/get');
 const { spawn, exec } = require('child_process');
 
-const installerName = 'Space FUSE Installer';
-
 class FuseInstallerProcess {
   constructor() {
     this.childProcess = null;
