@@ -3,11 +3,17 @@ const chalk = require('chalk');
 const get = require('lodash/get');
 const { spawn, exec } = require('child_process');
 
+/**
+ * FuseInstallerProcess is used to installed the FuseInstaller.pkg in the resources folder.
+ *
+ * If FUSE is needed to be installed, call the `start()` function and listen
+ * `on('success')` or `on('failed')` to know when the installation is completed.
+ */
 class FuseInstallerProcess {
   constructor() {
     this.childProcess = null;
     this.handlers = {
-      ready: [],
+      success: [],
       failed: [],
       pending: [],
     };
@@ -34,7 +40,10 @@ class FuseInstallerProcess {
   start(isDev) {
     if (this.childProcess) return;
 
+    this.callHandlers('pending');
+
     if (process.platform !== 'darwin') {
+      this.callHandlers('failed', 'installing FUSE not supported');
       return;
     }
 
@@ -65,10 +74,8 @@ class FuseInstallerProcess {
     this.childProcess.stderr.on('data', (data) => {
       // eslint-disable-next-line no-console
       console.error(chalk.red(data));
-      this.callHandlers('error');
+      this.callHandlers('failed');
     });
-
-    this.callHandlers('pending');
   }
 
   loadFuseKernel() {
@@ -78,7 +85,7 @@ class FuseInstallerProcess {
       if (err) {
         // eslint-disable-next-line no-console
         console.error(chalk.red(err.message));
-        this.callHandlers('error');
+        this.callHandlers('failed');
         return;
       }
 
