@@ -1,32 +1,9 @@
-import { ipcRenderer } from 'electron';
-
-import { objectPresenter } from '@utils';
-
+/* eslint-disable no-unused-vars */
 import store from '../store';
 import { CREATE_FOLDER_ACTION_TYPES } from '../reducers/create-folder';
 
-const EVENT_PREFIX = 'folder';
-const CREATE_FOLDER_EVENT = `${EVENT_PREFIX}:folder`;
-const CREATE_FOLDER_ERROR_EVENT = `${EVENT_PREFIX}:folder:error`;
-const CREATE_FOLDER_SUCCESS_EVENT = `${EVENT_PREFIX}:folder:success`;
-
 /* eslint-disable no-console */
 const registerKeysEvents = () => {
-  ipcRenderer.on(CREATE_FOLDER_ERROR_EVENT, (_, error) => {
-    console.error('Error when trying to create a folder: ', error.message);
-
-    store.dispatch({
-      error: error.message,
-      type: CREATE_FOLDER_ACTION_TYPES.ON_SUBMIT_ERROR,
-    });
-  });
-
-  ipcRenderer.on(CREATE_FOLDER_SUCCESS_EVENT, (_, data) => {
-    store.dispatch({
-      payload: objectPresenter(data),
-      type: CREATE_FOLDER_ACTION_TYPES.ON_SUBMIT_SUCCESS,
-    });
-  });
 };
 
 /**
@@ -40,8 +17,6 @@ export const createFolder = (payload) => {
   store.dispatch({
     type: CREATE_FOLDER_ACTION_TYPES.ON_SUBMIT,
   });
-
-  ipcRenderer.send(CREATE_FOLDER_EVENT, payload);
 };
 
 export default registerKeysEvents;

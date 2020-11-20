@@ -1,6 +1,4 @@
-import { ipcRenderer } from 'electron';
-
+/* eslint-disable no-unused-vars */
 // eslint-disable-next-line import/prefer-default-export
 export const resizeWindow = (payload) => {
-  ipcRenderer.send('winResize', payload);
 };
