@@ -41,4 +41,13 @@ export default makeStyles((theme) => ({
     fontSize: 14,
     fontWeight: 500,
   },
+  input: {
+    color: theme.palette.palette.black,
+    backgroundColor: theme.palette.palette.white,
+    borderRadius: 2,
+    width: 'calc(100% - 2px)',
+    '&&': {
+      padding: 0,
+    },
+  },
 }));

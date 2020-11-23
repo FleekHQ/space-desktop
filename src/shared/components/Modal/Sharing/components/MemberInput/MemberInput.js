@@ -3,10 +3,9 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Typography from '@ui/Typography';
-import TextField from '@material-ui/core/TextField';
 import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
+import RainbowField from '@terminal-packages/space-ui/core/RainbowField';
 import { faTimes } from '@fortawesome/pro-light-svg-icons/faTimes';
 import CollaboratorInput from '../CollaboratorInput';
 import useStyles from './styles';
@@ -121,13 +120,14 @@ const MemberInput = (props) => {
           }}
           onChange={(e, newValue) => setUsernames(newValue)}
           renderInput={(params) => (
-            <TextField
+            <RainbowField
               {...params}
               fullWidth
               InputProps={{
                 ...params.InputProps,
                 endAdornment: () => null,
                 disableUnderline: true,
+                className: `${params.InputProps.className} ${classes.input}`,
               }}
               placeholder={usernames.length > 0 ? '' : i18n.placeholder}
             />
