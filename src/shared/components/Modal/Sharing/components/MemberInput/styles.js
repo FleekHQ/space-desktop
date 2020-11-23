@@ -48,6 +48,13 @@ export default makeStyles((theme) => ({
     width: 'calc(100% - 2px)',
     '&&': {
       padding: 0,
+      paddingRight: '9px!important',
+      paddingLeft: '9px!important',
+    },
+    '& input::placeholder': {
+      color: theme.palette.text.secondary,
+      fontWeight: 400,
+      opacity: 1,
     },
   },
 }));

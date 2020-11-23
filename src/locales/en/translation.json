@@ -276,7 +276,7 @@
     },
     "sharingModal": {
       "to": "To",
-      "inputPlaceholder": "Username",
+      "inputPlaceholder": "Enter Name or Email",
       "shareVia": "Share via Username (Recommended)",
       "linkTitle": "Share a link instead",
       "noLinkDescription": "No link created yet.",
