@@ -111,6 +111,7 @@ const MemberInput = (props) => {
           classes={{
             root: classes.autocomplete,
             option: classes.option,
+            paper: classes.paper,
           }}
           onInputChange={(e) => {
             // There is a bug with <Autocomplete /> where sometimes the event is null

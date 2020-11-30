@@ -57,4 +57,8 @@ export default makeStyles((theme) => ({
       opacity: 1,
     },
   },
+  paper: {
+    border: '1px solid #F2F3F7',
+    boxShadow: '0 0 11px #DBE1ED9A',
+  },
 }));
