@@ -41,14 +41,4 @@ export default makeStyles((theme) => ({
     color: theme.palette.palette.blue1,
     marginRight: 4,
   },
-  panel: {
-    padding: '17px 24px 22px 20px',
-    '&:not(:last-child)': {
-      marginBottom: 10,
-    },
-  },
-  pieChartWrapper: {
-    padding: '0 0 8px',
-    marginLeft: 88,
-  },
 }));

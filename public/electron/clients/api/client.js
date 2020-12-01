@@ -3,7 +3,6 @@ const axios = require('axios');
 const walletEndpoints = require('./endpoints/wallet');
 const identityEndpoints = require('./endpoints/identity');
 const identitiesEndpoints = require('./endpoints/identities');
-const accountEndpoints = require('./endpoints/account');
 
 /**
  * @class
@@ -64,16 +63,6 @@ function ApiClient({
   this.wallet = Object.keys(walletEndpoints).reduce((walletMethods, key) => ({
     ...walletMethods,
     [key]: walletEndpoints[key].bind(this),
-  }), {});
-
-  /**
-   * Account endpoints.
-   * @name ApiClient#account
-   * @type {import('./endpoints/account.js')}
-   */
-  this.account = Object.keys(accountEndpoints).reduce((accountMethods, key) => ({
-    ...accountMethods,
-    [key]: accountEndpoints[key].bind(this),
   }), {});
 }
 

@@ -1,35 +1,46 @@
+const get = require('lodash/get');
 const { ipcMain } = require('electron');
 
-const { spaceClient } = require('../clients');
+const { spaceClient, billingClient } = require('../clients');
 
 const EVENT_PREFIX = 'usage';
-const FETCH_USAGE_EVENT = `${EVENT_PREFIX}:fetch`;
-// eslint-disable-next-line no-unused-vars
-const FETCH_USAGE_ERROR_EVENT = `${EVENT_PREFIX}:fetch:error`;
-const FETCH_USAGE_SUCCESS_EVENT = `${EVENT_PREFIX}:fetch:success`;
+const GET_CURRENT_USAGE_EVENT = `${EVENT_PREFIX}:currentUsage`;
+const GET_CURRENT_USAGE_ERROR_EVENT = `${EVENT_PREFIX}:currentUsage:error`;
+const GET_CURRENT_USAGE_SUCCESS_EVENT = `${EVENT_PREFIX}:currentUsage:success`;
+const GET_HISTORY_USAGE_EVENT = `${EVENT_PREFIX}:historyUsage`;
+const GET_HISTORY_USAGE_ERROR_EVENT = `${EVENT_PREFIX}:historyUsage:error`;
+const GET_HISTORY_USAGE_SUCCESS_EVENT = `${EVENT_PREFIX}:historyUsage:success`;
 
-const mockupResponse = (mainWindow) => {
-  setTimeout(() => {
-    mainWindow.webContents.send(FETCH_USAGE_SUCCESS_EVENT, {
-      localStorageUsed: 42532,
-      localBandwidthUsed: 86678,
-      spaceStorageUsed: 99231,
-      spaceBandwidthUsed: 68683,
-      usageQuota: 87456983,
-    });
-  }, 5000);
-};
-
-const registerUsageEvents = (mainWindow) => {
-  ipcMain.on(FETCH_USAGE_EVENT, async (event, payload) => {
+const registerAuthEvents = (mainWindow) => {
+  ipcMain.on(GET_CURRENT_USAGE_EVENT, async () => {
     try {
-      const res = await spaceClient.getUsageInfo(payload);
-      mainWindow.webContents.send(FETCH_USAGE_SUCCESS_EVENT, res);
+      const apiTokens = await spaceClient.getAPISessionTokens();
+      const { data } = await billingClient.account.getCurrent({
+        token: apiTokens.getServicestoken(),
+      });
+      mainWindow.webContents.send(GET_CURRENT_USAGE_SUCCESS_EVENT, data);
     } catch (error) {
-      // mainWindow.webContents.send(FETCH_USAGE_ERROR_EVENT, error);
-      mockupResponse(mainWindow);
+      const message = get(error, 'response.data.Message') || error.toString();
+      mainWindow.webContents.send(GET_CURRENT_USAGE_ERROR_EVENT, {
+        message,
+      });
+    }
+  });
+
+  ipcMain.on(GET_HISTORY_USAGE_EVENT, async () => {
+    try {
+      const apiTokens = await spaceClient.getAPISessionTokens();
+      const { data } = await billingClient.account.getHistory({
+        token: apiTokens.getServicestoken(),
+      });
+      mainWindow.webContents.send(GET_HISTORY_USAGE_SUCCESS_EVENT, data);
+    } catch (error) {
+      const message = get(error, 'response.data.Message') || error.toString();
+      mainWindow.webContents.send(GET_HISTORY_USAGE_ERROR_EVENT, {
+        message,
+      });
     }
   });
 };
 
-module.exports = registerUsageEvents;
+module.exports = registerAuthEvents;

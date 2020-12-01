@@ -37,7 +37,7 @@ function getCurrent(payload) {
 function getHistory(payload) {
   return this.instance({
     method: 'get',
-    url: `${DEFAULT_PATH}/usage`,
+    url: `${DEFAULT_PATH}/usage-history`,
     headers: {
       Authorization: payload.token,
     },

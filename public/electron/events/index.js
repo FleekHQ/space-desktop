@@ -10,11 +10,11 @@ const registerNotificationsEvents = require('./notifications');
 const registerAccountEvents = require('./account');
 const registerFolderEvents = require('./folder');
 const registerIdentitiesEvents = require('./identities');
-const registerUsageEvents = require('./usage');
 const registerWalletEvents = require('./wallet');
 const registerWinResizeEvents = require('./win-resize');
 const registerShellEvents = require('./shell');
 const registerSubscriptions = require('./subscriptions');
+const registerUsage = require('./usage');
 
 const registerEvents = ({
   app,
@@ -31,11 +31,11 @@ const registerEvents = ({
   registerAccountEvents(mainWindow);
   registerFolderEvents(mainWindow);
   registerIdentitiesEvents(mainWindow);
-  registerUsageEvents(mainWindow);
   registerWalletEvents(mainWindow);
   registerWinResizeEvents(mainWindow);
   registerShellEvents(mainWindow);
   registerSubscriptions(mainWindow);
+  registerUsage(mainWindow);
 
   if (!isDev && process.env.SKIP_AUTOUPDATE !== 'true') {
     registerAppUpdate({ app, mainWindow });

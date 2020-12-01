@@ -359,7 +359,11 @@
         },
         "currentUsage": {
           "title": "Current Usage",
-          "tooltip": "Current Usage shows the real time amount of storage and bandwidth you have used so far this billing period (date - date). Current Usage may increase based on how many files you store and how often you transfer/receive files. Current Usage is what's used to calculate your bill each month. At the end of the current monthly billing period the Current Usage amount will reset and start counting towards the next monthly billing period, so the amount displayed might fluctuate based on when you check it."
+          "tooltip": "Current Usage shows the real time amount of storage and bandwidth you have used so far this billing period (date - date). Current Usage may increase based on how many files you store and how often you transfer/receive files. Current Usage is what's used to calculate your bill each month. At the end of the current monthly billing period the Current Usage amount will reset and start counting towards the next monthly billing period, so the amount displayed might fluctuate based on when you check it.",
+          "labels": {
+            "bandwidth": "Bandwidth ({{size}})",
+            "storage": "Storage ({{size}})"
+          }
         },
         "info": {
           "upgrade": {
