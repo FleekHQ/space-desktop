@@ -95,7 +95,7 @@ const FileNameCell = (props) => {
           </Tooltip>
         ) : nameComponent}
 
-        {isShared && <PeopleIcon color="#7F8185" className={classes.icon} />}
+        {(isShared && !isFolder) && <PeopleIcon color="#7F8185" className={classes.icon} />}
       </div>
     </TableCell>
   );
