@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {
-  // Usage,
+  Usage,
   Account,
   Security,
   // ProductKey,
@@ -31,14 +31,14 @@ export default ({
     content: <div>notifications</div>,
   },
   */
-  // {
-  //   id: 'usage',
-  //   default: defaultItem === 'usage',
-  //   title: t('modals.settings.usage.title'),
-  //   content: (
-  //     <Usage />
-  //   ),
-  // },
+  {
+    id: 'usage',
+    default: defaultItem === 'usage',
+    title: t('modals.settings.usage.title'),
+    content: (
+      <Usage />
+    ),
+  },
   /*
   {
     id: 'referrals',
