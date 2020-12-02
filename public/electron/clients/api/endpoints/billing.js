@@ -1,4 +1,4 @@
-const DEFAULT_PATH = '/account';
+const BILLING_URL = `${process.env.SPACE_BILLING_SERVICE_URL}/account` || 'https://7ll1etbd0m.execute-api.us-west-2.amazonaws.com/dev/account';
 
 /**
  * @typedef {Object} CurrentUsageInfo
@@ -12,10 +12,10 @@ const DEFAULT_PATH = '/account';
  * @param {string} payload.token
  * @returns {import('axios').AxiosResponse<CurrentUsageInfo>}
  */
-function getCurrent(payload) {
+function getCurrentUsageInfo(payload) {
   return this.instance({
     method: 'get',
-    url: `${DEFAULT_PATH}/usage`,
+    url: `${BILLING_URL}/usage`,
     headers: {
       Authorization: payload.token,
     },
@@ -34,10 +34,10 @@ function getCurrent(payload) {
  * @param {string} payload.token
  * @returns {import('axios').AxiosResponse<Array<HistoryUsageInfo>>}
  */
-function getHistory(payload) {
+function getHistoryUsageInfo(payload) {
   return this.instance({
     method: 'get',
-    url: `${DEFAULT_PATH}/usage-history`,
+    url: `${BILLING_URL}/usage-history`,
     headers: {
       Authorization: payload.token,
     },
@@ -45,6 +45,6 @@ function getHistory(payload) {
 }
 
 module.exports = {
-  getCurrent,
-  getHistory,
+  getCurrentUsageInfo,
+  getHistoryUsageInfo,
 };

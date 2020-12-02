@@ -1,7 +1,7 @@
 const get = require('lodash/get');
 const { ipcMain } = require('electron');
 
-const { spaceClient, billingClient } = require('../clients');
+const { spaceClient, apiClient } = require('../clients');
 
 const EVENT_PREFIX = 'usage';
 const GET_CURRENT_USAGE_EVENT = `${EVENT_PREFIX}:currentUsage`;
@@ -15,7 +15,7 @@ const registerAuthEvents = (mainWindow) => {
   ipcMain.on(GET_CURRENT_USAGE_EVENT, async () => {
     try {
       const apiTokens = await spaceClient.getAPISessionTokens();
-      const { data } = await billingClient.account.getCurrent({
+      const { data } = await apiClient.billing.getCurrentUsageInfo({
         token: apiTokens.getServicestoken(),
       });
       mainWindow.webContents.send(GET_CURRENT_USAGE_SUCCESS_EVENT, data);
@@ -30,7 +30,7 @@ const registerAuthEvents = (mainWindow) => {
   ipcMain.on(GET_HISTORY_USAGE_EVENT, async () => {
     try {
       const apiTokens = await spaceClient.getAPISessionTokens();
-      const { data } = await billingClient.account.getHistory({
+      const { data } = await apiClient.billing.getHistoryUsageInfo({
         token: apiTokens.getServicestoken(),
       });
       mainWindow.webContents.send(GET_HISTORY_USAGE_SUCCESS_EVENT, data);
