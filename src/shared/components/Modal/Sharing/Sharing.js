@@ -59,16 +59,9 @@ const SharingModal = (props) => {
 
   const { error } = publicFileLink;
 
-  const i18n = {
-    memberInput: {
-      shareVia: t('modals.sharingModal.shareVia'),
-      to: t('modals.sharingModal.to'),
-      placeholder: t('modals.sharingModal.inputPlaceholder'),
-    },
-    collaboratorList: {
-      owner: t('common.owner'),
-      shareButton: t('modals.sharingModal.shareEmailButton'),
-    },
+  const collaboratorListI18n = {
+    owner: t('common.owner'),
+    shareButton: t('modals.sharingModal.shareEmailButton'),
   };
 
   /* eslint-disable no-console */
@@ -168,7 +161,7 @@ const SharingModal = (props) => {
         </Header>
         <MemberInput
           options={getOptions(t)}
-          i18n={i18n.memberInput}
+          inputLabel={t('modals.sharingModal.inputPlaceholder')}
           className={classes.memberInput}
           onChange={onChangeInputPermissions}
           setUsernames={setUsernames}
@@ -176,7 +169,7 @@ const SharingModal = (props) => {
           collaborators={mapIdentitiesToCollaborators(identities)}
         />
         <CollaboratorList
-          i18n={i18n.collaboratorList}
+          i18n={collaboratorListI18n}
           collaborators={collaborators}
           options={getOptions(t, true)}
           className={classes.collaboratorList}

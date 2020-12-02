@@ -20,6 +20,6 @@ export default makeStyles({
   },
   shareButton: {
     margin: '20px 25px 20px 0',
-    minWidth: 86,
+    width: 70,
   },
 });

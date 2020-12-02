@@ -275,9 +275,7 @@
       "usernameError": "Username is taken, please try another."
     },
     "sharingModal": {
-      "to": "To",
-      "inputPlaceholder": "Username",
-      "shareVia": "Share via Username (Recommended)",
+      "inputPlaceholder": "Enter Name or Email",
       "linkTitle": "Share a link instead",
       "noLinkDescription": "No link created yet.",
       "linkDescription": "Anyone with this link can view the folder.",
