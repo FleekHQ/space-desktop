@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Typography from '@ui/Typography';
@@ -70,11 +71,12 @@ const CollaboratorList = (props) => {
     return (
       <div key={id} className={classes.row}>
         <Collaborator {...collaboratorProps} />
-        {isOwner ? (
+        {isOwner && (
           <Typography variant="body2" className={classes.ownerLabel}>
             {i18n.owner}
           </Typography>
-        ) : (
+        )}
+        {/* : (
           <PermissionsDropdown
             open={isOpen}
             onChange={onChange}
@@ -85,7 +87,7 @@ const CollaboratorList = (props) => {
             disableBorder
             disabled
           />
-        )}
+        )} */}
       </div>
     );
   });
