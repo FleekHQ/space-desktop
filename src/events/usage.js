@@ -1,50 +1,58 @@
 import { ipcRenderer } from 'electron';
-import { USAGE_SETTINGS_ACTION_TYPES } from '@reducers/settings/usage';
 
 import store from '../store';
+import { USAGE_METRICS_ACTION_TYPES } from '../reducers/settings/usage';
 
 const EVENT_PREFIX = 'usage';
-const FETCH_USAGE_EVENT = `${EVENT_PREFIX}:fetch`;
-const FETCH_USAGE_ERROR_EVENT = `${EVENT_PREFIX}:fetch:error`;
-const FETCH_USAGE_SUCCESS_EVENT = `${EVENT_PREFIX}:fetch:success`;
+const GET_CURRENT_USAGE_EVENT = `${EVENT_PREFIX}:currentUsage`;
+const GET_CURRENT_USAGE_ERROR_EVENT = `${EVENT_PREFIX}:currentUsage:error`;
+const GET_CURRENT_USAGE_SUCCESS_EVENT = `${EVENT_PREFIX}:currentUsage:success`;
+const GET_HISTORY_USAGE_EVENT = `${EVENT_PREFIX}:historyUsage`;
+const GET_HISTORY_USAGE_ERROR_EVENT = `${EVENT_PREFIX}:historyUsage:error`;
+const GET_HISTORY_USAGE_SUCCESS_EVENT = `${EVENT_PREFIX}:historyUsage:success`;
 
-const registerUsageEvents = () => {
-  // eslint-disable-next-line no-unused-vars
-  ipcRenderer.on(FETCH_USAGE_SUCCESS_EVENT, (event, payload) => {
-    const data = {
-      localUsage: {
-        storage: payload.localStorageUsed,
-        bandwidth: payload.localBandwidthUsed,
-        combinedUsage: payload.localStorageUsed + payload.localBandwidthUsed,
-      },
-      backupUsage: {
-        storage: payload.spaceStorageUsed,
-        bandwidth: payload.spaceBandwidthUsed,
-        combinedUsage: payload.spaceStorageUsed + payload.spaceBandwidthUsed,
-        limit: payload.usageQuota,
-      },
-    };
-
+const registerAccountEvents = () => {
+  ipcRenderer.on(GET_CURRENT_USAGE_ERROR_EVENT, (event, { message }) => {
     store.dispatch({
-      payload: data,
-      type: USAGE_SETTINGS_ACTION_TYPES.FETCH_USAGE_INFO_SUCCESS,
+      type: USAGE_METRICS_ACTION_TYPES.GET_CURRENT_ERROR,
+      error: message,
     });
   });
 
-  ipcRenderer.on(FETCH_USAGE_ERROR_EVENT, (event, payload) => {
+  ipcRenderer.on(GET_CURRENT_USAGE_SUCCESS_EVENT, (event, payload) => {
     store.dispatch({
+      type: USAGE_METRICS_ACTION_TYPES.GET_CURRENT_SUCCESS,
       payload,
-      type: USAGE_SETTINGS_ACTION_TYPES.FETCH_USAGE_INFO_ERROR,
+    });
+  });
+
+  ipcRenderer.on(GET_HISTORY_USAGE_ERROR_EVENT, (event, { message }) => {
+    store.dispatch({
+      type: USAGE_METRICS_ACTION_TYPES.GET_HISTORY_ERROR,
+      error: message,
+    });
+  });
+
+  ipcRenderer.on(GET_HISTORY_USAGE_SUCCESS_EVENT, (event, payload) => {
+    store.dispatch({
+      type: USAGE_METRICS_ACTION_TYPES.GET_HISTORY_SUCCESS,
+      payload,
     });
   });
 };
 
-export const fetchUsageData = () => {
+export const getCurrentUsage = () => {
   store.dispatch({
-    type: USAGE_SETTINGS_ACTION_TYPES.FETCH_USAGE_INFO,
+    type: USAGE_METRICS_ACTION_TYPES.GET_CURRENT,
   });
-
-  ipcRenderer.send(FETCH_USAGE_EVENT);
+  ipcRenderer.send(GET_CURRENT_USAGE_EVENT);
 };
 
-export default registerUsageEvents;
+export const getHistoryUsage = () => {
+  store.dispatch({
+    type: USAGE_METRICS_ACTION_TYPES.GET_HISTORY,
+  });
+  ipcRenderer.send(GET_HISTORY_USAGE_EVENT);
+};
+
+export default registerAccountEvents;

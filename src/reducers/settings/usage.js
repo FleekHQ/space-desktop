@@ -1,87 +1,87 @@
-export const USAGE_SETTINGS_ACTION_TYPES = {
-  FETCH_USAGE_INFO: 'FETCH_USAGE_INFO',
-  FETCH_USAGE_INFO_SUCCESS: 'FETCH_USAGE_INFO_SUCCESS',
-  FETCH_USAGE_INFO_ERROR: 'FETCH_USAGE_INFO_ERROR',
-  TOGGLE_BACKUP: 'TOGGLE_BACKUP',
-  TOGGLE_BACKUP_SUCCESS: 'TOGGLE_BACKUP_SUCCESS',
-  TOGGLE_BACKUP_ERROR: 'TOGGLE_BACKUP_ERROR',
+export const USAGE_METRICS_ACTION_TYPES = {
+  GET_CURRENT: 'GET_CURRENT',
+  GET_CURRENT_ERROR: 'GET_CURRENT_ERROR',
+  GET_CURRENT_SUCCESS: 'GET_CURRENT_SUCCESS',
+  GET_HISTORY: 'GET_HISTORY',
+  GET_HISTORY_SUCCESS: 'GET_HISTORY_SUCCESS',
+  GET_HISTORY_ERROR: 'GET_HISTORY_ERROR',
 };
 
-const defaultState = {
-  loading: false,
-  error: null,
-  planName: 'Free plan',
-  usageData: {
-    success: false,
-    localUsage: {
-      storage: 0,
-      bandwidth: 0,
-      combinedUsage: 0,
-    },
-    backupUsage: {
-      storage: 0,
-      bandwidth: 0,
-      combinedUsage: 0,
-      limit: 0,
-    },
+const DEFAULT_STATE = {
+  current: {
+    loading: false,
+    error: null,
+    data: {},
   },
-  backupEnabled: undefined, // to show optimistic response
-  backupEnabledPrevValue: undefined, // if error, revert to old value
+  history: {
+    loading: false,
+    error: null,
+    data: [],
+  },
 };
 
-export default (state = defaultState, action) => {
+export default (state = DEFAULT_STATE, action) => {
   switch (action.type) {
-    case USAGE_SETTINGS_ACTION_TYPES.FETCH_USAGE_INFO: {
+    case USAGE_METRICS_ACTION_TYPES.GET_CURRENT: {
       return {
         ...state,
-        loading: true,
-      };
-    }
-
-    case USAGE_SETTINGS_ACTION_TYPES.FETCH_USAGE_INFO_ERROR: {
-      return {
-        ...state,
-        error: action.payload,
-        loading: false,
-      };
-    }
-
-    case USAGE_SETTINGS_ACTION_TYPES.FETCH_USAGE_INFO_SUCCESS: {
-      return {
-        ...state,
-        usageData: {
-          success: true,
-          ...action.payload,
+        current: {
+          ...state.current,
+          error: null,
+          loading: true,
         },
-        loading: false,
+      };
+    }
+    case USAGE_METRICS_ACTION_TYPES.GET_CURRENT_ERROR: {
+      return {
+        ...state,
+        current: {
+          ...state.current,
+          error: action.error,
+          loading: false,
+        },
+      };
+    }
+    case USAGE_METRICS_ACTION_TYPES.GET_CURRENT_SUCCESS: {
+      return {
+        ...state,
+        current: {
+          ...state.current,
+          data: action.payload,
+          loading: false,
+        },
       };
     }
 
-    case USAGE_SETTINGS_ACTION_TYPES.TOGGLE_BACKUP: {
+    case USAGE_METRICS_ACTION_TYPES.GET_HISTORY: {
       return {
         ...state,
-        backupEnabledPrevValue: state.backupEnabled,
-        backupEnabled: action.payload,
+        history: {
+          ...state.history,
+          error: null,
+          loading: true,
+        },
       };
     }
 
-    case USAGE_SETTINGS_ACTION_TYPES.TOGGLE_BACKUP_ERROR: {
+    case USAGE_METRICS_ACTION_TYPES.GET_HISTORY_ERROR: {
       return {
         ...state,
-        backupEnabledPrevValue: undefined,
-        backupEnabled: state.backupEnabledPrevValue,
+        history: {
+          ...state.history,
+          error: action.error,
+          loading: false,
+        },
       };
     }
 
-    case USAGE_SETTINGS_ACTION_TYPES.TOGGLE_BACKUP_SUCCESS: {
+    case USAGE_METRICS_ACTION_TYPES.GET_HISTORY_SUCCESS: {
       return {
         ...state,
-        backupEnabledPrevValue: undefined,
-        ...!state.backupEnabled && {
-          usageData: {
-            ...state.usageData,
-            backupUsage: defaultState.usageData.backupUsage,
-          },
+        history: {
+          ...state.history,
+          data: action.payload,
+          loading: false,
         },
       };
     }

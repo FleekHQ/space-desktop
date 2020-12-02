@@ -14,10 +14,10 @@ import registerNotificationsEvents from './notifications';
 import registerAccountEvents from './account';
 import registerFolderEvents from './folder';
 import registerIdentitiesEvents from './identities';
-import registerUsageEvents from './usage';
 import registerNotificationSubscribe from './notifications-subscribe';
 import walletSubscribe from './wallet';
 import registerSubscriptions from './subscriptions';
+import registerUsage from './usage';
 
 const RegisterEvents = () => {
   const history = useHistory();
@@ -36,10 +36,10 @@ const RegisterEvents = () => {
     registerAccountEvents();
     registerFolderEvents();
     registerIdentitiesEvents();
-    registerUsageEvents();
     registerNotificationSubscribe();
     walletSubscribe();
     registerSubscriptions();
+    registerUsage();
   }, []);
 
   return null;
@@ -56,7 +56,7 @@ export * from './notifications';
 export * from './account';
 export * from './folder';
 export * from './identities';
-export * from './usage';
 export * from './wallet';
 export * from './win-resize';
 export * from './subscriptions';
+export * from './usage';
