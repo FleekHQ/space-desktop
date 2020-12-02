@@ -11,7 +11,7 @@ import useStyles from './styles';
 
 const Header = ({
   title,
-  subTitle,
+  subtitle,
   tooltip,
   usedMemory,
   totalMemory,
@@ -26,7 +26,7 @@ const Header = ({
         <Box fontWeight={600}>{title}</Box>
       </Typography>
       <Typography color="secondary">
-        <Box ml="5px">{subTitle}</Box>
+        <Box ml="5px">{subtitle}</Box>
       </Typography>
       <Tooltip
         interactive
@@ -61,7 +61,7 @@ const Header = ({
 
 Header.propTypes = {
   title: PropTypes.string.isRequired,
-  subTitle: PropTypes.string.isRequired,
+  subtitle: PropTypes.string.isRequired,
   tooltip: PropTypes.string.isRequired,
   usedMemory: PropTypes.string.isRequired,
   totalMemory: PropTypes.string.isRequired,

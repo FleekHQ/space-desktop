@@ -1,12 +1,24 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
+// import moment from 'moment-timezone';
 import PieChart from '@terminal-packages/space-ui/core/PieChart';
 import { getCurrentUsage } from '@events';
 import { formatBytes } from '@utils';
 import useStyles from './styles';
 import { BaseCard } from '../../../../components';
 import Header from '../Header';
+
+// TODO: use in the next PR
+// const getDataRange = (history) => {
+//   const startFormattedDate = moment(history.data[0].date)
+//     .tz(moment.tz.guess())
+//     .format('MM/DD/YY');
+//   const endFormattedDate = moment(history.data[history.data.length - 1].date)
+//     .tz(moment.tz.guess())
+//     .format('MM/DD/YY');
+//   return `(${startFormattedDate} - ${endFormattedDate})`;
+// };
 
 const CurrentUsage = () => {
   const classes = useStyles();
@@ -28,7 +40,7 @@ const CurrentUsage = () => {
     <BaseCard className={classes.panel}>
       <Header
         title={t('modals.settings.usage.currentUsage.title')}
-        subtitle="(10/01/20 - 10/30/20)"
+        subtitle=""
         tooltip={t('modals.settings.usage.currentUsage.tooltip')}
         usedMemory="800"
         totalMemory="1"
