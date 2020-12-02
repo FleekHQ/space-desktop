@@ -7,13 +7,25 @@ export default makeStyles((theme) => ({
     minHeight: 60,
   },
   autocomplete: {
-    margin: '0 18px',
+    '& > div > div > div': {
+      borderRadius: 3,
+      '& label': {
+        backgroundColor: theme.palette.palette.white,
+        padding: '0 5px',
+      },
+      '&:focus-within': {
+        boxShadow: '0 0 11px #DBE1ED9A',
+      },
+    },
     '&&&  div': {
       paddingRight: 0,
     },
   },
   option: {
     display: 'flex',
+    '&[data-focus="true"]': {
+      backgroundColor: '#F5F6F8',
+    },
     '&&& p': {
       textOverflow: 'ellipsis',
       display: 'inline-block',
@@ -36,11 +48,6 @@ export default makeStyles((theme) => ({
   chipLabel: {
     paddingLeft: 5,
   },
-  shareVia: {
-    margin: '11px 0px 0px 25px',
-    fontSize: 14,
-    fontWeight: 500,
-  },
   input: {
     color: theme.palette.palette.black,
     backgroundColor: theme.palette.palette.white,
@@ -60,5 +67,11 @@ export default makeStyles((theme) => ({
   paper: {
     border: '1px solid #F2F3F7',
     boxShadow: '0 0 11px #DBE1ED9A',
+    margin: '7px -2px',
+  },
+  inputRoot: {
+    '& input': {
+      padding: '8px 4px',
+    },
   },
 }));

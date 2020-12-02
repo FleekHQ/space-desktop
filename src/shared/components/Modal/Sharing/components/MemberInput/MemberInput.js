@@ -1,8 +1,8 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import Typography from '@ui/Typography';
 import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import RainbowField from '@terminal-packages/space-ui/core/RainbowField';
@@ -15,7 +15,7 @@ import getFilteredOptions from './utils/get-filtered-options';
 
 const MemberInput = (props) => {
   const {
-    i18n,
+    inputLabel,
     onChange,
     className,
     loading,
@@ -68,20 +68,12 @@ const MemberInput = (props) => {
 
   return (
     <div>
-      <Typography
-        className={classes.shareVia}
-      >
-        {i18n.shareVia}
-      </Typography>
       <div
         className={classnames(
           classes.root,
           className,
         )}
       >
-        <Typography>
-          {i18n.to}
-        </Typography>
         <Autocomplete
           disabled={loading}
           filterOptions={filterOptions}
@@ -112,6 +104,8 @@ const MemberInput = (props) => {
             root: classes.autocomplete,
             option: classes.option,
             paper: classes.paper,
+            inputRoot: classes.inputRoot,
+            inputFocused: classes.inputFocused,
           }}
           onInputChange={(e) => {
             // There is a bug with <Autocomplete /> where sometimes the event is null
@@ -130,7 +124,7 @@ const MemberInput = (props) => {
                 disableUnderline: true,
                 className: `${params.InputProps.className} ${classes.input}`,
               }}
-              placeholder={usernames.length > 0 ? '' : i18n.placeholder}
+              label={inputLabel}
             />
           )}
           renderOption={(option) => (
@@ -141,14 +135,14 @@ const MemberInput = (props) => {
             />
           )}
         />
-        <PermissionsDropdown
+        {/* <PermissionsDropdown
           open={open}
           options={options}
           onChange={handleOnChange}
           handleClose={handleClose}
           handleToggle={handleToggle}
           className={classes.permissionDropdown}
-        />
+        /> */}
       </div>
     </div>
   );
@@ -164,11 +158,7 @@ MemberInput.defaultProps = {
 MemberInput.propTypes = {
   className: PropTypes.string,
   loading: PropTypes.bool,
-  i18n: PropTypes.shape({
-    to: PropTypes.string.isRequired,
-    placeholder: PropTypes.string.isRequired,
-    shareVia: PropTypes.string.isRequired,
-  }).isRequired,
+  inputLabel: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   options: PropTypes.arrayOf(PropTypes.shape({
     danger: PropTypes.bool,
