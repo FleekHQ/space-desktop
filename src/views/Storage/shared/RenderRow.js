@@ -47,7 +47,7 @@ const RenderRow = ({ row, arrowOnClick }) => {
       </FileCell>
       <TableCell>
         <Typography variant="body1" color="secondary" noWrap>
-          {formatBytes(row.size)}
+          {formatBytes(row.size).join(' ')}
         </Typography>
       </TableCell>
       <TableCell>

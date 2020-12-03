@@ -48,12 +48,12 @@ const Header = ({
       </Tooltip>
       <Typography className={classes.boldText} color="secondary">
         <span className={classes.accentText}>
-          <Box component="span" fontSize={23}>{usedMemory}</Box>
-          MB
+          <Box component="span" fontSize={23}>{usedMemory[0]}</Box>
+          {usedMemory[1]}
         </span>
         {t('common.of')}
-        <Box component="span" ml="4px" fontSize={23}>{totalMemory}</Box>
-        GB
+        <Box component="span" ml="4px" fontSize={23}>{totalMemory[0]}</Box>
+        {totalMemory[1]}
       </Typography>
     </div>
   );
@@ -63,8 +63,8 @@ Header.propTypes = {
   title: PropTypes.string.isRequired,
   subtitle: PropTypes.string.isRequired,
   tooltip: PropTypes.string.isRequired,
-  usedMemory: PropTypes.string.isRequired,
-  totalMemory: PropTypes.string.isRequired,
+  usedMemory: PropTypes.arrayOf(PropTypes.string).isRequired,
+  totalMemory: PropTypes.arrayOf(PropTypes.string).isRequired,
   widerTooltip: PropTypes.bool.isRequired,
 };
 

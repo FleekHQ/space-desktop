@@ -15,6 +15,7 @@ const registerWinResizeEvents = require('./win-resize');
 const registerShellEvents = require('./shell');
 const registerSubscriptions = require('./subscriptions');
 const registerUsage = require('./usage');
+const registerBilling = require('./billing');
 
 const registerEvents = ({
   app,
@@ -36,6 +37,7 @@ const registerEvents = ({
   registerShellEvents(mainWindow);
   registerSubscriptions(mainWindow);
   registerUsage(mainWindow);
+  registerBilling(mainWindow);
 
   if (!isDev && process.env.SKIP_AUTOUPDATE !== 'true') {
     registerAppUpdate({ app, mainWindow });

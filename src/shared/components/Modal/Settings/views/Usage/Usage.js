@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { getBillingInfo } from '@events';
+import { formatBytes } from '@utils';
 import CurrentUsage from './components/CurrentUsage';
 import HistoryUsage from './components/HistoryUsage';
 import {
@@ -10,6 +13,12 @@ import {
 
 const Usage = () => {
   const showInfo = 'backupLimitReached';
+  const state = useSelector((s) => s.billing);
+  useEffect(() => {
+    getBillingInfo();
+  }, []);
+
+  const freeUsageQuota = formatBytes(state.freeUsageQuota);
 
   return (
     <div>
@@ -21,8 +30,8 @@ const Usage = () => {
       {showInfo === 'backupLimitReached' && (
         <BackupLimitReached backupLimit="500GB" />
       )}
-      <HistoryUsage />
-      <CurrentUsage />
+      <HistoryUsage freeUsageQuota={freeUsageQuota} />
+      <CurrentUsage freeUsageQuota={freeUsageQuota} />
     </div>
   );
 };

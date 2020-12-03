@@ -44,7 +44,31 @@ function getHistoryUsageInfo(payload) {
   });
 }
 
+/**
+ * @typedef {Object} BillingInfo
+ * @property {string} billingPeriodStart
+ * @property {string} billingPeriodEnd
+ * @property {number} freeUsageQuota
+ */
+
+/**
+ * @this {import('../client.js')}
+ * @param {Object} payload
+ * @param {string} payload.token
+ * @returns {import('axios').AxiosResponse<BillingInfo>}
+ */
+function getBillingInfo(payload) {
+  return this.instance({
+    method: 'get',
+    url: BILLING_URL,
+    headers: {
+      Authorization: payload.token,
+    },
+  });
+}
+
 module.exports = {
   getCurrentUsageInfo,
   getHistoryUsageInfo,
+  getBillingInfo,
 };

@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
-// import moment from 'moment-timezone';
+import moment from 'moment-timezone';
 import PieChart from '@terminal-packages/space-ui/core/PieChart';
 import { getCurrentUsage } from '@events';
 import { formatBytes } from '@utils';
@@ -9,18 +10,17 @@ import useStyles from './styles';
 import { BaseCard } from '../../../../components';
 import Header from '../Header';
 
-// TODO: use in the next PR
-// const getDataRange = (history) => {
-//   const startFormattedDate = moment(history.data[0].date)
-//     .tz(moment.tz.guess())
-//     .format('MM/DD/YY');
-//   const endFormattedDate = moment(history.data[history.data.length - 1].date)
-//     .tz(moment.tz.guess())
-//     .format('MM/DD/YY');
-//   return `(${startFormattedDate} - ${endFormattedDate})`;
-// };
+const getFormattedDataRange = (start, end) => {
+  const startFormattedDate = moment(start)
+    .tz(moment.tz.guess())
+    .format('MM/DD/YY');
+  const endFormattedDate = moment(end)
+    .tz(moment.tz.guess())
+    .format('MM/DD/YY');
+  return `(${startFormattedDate} - ${endFormattedDate})`;
+};
 
-const CurrentUsage = () => {
+const CurrentUsage = ({ freeUsageQuota, billingPeriodStart, billingPeriodEnd }) => {
   const classes = useStyles();
   const { t } = useTranslation();
   const state = useSelector((s) => s.settings.usage.current);
@@ -30,20 +30,18 @@ const CurrentUsage = () => {
   }, []);
 
   const { storage = 0, bandwidth = 0 } = state.data;
-  const bandwidthFormatted = formatBytes(bandwidth, 0);
-  const storageFormatted = formatBytes(storage, 0);
-  const togetherFormatted = formatBytes(storage + bandwidth, 0);
-  const [togetherValue] = togetherFormatted.match(/^\d+/); // all digits from start
-  const [togetherUnit] = togetherFormatted.match(/[^\d]+$/); // all non digits at the end
+  const bandwidthFormatted = formatBytes(bandwidth, 0).join('');
+  const storageFormatted = formatBytes(storage, 0).join('');
+  const totalUsage = formatBytes(storage + bandwidth, 0);
 
   return (
     <BaseCard className={classes.panel}>
       <Header
         title={t('modals.settings.usage.currentUsage.title')}
-        subtitle=""
+        subtitle={getFormattedDataRange(billingPeriodStart, billingPeriodEnd)}
         tooltip={t('modals.settings.usage.currentUsage.tooltip')}
-        usedMemory="800"
-        totalMemory="1"
+        usedMemory={totalUsage}
+        totalMemory={freeUsageQuota}
         withTooltip
       />
       <div className={classes.pieChartWrapper}>
@@ -52,11 +50,17 @@ const CurrentUsage = () => {
             { label: t('modals.settings.usage.currentUsage.labels.bandwidth', { size: bandwidthFormatted }), value: bandwidth, color: '#59F66E' },
             { label: t('modals.settings.usage.currentUsage.labels.storage', { size: storageFormatted }), value: storage, color: '#0063FF' },
           ]}
-          mainLabel={[togetherValue, togetherUnit]}
+          mainLabel={totalUsage}
         />
       </div>
     </BaseCard>
   );
+};
+
+CurrentUsage.propTypes = {
+  freeUsageQuota: PropTypes.arrayOf(PropTypes.string).isRequired,
+  billingPeriodStart: PropTypes.string.isRequired,
+  billingPeriodEnd: PropTypes.string.isRequired,
 };
 
 export default CurrentUsage;
