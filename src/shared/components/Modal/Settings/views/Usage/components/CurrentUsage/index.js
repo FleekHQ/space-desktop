@@ -11,6 +11,10 @@ import { BaseCard } from '../../../../components';
 import Header from '../Header';
 
 const getFormattedDataRange = (start, end) => {
+  if (!start || !end) {
+    return '';
+  }
+
   const startFormattedDate = moment(start)
     .tz(moment.tz.guess())
     .format('MM/DD/YY');
@@ -30,6 +34,7 @@ const CurrentUsage = ({ freeUsageQuota, billingPeriodStart, billingPeriodEnd }) 
   }, []);
 
   const { storage = 0, bandwidth = 0 } = state.data;
+
   const bandwidthFormatted = formatBytes(bandwidth, 0).join('');
   const storageFormatted = formatBytes(storage, 0).join('');
   const totalUsage = formatBytes(storage + bandwidth, 0);
@@ -42,7 +47,7 @@ const CurrentUsage = ({ freeUsageQuota, billingPeriodStart, billingPeriodEnd }) 
         tooltip={t('modals.settings.usage.currentUsage.tooltip')}
         usedMemory={totalUsage}
         totalMemory={freeUsageQuota}
-        withTooltip
+        widerTooltip
       />
       <div className={classes.pieChartWrapper}>
         <PieChart
@@ -57,10 +62,15 @@ const CurrentUsage = ({ freeUsageQuota, billingPeriodStart, billingPeriodEnd }) 
   );
 };
 
+CurrentUsage.defaultProps = {
+  billingPeriodStart: undefined,
+  billingPeriodEnd: undefined,
+};
+
 CurrentUsage.propTypes = {
   freeUsageQuota: PropTypes.arrayOf(PropTypes.string).isRequired,
-  billingPeriodStart: PropTypes.string.isRequired,
-  billingPeriodEnd: PropTypes.string.isRequired,
+  billingPeriodStart: PropTypes.string,
+  billingPeriodEnd: PropTypes.string,
 };
 
 export default CurrentUsage;

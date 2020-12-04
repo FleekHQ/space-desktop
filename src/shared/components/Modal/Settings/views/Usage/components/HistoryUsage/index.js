@@ -31,11 +31,12 @@ const HistoryUsage = ({ freeUsageQuota }) => {
     <BaseCard className={classes.panel}>
       <Header
         title={t('modals.settings.usage.currentStorage.title')}
-        subTitle=""
         tooltip={t('modals.settings.usage.currentStorage.tooltip')}
-        usedMemory="728"
+        usedMemory={chartData.length
+          ? formatBytes(chartData[chartData.length - 1].y, 0)
+          : ['', '']}
         totalMemory={freeUsageQuota}
-        withTooltip={false}
+        widerTooltip={false}
       />
       <AreaChart
         width={530}

@@ -23,10 +23,10 @@ const Header = ({
   return (
     <div className={classes.header}>
       <Typography>
-        <Box fontWeight={600}>{title}</Box>
+        <Box fontWeight={600} component="span">{title}</Box>
       </Typography>
       <Typography color="secondary">
-        <Box ml="5px">{subtitle}</Box>
+        <Box ml="5px" component="span">{subtitle}</Box>
       </Typography>
       <Tooltip
         interactive
@@ -59,9 +59,13 @@ const Header = ({
   );
 };
 
+Header.defaultProps = {
+  subtitle: '',
+};
+
 Header.propTypes = {
   title: PropTypes.string.isRequired,
-  subtitle: PropTypes.string.isRequired,
+  subtitle: PropTypes.string,
   tooltip: PropTypes.string.isRequired,
   usedMemory: PropTypes.arrayOf(PropTypes.string).isRequired,
   totalMemory: PropTypes.arrayOf(PropTypes.string).isRequired,

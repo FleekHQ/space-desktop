@@ -17,8 +17,7 @@ const Usage = () => {
   useEffect(() => {
     getBillingInfo();
   }, []);
-
-  const freeUsageQuota = formatBytes(state.freeUsageQuota);
+  const freeUsageQuota = formatBytes(state.data.freeUsageQuota, 0);
 
   return (
     <div>
@@ -31,7 +30,11 @@ const Usage = () => {
         <BackupLimitReached backupLimit="500GB" />
       )}
       <HistoryUsage freeUsageQuota={freeUsageQuota} />
-      <CurrentUsage freeUsageQuota={freeUsageQuota} />
+      <CurrentUsage
+        freeUsageQuota={freeUsageQuota}
+        billingPeriodStart={state.data.billingPeriodStart}
+        billingPeriodEnd={state.data.billingPeriodEnd}
+      />
     </div>
   );
 };
