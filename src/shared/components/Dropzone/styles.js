@@ -21,9 +21,8 @@ export default makeStyles({
     position: 'absolute',
     top: 0,
     opacity: 0.1,
-    zIndex: 1,
     '& + &': {
-      zIndex: 2,
+      zIndex: 1,
       opacity: 1,
     },
   },
