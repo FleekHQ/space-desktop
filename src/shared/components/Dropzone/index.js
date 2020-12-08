@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import useStyles, { rowHeight, headHeight } from './styles';
 
 const RAINBOW_BORDER_WIDTH = 2;
-const X_MARGINS = 12;
 
 const Dropzone = ({
   children,
@@ -83,7 +82,7 @@ const Dropzone = ({
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={`calc(100% - ${X_MARGINS}px)`}
+        width={`calc(100% - ${RAINBOW_BORDER_WIDTH}px)`}
         height={`${defaultHeight + RAINBOW_BORDER_WIDTH / 2}px`}
         className={classes.rainbowField}
       >
@@ -116,7 +115,7 @@ const Dropzone = ({
       className={classes.root}
     >
       <div ref={wrapperNode} className={classes.wrapper}>
-        {(isDragActive || true) && (
+        {isDragActive && (
           <>
             {getSvg({
               fill: 'url(#gradient)',

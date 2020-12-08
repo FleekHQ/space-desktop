@@ -13,11 +13,13 @@ export default makeStyles({
     },
   },
   wrapper: {
+    position: 'relative',
     minHeight: '100%',
   },
   rainbowField: {
     pointerEvents: 'none',
     position: 'absolute',
+    top: 0,
     opacity: 0.1,
     zIndex: 1,
     '& + &': {
