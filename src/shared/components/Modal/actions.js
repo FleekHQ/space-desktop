@@ -5,7 +5,6 @@ export const OPEN_MODAL = 'OPEN_MODAL';
 export const CLOSE_MODAL = 'CLOSE_MODAL';
 
 /* Modal Ids */
-export const UPLOAD_PROGRESS_TOAST = 'UPLOAD_PROGRESS_TOAST';
 export const SHARE_PROGRESS_TOAST = 'SHARE_PROGRESS_TOAST';
 export const SETTINGS_MODAL = 'SETTINGS_MODAL';
 export const SHARING_MODAL = 'SHARING_MODAL';

@@ -46,7 +46,6 @@ export const SEARCH_TERM_CHANGE = 'SEARCH_TERM_CHANGE';
 export const SET_UPLOAD_ERROR_STATE = 'SET_UPLOAD_ERROR_STATE';
 export const SET_BUCKETS_LIST_ERROR_STATE = 'SET_BUCKETS_LIST_ERROR_STATE';
 export const SET_UPLOAD_SUCCESS_STATE = 'SET_UPLOAD_SUCCESS_STATE';
-export const INIT_UPLOAD_STATE = 'INIT_UPLOAD_STATE';
 
 export default (state = DEFAULT_STATE, action) => {
   switch (action.type) {
@@ -85,22 +84,6 @@ export default (state = DEFAULT_STATE, action) => {
         ...state,
         bucketsListLoading: false,
         error: action.payload,
-      };
-    }
-
-    case INIT_UPLOAD_STATE: {
-      return {
-        ...state,
-        uploadsList: {
-          ...state.uploadsList,
-          [action.payload.id]: {
-            targetPath: action.payload.targetPath,
-            wasUploaded: action.payload.sourcePaths.reduce((result, path) => ({
-              ...result,
-              [path]: false,
-            }), {}),
-          },
-        },
       };
     }
 

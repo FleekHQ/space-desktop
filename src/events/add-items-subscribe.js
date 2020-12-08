@@ -1,14 +1,12 @@
-import { ipcRenderer } from 'electron';
-import { objectPresenter } from '@utils';
+/* eslint-disable */
+import { ipcRenderer, remote } from 'electron';
+import { objectPresenter, createNewObject } from '@utils';
 import {
   SET_UPLOAD_SUCCESS_STATE,
   SET_UPLOAD_ERROR_STATE,
-  INIT_UPLOAD_STATE,
+  UPDATE_OBJECTS,
   ADD_OBJECT,
 } from '@reducers/storage';
-import {
-  openModal, UPLOAD_PROGRESS_TOAST,
-} from '@shared/components/Modal/actions';
 
 import store from '../store';
 
@@ -37,22 +35,52 @@ const registerAddItemsSubscribeEvents = () => {
   });
 };
 
+
+const getFileStats = async (sourcePath) => new Promise((resolve, reject) => {
+  const fs = remote.require('fs');
+  fs.stat(sourcePath, {}, (err, stats) => {
+    console.log(sourcePath, stats);
+    if (err) {
+      reject(err);
+    }
+    resolve({
+      sourcePath,
+      size: stats.size,
+      isDir: stats.isDirectory(),
+    });
+  });
+});
+
 /**
  * @param {Object} payload
  * @param {string} payload.targetPath
  * @param {Array<string>} payload.sourcePaths
  */
-export const addItems = (payload) => {
-  const modalId = store.dispatch(openModal(UPLOAD_PROGRESS_TOAST));
-  store.dispatch({
-    type: INIT_UPLOAD_STATE,
-    payload: {
-      id: modalId,
-      sourcePaths: payload.sourcePaths,
-      targetPath: payload.targetPath,
-    },
-  });
-  ipcRenderer.send(SUBSCRIBE_START_EVENT, { id: modalId, payload });
+export const addItems = async (payload) => {
+  const id = new Date().getTime();
+  const statsPromises = payload.sourcePaths.map((sourcePath) => getFileStats(sourcePath));
+
+  Promise.all(statsPromises)
+    .then((data) => {
+      store.dispatch({
+        type: UPDATE_OBJECTS,
+        payload: [
+          /* eslint-disable-next-line max-len */
+          ...data.map((stats) => {
+            const object = createNewObject({
+                targetPath: payload.targetPath,
+                bucket: 'personal',
+                ...stats
+              });
+            return object;
+          })
+        ],
+      });
+      // ipcRenderer.send(SUBSCRIBE_START_EVENT, { id, payload });
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 };
 
 export default registerAddItemsSubscribeEvents;
