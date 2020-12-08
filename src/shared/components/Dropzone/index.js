@@ -4,6 +4,9 @@ import { useDropzone } from 'react-dropzone';
 import PropTypes from 'prop-types';
 import useStyles, { rowHeight, headHeight } from './styles';
 
+const RAINBOW_BORDER_WIDTH = 2;
+const X_MARGINS = 12;
+
 const Dropzone = ({
   children,
   objectsList,
@@ -74,6 +77,38 @@ const Dropzone = ({
     bottom: wrapperHeight.current - (headHeight + (rowNumber + 1) * rowHeight),
   } : {};
 
+  const getSvg = (overrideSvgProps) => {
+    const defaultHeight = Math.max(objectsList.length * rowHeight, wrapperHeight.current);
+
+    return (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width={`calc(100% - ${X_MARGINS}px)`}
+        height={`${defaultHeight + RAINBOW_BORDER_WIDTH / 2}px`}
+        className={classes.rainbowField}
+      >
+        <linearGradient id="gradient" x1="0%" y1="25%" x2="100%" y2="75%">
+          <stop offset="18%" stopColor="#ed55eb" />
+          <stop offset="42%" stopColor="#17e0d8" />
+          <stop offset="59%" stopColor="#00ffc2" />
+          <stop offset="81%" stopColor="#ffec06" />
+        </linearGradient>
+        <rect
+          fill="transparent"
+          y={rainbowFieldStyles.top ? rainbowFieldStyles.top : headHeight}
+          x={`${RAINBOW_BORDER_WIDTH / 2}px`}
+          width={`calc(100% - ${RAINBOW_BORDER_WIDTH}px)`}
+          height={rainbowFieldStyles.top ? rowHeight : defaultHeight - headHeight}
+          rx="6"
+          ry="6"
+          style={{ transition: 'y ease .17s, height ease .17s' }}
+          // eslint-disable-next-line react/jsx-props-no-spreading
+          {...overrideSvgProps}
+        />
+      </svg>
+    );
+  };
+
   return (
     <div
       // eslint-disable-next-line react/jsx-props-no-spreading
@@ -81,11 +116,16 @@ const Dropzone = ({
       className={classes.root}
     >
       <div ref={wrapperNode} className={classes.wrapper}>
-        {isDragActive && (
-          <div
-            className={classes.rainbowField}
-            style={rainbowFieldStyles}
-          />
+        {(isDragActive || true) && (
+          <>
+            {getSvg({
+              fill: 'url(#gradient)',
+            })}
+            {getSvg({
+              stroke: 'url(#gradient)',
+              strokeWidth: RAINBOW_BORDER_WIDTH,
+            })}
+          </>
         )}
         {/* eslint-disable-next-line react/jsx-props-no-spreading */}
         <input {...getInputProps()} />
