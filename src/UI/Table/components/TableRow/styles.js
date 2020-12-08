@@ -22,9 +22,6 @@ export default makeStyles((theme) => ({
       borderRadius: 4,
       backgroundColor: theme.palette.palette.white,
     },
-    '& > *': {
-      zIndex: 1,
-    },
   },
   hover: {},
 }));
