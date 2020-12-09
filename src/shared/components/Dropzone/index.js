@@ -86,7 +86,7 @@ const Dropzone = ({
         height={`${defaultHeight + RAINBOW_BORDER_WIDTH / 2}px`}
         className={classes.rainbowField}
       >
-        <linearGradient id="gradient" x1="0%" y1="25%" x2="100%" y2="75%">
+        <linearGradient id="dropzone-gradient" x1="0%" y1="25%" x2="100%" y2="75%">
           <stop offset="18%" stopColor="#ed55eb" />
           <stop offset="42%" stopColor="#17e0d8" />
           <stop offset="59%" stopColor="#00ffc2" />
