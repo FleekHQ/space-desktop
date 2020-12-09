@@ -118,10 +118,10 @@ const Dropzone = ({
         {isDragActive && (
           <>
             {getSvg({
-              fill: 'url(#gradient)',
+              fill: 'url(#dropzone-gradient)',
             })}
             {getSvg({
-              stroke: 'url(#gradient)',
+              stroke: 'url(#dropzone-gradient)',
               strokeWidth: RAINBOW_BORDER_WIDTH,
             })}
           </>
