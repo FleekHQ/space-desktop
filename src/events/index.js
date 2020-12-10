@@ -18,6 +18,7 @@ import registerNotificationSubscribe from './notifications-subscribe';
 import walletSubscribe from './wallet';
 import registerSubscriptions from './subscriptions';
 import registerUsage from './usage';
+import registerBilling from './billing';
 
 const RegisterEvents = () => {
   const history = useHistory();
@@ -40,6 +41,7 @@ const RegisterEvents = () => {
     walletSubscribe();
     registerSubscriptions();
     registerUsage();
+    registerBilling();
   }, []);
 
   return null;
@@ -60,3 +62,4 @@ export * from './wallet';
 export * from './win-resize';
 export * from './subscriptions';
 export * from './usage';
+export * from './billing';

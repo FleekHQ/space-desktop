@@ -16,7 +16,7 @@ const objectPresenter = (obj = {}, isRootDir = false) => {
   const created = new Date(get(obj, 'created'));
 
   const size = parseInt(get(obj, 'sizeInBytes', 0), 10);
-  const bytesSize = formatBytes(size);
+  const bytesSize = formatBytes(size).join(' ');
 
   const members = get(obj, 'members', []);
   const backupCount = get(obj, 'backupCount', 0);

@@ -23,10 +23,10 @@ const Header = ({
   return (
     <div className={classes.header}>
       <Typography>
-        <Box fontWeight={600}>{title}</Box>
+        <Box fontWeight={600} component="span">{title}</Box>
       </Typography>
       <Typography color="secondary">
-        <Box ml="5px">{subtitle}</Box>
+        <Box ml="5px" component="span">{subtitle}</Box>
       </Typography>
       <Tooltip
         interactive
@@ -48,23 +48,27 @@ const Header = ({
       </Tooltip>
       <Typography className={classes.boldText} color="secondary">
         <span className={classes.accentText}>
-          <Box component="span" fontSize={23}>{usedMemory}</Box>
-          MB
+          <Box component="span" fontSize={23}>{usedMemory[0]}</Box>
+          {usedMemory[1]}
         </span>
         {t('common.of')}
-        <Box component="span" ml="4px" fontSize={23}>{totalMemory}</Box>
-        GB
+        <Box component="span" ml="4px" fontSize={23}>{totalMemory[0]}</Box>
+        {totalMemory[1]}
       </Typography>
     </div>
   );
 };
 
+Header.defaultProps = {
+  subtitle: '',
+};
+
 Header.propTypes = {
   title: PropTypes.string.isRequired,
-  subtitle: PropTypes.string.isRequired,
+  subtitle: PropTypes.string,
   tooltip: PropTypes.string.isRequired,
-  usedMemory: PropTypes.string.isRequired,
-  totalMemory: PropTypes.string.isRequired,
+  usedMemory: PropTypes.arrayOf(PropTypes.string).isRequired,
+  totalMemory: PropTypes.arrayOf(PropTypes.string).isRequired,
   widerTooltip: PropTypes.bool.isRequired,
 };
 
