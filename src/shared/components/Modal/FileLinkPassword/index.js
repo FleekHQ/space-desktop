@@ -69,7 +69,7 @@ const FileLinkPassword = ({
         </Typography>
         <Typography>
           <Box component="span" fontWeight={500} fontSize="14px">
-            {fExt}
+            .{fExt}
           </Box>
         </Typography>
       </Box>

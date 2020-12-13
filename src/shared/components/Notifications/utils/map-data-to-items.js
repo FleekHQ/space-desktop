@@ -52,14 +52,12 @@ const mapInvitationItem = (item, lastSeenAt, Trans, t, classes, identities) => {
     timestamp: createdAt,
     description: getDescription(),
     files: itemPaths.map((itemPath) => {
-      const currentFileSplitPath = itemPath.path.split('/');
-      const currentFile = currentFileSplitPath[currentFileSplitPath.length - 1];
-      const currentFileExtension = currentFile.split('.');
-      const testIsExtension = /^[\w!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]+\.[\w]+$/;
-      const isExtension = testIsExtension.test(currentFile);
+      const currentFile = itemPath.path.split('/').pop();
+      const currentFileArray = currentFile.split('.');
+
       return ({
         name: currentFile,
-        ext: isExtension && currentFileExtension[currentFileExtension.length - 1],
+        ext: currentFileArray.length > 1 ? currentFileArray.pop() : '',
       });
     }),
     status,
@@ -85,7 +83,7 @@ const mapDataToItems = (data, Trans, t, classes, identities) => {
     return arr;
   }, []);
 
-  return mappedData;
+  return mappedData.sort((n1, n2) => n2.timestamp - n1.timestamp);
 };
 
 export default mapDataToItems;

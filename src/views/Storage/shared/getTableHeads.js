@@ -1,22 +1,49 @@
-import React from 'react';
-
-import { IconsTooltip } from '@ui/Table';
-
-export default (t) => [
+const getPersonalHeaders = (t) => [
   {
-    width: '40%',
+    id: 'name',
+    width: '50%',
     title: t('modules.storage.fileTable.head.name'),
+    isSortable: true,
   },
   {
-    width: '20%',
+    id: 'size',
+    width: '25%',
     title: t('modules.storage.fileTable.head.size'),
+    isSortable: true,
+    paddingLeft: 23,
   },
   {
-    width: '32%',
+    id: 'lastModified',
+    width: '25%',
     title: t('modules.storage.fileTable.head.lastModified'),
-  },
-  {
-    width: '80px',
-    title: <IconsTooltip />,
+    isSortable: true,
   },
 ];
+
+const getSharedHeaders = (t) => [
+  {
+    id: 'name',
+    width: '50%',
+    title: t('modules.storage.fileTable.head.name'),
+    isSortable: true,
+  },
+  {
+    id: 'size',
+    width: '25%',
+    title: t('modules.storage.fileTable.head.sharedBy'),
+    isSortable: true,
+  },
+  {
+    id: 'lastModified',
+    width: '25%',
+    title: t('modules.storage.fileTable.head.lastModified'),
+    isSortable: true,
+  },
+];
+
+const headerTypes = {
+  shared: getSharedHeaders,
+  personal: getPersonalHeaders,
+};
+
+export default (t, type) => headerTypes[type](t);

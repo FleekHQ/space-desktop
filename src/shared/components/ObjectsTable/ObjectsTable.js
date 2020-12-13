@@ -1,21 +1,27 @@
-import React from 'react';
-import classNames from 'classnames';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEllipsisH } from '@fortawesome/pro-regular-svg-icons/faEllipsisH';
-import Button from '@material-ui/core/Button';
+import { faLongArrowUp } from '@fortawesome/pro-regular-svg-icons/faLongArrowUp';
+import { faLongArrowDown } from '@fortawesome/pro-regular-svg-icons/faLongArrowDown';
+import ButtonBase from '@material-ui/core/ButtonBase';
 import Typography from '@material-ui/core/Typography';
 import { openObject } from '@events';
 import { UPDATE_OBJECTS } from '@reducers/storage';
 import Dropzone from '@shared/components/Dropzone';
+import Popper from '@material-ui/core/Popper';
 import Table, { TableCell, TableRow } from '@ui/Table';
+import ContextMenu, { CONTEXT_OPTION_IDS } from '@ui/ContextMenu';
+import { openModal, SHARING_MODAL, DELETE_OBJECT } from '@shared/components/Modal/actions';
+import { useTranslation } from 'react-i18next';
+import { getTabulations } from '@utils';
+import getContextMenuItems from './utils/get-context-menu';
 
 import useStyles from './styles';
 
 const ObjectsTable = ({
-  rows,
+  rows: unsortedRows,
   heads,
   renderRow: RenderRow,
   withRowOptions,
@@ -25,20 +31,83 @@ const ObjectsTable = ({
   loading,
   renderLoadingRows,
   EmptyState,
+  fetchDir,
+  disableRowOffset,
 }) => {
-  const classes = useStyles();
+  const { t } = useTranslation();
   const history = useHistory();
   const dispatch = useDispatch();
-  const wrapperRef = React.useRef(null);
+  const location = useLocation();
 
-  const handleRowClick = ({ rowIndex }) => (event) => {
+  const initialContextState = {
+    mouseX: null,
+    mouseY: null,
+  };
+  const [contextState, setContextState] = React.useState(initialContextState);
+
+  const wrapperRef = React.useRef(null);
+  const [filtersDirection, setFiltersDirection] = useState({
+    name: 'desc',
+    size: 'desc',
+    lastModified: 'desc',
+  });
+  const [currentFilter, setCurrentFilter] = useState('name');
+
+  const getSortedRows = (rowsToSort) => (rowsToSort.sort((rowA, rowB) => {
+    let compareValueA = rowA[currentFilter];
+    let compareValueB = rowB[currentFilter];
+    if (filtersDirection[currentFilter] === 'desc') {
+      compareValueA = rowB[currentFilter];
+      compareValueB = rowA[currentFilter];
+    }
+    if (compareValueA instanceof Date) {
+      compareValueA = new Date(compareValueA).getTime();
+      compareValueB = new Date(compareValueB).getTime();
+    }
+
+    if (typeof compareValueA === 'string') {
+      compareValueA = compareValueA.toLowerCase();
+      compareValueB = compareValueB.toLowerCase();
+      if (compareValueA > compareValueB) {
+        return 1;
+      }
+      if (compareValueA < compareValueB) {
+        return -1;
+      }
+      return 0;
+    }
+
+    return (compareValueA - compareValueB);
+  }));
+
+  const sortAndAddSubfolders = (rows) => {
+    let sorted = getSortedRows(rows);
+    sorted = sorted.reduce((newArr, row) => {
+      let arrayWithSubfolder = newArr;
+      arrayWithSubfolder.push(row);
+      if (row.expanded) {
+        const subFolderContent = sortAndAddSubfolders(row.folderContent);
+        arrayWithSubfolder = arrayWithSubfolder.concat(subFolderContent);
+      }
+      return arrayWithSubfolder;
+    }, []);
+    return sorted;
+  };
+
+  const sortedRows = sortAndAddSubfolders(unsortedRows);
+
+  const classes = useStyles();
+
+  const clickedItem = sortedRows.find((row) => row.selected);
+
+  const handleRowClick = ({ rowIndex }) => (event, keypresses) => {
     event.preventDefault();
 
-    const isShiftKeyPress = !!event.shiftKey;
-    const isCtrlOrMetaPress = !!(event.ctrlKey || event.metaKey);
-    const pivoteRowIndex = rows.findIndex((_row) => _row.pivote);
+    const isShiftKeyPress = !!keypresses.shiftKey;
+    const isCtrlOrMetaPress = !!(keypresses.ctrlKey || keypresses.metaKey);
+    const pivoteRowIndex = sortedRows.findIndex((_row) => _row.pivote);
 
-    const payload = rows.reduce((newRows, _row, index) => {
+    const payload = sortedRows.reduce((newRows, _row, index) => {
       if (
         isShiftKeyPress
         && pivoteRowIndex !== -1
@@ -75,14 +144,16 @@ const ObjectsTable = ({
   };
 
   const handleDoubleRowClick = ({ row }) => (event) => {
-    event.preventDefault();
+    if (event) {
+      event.preventDefault();
+    }
     let newRows = [];
 
     if (row.type === 'folder') {
       const redirectUrl = getRedirectUrl(row);
       history.push(redirectUrl);
 
-      newRows = rows.map((_row) => ({
+      newRows = sortedRows.map((_row) => ({
         ..._row,
         pivote: false,
         selected: false,
@@ -96,9 +167,10 @@ const ObjectsTable = ({
         name: row.name,
         ipfsHash: row.ipfsHash,
         isPublicLink: row.isPublicLink,
+        fullKey: row.fullKey,
       });
 
-      newRows = rows.map((_row) => ({
+      newRows = sortedRows.map((_row) => ({
         ..._row,
         pivote: row.id === _row.id,
         selected: row.id === _row.id,
@@ -113,14 +185,13 @@ const ObjectsTable = ({
 
   const handleRowRightClick = ({ row }) => (event) => {
     event.preventDefault();
-    // eslint-disable-next-line no-console
-    console.log('TODO: show context menu');
 
-    if (row.selected) {
-      return;
-    }
+    setContextState({
+      mouseX: event.clientX - 2,
+      mouseY: event.clientY - 4,
+    });
 
-    const newRows = rows.map((_row) => ({
+    const newRows = sortedRows.map((_row) => ({
       ..._row,
       pivote: _row.id === row.id,
       selected: _row.id === row.id,
@@ -132,6 +203,9 @@ const ObjectsTable = ({
     });
   };
 
+  const handleContextClose = () => {
+    setContextState(initialContextState);
+  };
   const handleTableOutsideClick = (event) => {
     if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
       onOutsideClick(event.target);
@@ -144,7 +218,70 @@ const ObjectsTable = ({
     return () => {
       document.removeEventListener('click', handleTableOutsideClick);
     };
-  }, [rows]);
+  }, [sortedRows]);
+
+  const sortButtonOnClick = (id) => {
+    if (currentFilter === id) {
+      setFiltersDirection({
+        ...filtersDirection,
+        [id]: filtersDirection[id] === 'desc' ? 'asc' : 'desc',
+      });
+      return;
+    }
+    setCurrentFilter(id);
+  };
+
+  const arrowOnClick = (clickedRow) => {
+    const expanded = !clickedRow.expanded;
+    const newRows = [
+      {
+        ...clickedRow,
+        expanded,
+      },
+    ];
+
+    if (expanded) {
+      fetchDir(clickedRow.key);
+    }
+
+    dispatch({
+      payload: newRows,
+      type: UPDATE_OBJECTS,
+    });
+  };
+
+  const menuItemOnClick = (optionId) => {
+    switch (optionId) {
+      case CONTEXT_OPTION_IDS.open:
+        handleDoubleRowClick({ row: clickedItem })();
+        break;
+      case CONTEXT_OPTION_IDS.trash:
+        dispatch(openModal(DELETE_OBJECT, { item: clickedItem }));
+        break;
+      case CONTEXT_OPTION_IDS.share:
+      default:
+        dispatch(openModal(SHARING_MODAL, { selectedObjects: [clickedItem] }));
+        break;
+    }
+    handleContextClose();
+  };
+
+  const contextMenuItems = getContextMenuItems(clickedItem, t);
+
+  const getDropzoneObjsList = () => {
+    let indexOfLastVisitedRootObj = 0;
+
+    return sortedRows.map((obj, index) => {
+      if (getTabulations(obj.key, location) === 0) {
+        indexOfLastVisitedRootObj = index;
+      }
+      return {
+        isFolder: obj.type === 'folder',
+        name: obj.key,
+        index: indexOfLastVisitedRootObj,
+      };
+    });
+  };
 
   return (
     <div className={classes.tableWrapper}>
@@ -152,60 +289,84 @@ const ObjectsTable = ({
         noClick
         onDrop={onDropzoneDrop}
         disabled={!onDropzoneDrop}
-        objectsList={rows.map((obj) => ({
-          isFolder: obj.type === 'folder',
-          name: obj.key,
-        }))}
+        objectsList={getDropzoneObjsList()}
       >
         <div ref={wrapperRef}>
           <Table
             head={withRowOptions ? [...heads, { width: 43 }] : heads}
-            rows={rows}
+            rows={sortedRows}
             className={classes.root}
             renderLoadingRows={renderLoadingRows}
             loading={loading}
             renderHead={({ head = [] }) => (
               <TableRow>
-                {head.map(({ width, title }) => (
-                  <TableCell key={title || 'options'} className={classes.headerCell} width={width}>
-                    <Typography variant="body2">
-                      {title}
-                    </Typography>
+                {head.map(({
+                  width,
+                  title,
+                  isSortable,
+                  id,
+                  paddingLeft = 0,
+                }) => (
+                  <TableCell
+                    key={title || 'options'}
+                    className={classes.headerCell}
+                    width={width}
+                    style={{ paddingLeft }}
+                  >
+                    {isSortable ? (
+                      <ButtonBase
+                        className={classes.sortButton}
+                        onClick={() => sortButtonOnClick(id)}
+                      >
+                        <Typography variant="body2">
+                          {title}
+                        </Typography>
+                        {(currentFilter === id) && (
+                          <FontAwesomeIcon
+                            icon={(filtersDirection[currentFilter] === 'desc') ? faLongArrowDown : faLongArrowUp}
+                            className={classes.filterDirectionIcon}
+                          />
+                        )}
+                      </ButtonBase>
+                    ) : (
+                      <Typography variant="body2">
+                        {title}
+                      </Typography>
+                    )}
                   </TableCell>
                 ))}
               </TableRow>
             )}
             renderRow={({ row, rowIndex }) => (
-              <TableRow
-                hover
-                key={row.id}
-                className={classNames(classes.row, {
-                  [classes.selected]: row.selected,
-                })}
-                onClick={handleRowClick({ row, rowIndex })}
-                onContextMenu={handleRowRightClick({ row })}
-                onDoubleClick={handleDoubleRowClick({ row })}
-              >
-                <RenderRow row={row} />
-                {withRowOptions && (
-                  <TableCell align="right">
-                    <Button
-                      className={classes.options}
-                      color="secondary"
-                      disableRipple
-                      onClick={(e) => {
-                        e.stopPropagation();
-                      }}
-                    >
-                      <FontAwesomeIcon icon={faEllipsisH} />
-                    </Button>
-                  </TableCell>
-                )}
-              </TableRow>
+              <RenderRow
+                row={row}
+                rowIndex={rowIndex}
+                disableOffset={disableRowOffset}
+                arrowOnClick={() => arrowOnClick(row)}
+                handleRowClick={handleRowClick}
+                handleRowRightClick={handleRowRightClick}
+                handleDoubleRowClick={handleDoubleRowClick}
+                rowClasses={classes}
+              />
             )}
           />
+          <Popper
+            open={contextState.mouseY !== null}
+            onClose={handleContextClose}
+            onClickAway={handleContextClose}
+            style={{
+              top: contextState.mouseY,
+              left: contextState.mouseX,
+            }}
+          >
+            <ContextMenu
+              onClickAway={handleContextClose}
+              menuItemOnClick={menuItemOnClick}
+              items={contextMenuItems}
+            />
+          </Popper>
         </div>
-        {!loading && !rows.length && <EmptyState />}
+        {!loading && !sortedRows.length && <EmptyState />}
       </Dropzone>
     </div>
   );
@@ -213,11 +374,13 @@ const ObjectsTable = ({
 
 ObjectsTable.defaultProps = {
   onDropzoneDrop: null,
-  withRowOptions: false,
+  withRowOptions: true,
   onOutsideClick: () => null,
   renderLoadingRows: () => null,
   loading: false,
   EmptyState: () => null,
+  fetchDir: () => null,
+  disableRowOffset: false,
 };
 
 ObjectsTable.propTypes = {
@@ -234,6 +397,8 @@ ObjectsTable.propTypes = {
   renderLoadingRows: PropTypes.func,
   loading: PropTypes.bool,
   EmptyState: PropTypes.elementType,
+  fetchDir: PropTypes.func,
+  disableRowOffset: PropTypes.bool,
 };
 
 export default ObjectsTable;

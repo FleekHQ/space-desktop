@@ -6,11 +6,11 @@ import { object, boolean } from '@storybook/addon-knobs';
 
 import Table from './index';
 import {
-  FileCell,
   TableRow,
   TableCell,
   IconsCell,
   LoadingCell,
+  FileNameCell,
 } from './components';
 
 const categoryName = 'ElementalComponents/Table';
@@ -32,11 +32,16 @@ const renderRow = ({ row }) => (
     key={row.id}
     hover
   >
-    <FileCell ext={row.ext} src={row.src}>
+    <FileNameCell
+      ext={row.ext}
+      src={row.src}
+      expanded={row.expanded}
+      tabulations={row.tabulations}
+    >
       <Typography variant="body1">
         {row.name}
       </Typography>
-    </FileCell>
+    </FileNameCell>
     <TableCell>
       <Typography variant="body1" color="secondary">
         Only you
@@ -68,16 +73,26 @@ const renderLoadingRows = () => [...Array(20)].map((_, index) => (
     key={index}
   >
     <TableCell>
-      <LoadingCell isIconCell />
+      <LoadingCell
+        width="calc(100% - 25px)"
+      />
     </TableCell>
     <TableCell>
-      <LoadingCell />
+      <LoadingCell
+        width={24}
+        style={{ marginRight: 10 }}
+      />
+      <LoadingCell
+        width="calc(100% - 54px)"
+      />
     </TableCell>
     <TableCell>
-      <LoadingCell />
+      <LoadingCell
+        width="calc(100% - 25px)"
+      />
     </TableCell>
     <TableCell>
-      <LoadingCell isLastCell/>
+      <LoadingCell/>
     </TableCell>
   </TableRow>
 ));
@@ -90,7 +105,7 @@ storiesOf(categoryName, module).add('Table', () => {
       'Last Modified',
       '',
     ]),
-    loading: boolean('loading', true),
+    loading: boolean('loading', false),
     rows: object('rows', [
       {
         id: 'a1',
@@ -100,6 +115,17 @@ storiesOf(categoryName, module).add('Table', () => {
         lastModified: 'Apr 1, 2020 1:02:56 PM EST',
         size: '429.0 B',
         selected: false,
+        expanded: true,
+      },
+      {
+        id: 'a1',
+        type: 'folder',
+        ext: 'folder',
+        name: 'Analytics',
+        lastModified: 'Apr 1, 2020 1:02:56 PM EST',
+        size: '429.0 B',
+        selected: false,
+        expanded: false,
       },
       {
         id: 'b2',
@@ -109,6 +135,28 @@ storiesOf(categoryName, module).add('Table', () => {
         lastModified: 'Mar 12, 2020 12:11:32 PM EST',
         size: '773.0 B',
         selected: false,
+        tabulations: 1,
+      },
+      {
+        id: 'a1',
+        type: 'folder',
+        ext: 'folder',
+        name: 'Analytics',
+        lastModified: 'Apr 1, 2020 1:02:56 PM EST',
+        size: '429.0 B',
+        selected: false,
+        expanded: false,
+        tabulations: 1
+      },
+      {
+        id: 'b2',
+        type: 'file',
+        name: 'TechDocsV2.docx',
+        ext: 'docx',
+        lastModified: 'Mar 12, 2020 12:11:32 PM EST',
+        size: '773.0 B',
+        selected: false,
+        tabulations: 2,
       },
       {
         id: 'c3',
