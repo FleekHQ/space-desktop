@@ -10,7 +10,8 @@ export default makeStyles(() => ({
     maxWidth: ({ maxWidth }) => maxWidth,
     borderRadius: 6,
     overflow: 'auto',
-    boxShadow: '0 2px 6px #DBE1EDB2',
+    filter: 'drop-shadow(0 2px 6px #DBE1EDB2)',
+    boxShadow: 'none',
     '&:focus': {
       outline: 'none',
     },
