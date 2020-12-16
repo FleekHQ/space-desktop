@@ -156,17 +156,14 @@ const RenderRow = ({
         src={`file:${row.key}`}
         arrowOnClick={arrowOnClick}
         expanded={row.expanded}
-        tabulations={getTabulations(row.key, location)}
+        tabulations={disableOffset ? 0 : getTabulations(row.key, location)}
         name={row.name}
         selected={!!row.selected}
         isShared={row.members.length > 1}
         isUploading={row.isUploading}
         onNameClick={rowDoubleClickHandler}
       />
-      <TableCell
-        className={classes.iconSizeContainer}
-        tabulations={disableOffset ? 0 : getTabulations(row.key, location)}
-      >
+      <TableCell className={classes.iconSizeContainer}>
         {getSizeIcon()}
         <Typography
           variant="body1"
