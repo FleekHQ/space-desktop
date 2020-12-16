@@ -78,6 +78,12 @@ const HeaderNav = () => {
     </Typography>
   );
 
+  const searchResults = results ? results.map((item) => ({
+    ext: item.ext,
+    key: item.id,
+    fileName: item.key,
+  })) : null;
+
   return (
     <div className={classes.root}>
       <FolderNavButton
@@ -99,16 +105,11 @@ const HeaderNav = () => {
       />
       <SearchBar
         debounce={200}
-        results={results}
+        results={searchResults}
         value={searchTerm}
         noResults={noResults}
         placeholder={t('common.search')}
         onChange={(val) => searchFiles(val)}
-        mapItemToFileItemProps={(item) => ({
-          ext: item.ext,
-          key: item.id,
-          fileName: item.key,
-        })}
         onClickResult={(item, hideResults) => {
           navigateToFolder(item, history);
           openItem(item);
